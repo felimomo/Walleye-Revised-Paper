@@ -125,15 +125,21 @@ N_a(t+1) &= s\times (N_{a-1}(t) - H_{a-1}(t)), \quad && 1 < a <20,\\
 N_{20}(t+1) &= s\times \left(N_{20}(t) - H_{20}(t) + N_{19}(t) - H_{19}(t)\right). \quad &&
 \end{alignat}
 Here we use the following notations: 
-The control variables in the Markov decision problem are the harvest-at-age values $H_a$ (calculated in numbers of fish).
+The harvest-at-age is $H_a(t) = F_t V_a N_a(t)$, where $F_t$ is the harvest mortality rate, $V_a$ is the *harvest vulnerability at age*,
+\begin{align}
+  V_a &= 
+  \frac{1}{1 + e^{-(a-a_{hv})/2}}\, ,
+\end{align}
+and $a_{hv}=5$ is the age at half harvest vulnerability.
+Notice that even for a high net fishing mortality rate, e.g. , the actual fishing mortality rate enacted on young age classes remains low, which is a common assumption in many recreational fisheries (e.g., see @golden2022focusing).
 The spawning stock biomass is $SSB_t$, 
 \begin{align}
   SSB_t &= \sum_{a=1}^{20} wt_a N_a / 
   \left(
     1 + e^{-(a - a_{hm})/2}
-  \right),
+  \right)\, ,
 \end{align}
-where $wt_a$ is the average weight-at-age and $a_{hm}=5$ is the age at 50\% maturity (see @cahill2022unveiling for more details).
+where $wt_a$ is the average weight-at-age and $a_{hm}=6$ is the age at 50\% maturity (see @cahill2022unveiling for more details).
 The parameters $\alpha$ and $\beta$ describe the juvenile survival as a function of $SSB_t$. 
 
 The model has stochastic dynamics via the parameter $r_t$, which is independently sampled at each timestep. 
@@ -144,6 +150,11 @@ We use a Bernoulli trial with $\mathrm{Pr.}=0.025$ to decide whether a large rec
 Large recruitment events are rare in any one fishery, however their occurrence happens at a rate much higher than would be predicted by the log-normal distribution alone [@cahill2022unveiling].
 Our model for $r_t$ is a minimalistic description of this dynamic which has explicit control over the rate of large recruitment events.
 We contrast recruitment timeseries for our model with timeseries using log-normal stochasticity in an appendix.
+
+Simulations were run for 1000 time-steps in an attempt to capture the long-term effects of HCRs on population dynamics and performance criteria. 
+Specifically, the expected number of large recruitment years (i.e. ‘‘successful’’ Bernoulli trials for $r_t$) over a period of 1000 time-steps is 25, which was judged to be high enough to capture the dynamics arising from a particular HCR. 
+Using nomenclature from the RL literature, we also refer to these 1000 time-step simulations as *episodes*.
+
 
 
 
