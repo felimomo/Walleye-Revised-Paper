@@ -119,11 +119,34 @@ Unless stated otherwise parameter values for all relationships are drawn from av
 A finding of @cahill2022unveiling was that recruitment dynamics were highly variable and/or spasmodic (see also @caddy1983historical). 
 Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(N_1,\dots,N_{20})$. 
 Recruitment was modeled via the Beverton-Holt equation 
+\begin{alignat}{2}
+N_1(t+1) &= \alpha\, r_t SSB_t / (1 + \beta SSB_t), \quad &&\\
+N_a(t+1) &= s\times (N_{a-1}(t) - H_{a-1}(t)), \quad && 1 < a <20,\\
+N_{20}(t+1) &= s\times \left(N_{20}(t) - H_{20}(t) + N_{19}(t) - H_{19}(t)\right). \quad &&
+\end{alignat}
+Here we use the following notations: 
+The control variables in the Markov decision problem are the harvest-at-age values $H_a$ (calculated in numbers of fish).
+The spawning stock biomass is $SSB_t$, 
 \begin{align}
-N_1(t+1) &= \alpha\, r_t SSB_t / (1 + \beta SSB_t) - H_1(t),\\
-N_a(t+1) &= s\times \left(N_{a-1}(t) - H_{a-1}(t)\right) - s\times \left(N_a(t) - H_a(t)\right), \quad \text{for } 1 < a <20,\\
-N_{20}(t+1) &= s\times \left(N_{20}(t) - H_{20}(t)\right) + s\times \left(N_{19}(t) - H_{19}(t)\right),
+  SSB_t &= \sum_{a=1}^{20} wt_a N_a / 
+  \left(
+    1 + e^{-(a - a_{hm})/2}
+  \right),
 \end{align}
+where $wt_a$ is the average weight-at-age and $a_{hm}=5$ is the age at 50\% maturity (see @cahill2022unveiling for more details).
+The parameters $\alpha$ and $\beta$ describe the juvenile survival as a function of $SSB_t$. 
+
+The model has stochastic dynamics via the parameter $r_t$, which is independently sampled at each timestep. 
+There are two types of events for the variable $r_t$: 
+1) A normal recruitment year, in which $r_t$ is a log-normal variable $r_t\sim \mathrm{lognorm}(\mu=0, \sigma=1)$ (see, e.g., @quinn1999quantitative).
+2) A large recruitment year, in which $r_t\sim \mathrm{unif}(10,30)$.
+
+Large recruitment events are rare in any one fishery, however their occurrence happens at a rate much higher than would be predicted by the log-normal distribution alone [@cahill2022unveiling].
+Because of this, we use the Bernoulli trial as a simple mechanism to describe this dynamic and have explicit control over the rate of large recruitment events, which we set to $\mathrm{Pr.}=0.025$ here.
+We contrast recruitment timeseries for our model with timeseries using log-normal stochasticity in an appendix.
+
+
+
 
 ```{bibliography}
 :style: alpha
