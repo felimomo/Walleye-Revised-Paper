@@ -24,7 +24,7 @@ authors:
         city: East Lansing
 exports:
        - format: pdf
-         template: arxiv_two_column
+         template: arxiv_nips
          output: fisheries.pdf
 abstract: |
   In fishery science, harvest management of size-structured stochastic populations is a long-standing and  difficult problem. 
@@ -39,8 +39,18 @@ keywords:
   - Fishery science
   - Walleye 
   - Spasmodic fishery
+bibliography:
+  - refs.bib
 ---
 
 # Introduction
 
-This is an introduction
+
+Over the past two decades a wealth of literature has emerged that is aimed at solving sequential decision problems in diverse fields such as engineering, robotics, and control theory.
+This work, collectively referred to as Reinforcement Learning (RL), has now advanced to the level needed to outperform human experts in many fields [@sutton;@bertsekas2019reinforcement].
+For example, the application of RL has revolutionized games like chess, where the world’s top chess engines now almost always defeat elite players.
+Beyond outperforming experts, RL offers a fresh perspective on previously unsolvable problems—and in the case of chess, top players now incorporate strategies discovered by engines into their repertoires that were once considered nonsensical by humans. 
+Lessons like these seem relevant to fisheries scientists, as a number of sustainability problems lie at the intersection of age-structured population dynamics and sequential decision making under uncertainty (Walters and Hilborn 1978), and for which methods like dynamic programming or analytical approaches break down due to the “curse of dimensionality.”
+It is in these decision-making contexts that RL shows promise, and could serve as a useful guide for improving our collective intuition surrounding the design of feedback policies. 
+
+
