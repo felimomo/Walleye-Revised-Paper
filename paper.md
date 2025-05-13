@@ -75,6 +75,21 @@ Similarly, Atlantic Redfish Sebastes fasciatus stocks off the eastern coast of C
 In inland systems, Walleye Sander vitreus in Lake Erie increased from low abundance due to a large recruitment event in 2003, and this cohort has continued to support the bulk of one of most economically valuable recreational fisheries in the world for nearly a decade [@schmitt2020does]. 
 In these examples, large recruitment events affected both population status and the users who rely upon those populations; however, such events are almost always written off as “environmental effects” and are notoriously difficult to predict with the reliability needed to inform feedback policy design (see @myers1998environment; @punt2014fisheries).
 
+```{figure} figures/conceptual.jpeg
+:name: conceptual
+:width: 70000px
+:align: center
+
+Conceptual framework for our methodology. a) The dynamics of a Walleye population is simulated using a size-structured stochastic model with 20 size classes (right box). 
+The state of the population is specified by the biomass in each size class, i.e. the system's state is 20-dimensional. 
+Policy decisions are based on either one or two observations are gathered out of this 20-dimensional vector (middle box). 
+These observations are gathered through a simulated survey conducted by the fishery management. 
+Vulnerable biomass: the total biomass vulnerable to the survey gear, mean fish weight: the mean weight of fish caught in the survey. 
+A quantitative policy uses these observations to fix an instantaneous fishing mortality (left box). b) We optimize policies in three scenarios with differing utility functions. 
+Total harvest: long-term yield. Hyperbolic additive risk-averse (HARA): a risk-averse utility function which penalizes inter-annual variability. 
+Trophy fishing: a utility function which only values large fish, while small fish do not contribute to the utility. c) Four types of policies are optimized. The first three policies—FMSY, Precautionary Policy, and 1-Observation ML—use only the vulnerable biomass observation, whereas 2-Observation ML uses both observations.
+```
+
 Little work has examined the implications of infrequent large recruitment events on the performance of feedback policies in age-structured populations, even though feedback policies are now considered the de facto standard for managing fisheries exploitation worldwide (see @free2023harvest; @silvar2022empirical; however, see @licandeo2020management). 
 This is noteworthy because nearly all of the theoretical work underpinning harvest control rule or feedback policy design has assumed populations exhibit uncorrelated recruitment anomalies originating from standard, stationary statistical distributions (see @walters1975optimal; @walters1978ecological; @reed1979optimal; however see @parma1990experimental; @hawkshaw2015harvest).
 In this paper, we apply RL and Bayesian optimization to the problem of designing harvest control rules (HCRs) for partially-observed age-structured populations exhibiting highly variable recruitment dynamics (see Fig. 1a). 
