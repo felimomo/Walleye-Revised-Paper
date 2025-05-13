@@ -59,3 +59,12 @@ While extensive application of the MSE approach has shown it to be a useful tool
 Phrased differently, if a particular policy is not included a priori due to a lack of creativity on behalf of analysts or perhaps due to the constraints of national legislation (e.g., see [@dfo2009]), then it simply is not possible to learn whether some alternative harvest control rule might outperform those tested. 
 In the context of feedback policy design this may be problematic, because feedback policy design is often counterintuitive, and because analysts typically limit themselves to 1-dimensional control rules based on stock biomass [@punt2022framework;@sainsbury2000design]. 
 For multidimensional population dynamics models (e.g., age-structured models, or community models), there is no theoretical guarantee that a single quantity (e.g. stock biomass) is sufficient to specify the optimal harvesting rate (see, e.g., discussion in @walters2002stock).
+
+The dynamics of age-structured populations occur in high dimensional spaces, and thus in some situations it is possible for different states to correspond to the same total stock biomass. 
+For example, in a standard  age-structured model, many small fish can have the same total biomass as a few large fish. 
+Not surprisingly, managers might prescribe different management actions  in  these different contexts (see similar arguments in @hilborn2002dark). 
+Intuitively, a dimensionality problem such as this makes it difficult  to specify policies to test a priori. While complexity due to age-structure makes it difficult to specify effective policies a priori, it also implies that managers have access to more information than total biomass in some situations—this additional information might be useful for informing harvesting decisions. 
+For instance, knowing the mean fish weight in addition to total stock biomass might help the manager distinguish between a population with many small fish and one with a population composed of mainly large fish. 
+Sources of additional information could be especially useful for managing fisheries with complex population dynamics such as populations with spasmodic recruitment dynamics.
+
+
