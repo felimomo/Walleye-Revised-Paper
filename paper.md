@@ -104,6 +104,27 @@ We found that considerable gains can be achieved in performance by precautionary
 By using an RL methodology we explored whether mean weight was a useful variable for policy decisions and found that the answer depends on the choice of utility function. 
 Namely, we found that mean weight was useful in the trophy fishing setting and, surprisingly, not in the yield maximizing and risk averse settings.
 
+# Methods
+
+A collection of 15-30 walleye lakes in Alberta are managed using a Special Harvest License (SHL), which enables managers to assign a Total Allowable Catch (TAC) to limit harvest, and which is unique for inland recreational fisheries in North America. 
+Presently, managers use an indicator-based approach to set TACs in any particular year based on standardized gill-netting surveys occuring in fall. 
+However, @cahill2022unveiling showed that harvestable surplus existed in many systems even though many management plans stated the goal of seeking to harvest for maximum sustainable yield. 
+Consequently, we aim to improve the scientific defensibility of this harvest allocation process in the Alberta SHL walleye program. 
+To do so, we extended a standard age-structured population dynamics model of walleye described in detail in @cahill2022unveiling and use it to simulate realistic population dynamics. 
+Briefly, we model population processes such growth in numbers at age through time as a function of Beverton-Holt stock-recruitment (see below), von Bertalanffy somatic growth in length-at-age (see @cahill2022unveiling), and total mortality as an additive process assuming total instantaneous mortality Z is equal to instantaneous natural mortality M plus fishing mortality rates imposed by recreational harvesters and which is modulated by vulnerability at age. 
+Unless stated otherwise parameter values for all relationships are drawn from average values estimated in @cahill2022unveiling.
+
+## Population dynamics
+
+A finding of @cahill2022unveiling was that recruitment dynamics were highly variable and/or spasmodic (see also @caddy1983historical). 
+Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(N_1,\dots,N_{20})$. 
+Recruitment was modeled via the Beverton-Holt equation 
+\begin{align}
+N_1(t+1) &= \alpha\, r_t SSB_t / (1 + \beta SSB_t) - H_1(t),\\
+N_a(t+1) &= s\times \left(N_{a-1}(t) - H_{a-1}(t)\right) - s\times \left(N_a(t) - H_a(t)\right), \quad \text{for } 1 < a <20,\\
+N_{20}(t+1) &= s\times \left(N_{20}(t) - H_{20}(t)\right) + s\times \left(N_{19}(t) - H_{19}(t)\right),
+\end{align}
+
 ```{bibliography}
 :style: alpha
 ```
