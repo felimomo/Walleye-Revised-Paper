@@ -67,4 +67,21 @@ Intuitively, a dimensionality problem such as this makes it difficult  to specif
 For instance, knowing the mean fish weight in addition to total stock biomass might help the manager distinguish between a population with many small fish and one with a population composed of mainly large fish. 
 Sources of additional information could be especially useful for managing fisheries with complex population dynamics such as populations with spasmodic recruitment dynamics.
 
+Fish populations with highly variable, spasmodic, recruitment are some of the most perplexing systems to learn from and in which to inform fisheries management [@hjort1914fluctuations; @caddy1983historical], and thus serve as a useful test case in which to explore the utility of RL methodologies for improving feedback policy design. 
+In this paper we define highly variable or spasmodic recruitment to mean that a fish population exhibits infrequent large year classes of at least 10-50 times the long-term average recruitment level (see @caddy1983historical). 
+While by definition such events are rare in any one system, a cursory review of the literature reveals that these types of fluctuations occur with some regularity in fisheries throughout the world (e.g., see @fisch2019comparison; @licandeo2020management). 
+For example, while better fisheries management practices helped rebuild Northeast Atlantic fish stocks, it appears that of the stocks that displayed the strongest recoveries, record large year classes occurred at low abundance that drove stock productivity upward and out of low, collapsed states (see @zimmermann2019improved). 
+Similarly, Atlantic Redfish Sebastes fasciatus stocks off the eastern coast of Canada exhibit spasmodic recruitment fluctuations that make the application of standard stock assessment techniques and MSE challenging [@licandeo2020management]. 
+In inland systems, Walleye Sander vitreus in Lake Erie increased from low abundance due to a large recruitment event in 2003, and this cohort has continued to support the bulk of one of most economically valuable recreational fisheries in the world for nearly a decade [@schmitt2020does]. 
+In these examples, large recruitment events affected both population status and the users who rely upon those populations; however, such events are almost always written off as “environmental effects” and are notoriously difficult to predict with the reliability needed to inform feedback policy design (see @myers1998environment; @punt2014fisheries).
 
+Little work has examined the implications of infrequent large recruitment events on the performance of feedback policies in age-structured populations, even though feedback policies are now considered the de facto standard for managing fisheries exploitation worldwide (see @free2023harvest; @silvar2022empirical; however, see @licandeo2020management). 
+This is noteworthy because nearly all of the theoretical work underpinning harvest control rule or feedback policy design has assumed populations exhibit uncorrelated recruitment anomalies originating from standard, stationary statistical distributions (see @walters1975optimal; @walters1978ecological; @reed1979optimal; however see @parma1990experimental; @hawkshaw2015harvest).
+In this paper, we apply RL and Bayesian optimization to the problem of designing harvest control rules (HCRs) for partially-observed age-structured populations exhibiting highly variable recruitment dynamics (see Fig. 1a). 
+Specifically, we use RL methodologies to explore whether multi-dimensional control rules—particularly rules depending on the total stock biomass and the mean fish weight—might be helpful for managing age-structured, spasmodically recruiting, populations. 
+We focus our case study on a recreational Walleye fishery managed via harvest lottery in Alberta, Canada (see @sullivan2003active), as recent work showed these populations recovered from collapse due in part to large positive recruitment anomalies [@post2002canada; @cahill2022unveiling]. 
+We also compare the policies obtained by numerical optimization with a rectilinear ‘default’ precautionary rule recommended by Canada [@dfo2009].  
+
+```{bibliography}
+:style: alpha
+```
