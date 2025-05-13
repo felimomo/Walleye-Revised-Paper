@@ -85,6 +85,10 @@ We also compare the policies obtained by numerical optimization with a rectiline
 We evaluate HCRs with three types of utility functions: total harvest (i.e., yield maximizing), a risk-averse utility that prioritizes inter-annual consistency in catch, and a trophy fishing utility in which only sufficiently large fish are valued by harvesters (see Fig. 1b). 
 We optimize and evaluate four classes of HCRs: 1) constant fishing mortality rate ($F_{MSY}$), 2) a rectilinear precautionary rule derived from $F_{MSY}$ and the biomass at which surplus production is maximized $B_{MSY}$ (see [@dfo2006; Fig. 1] for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see Fig. 1c).
 
+We found that considerable gains can be achieved in performance by precautionary policies by optimizing policy parameters. 
+By using an RL methodology we explored whether mean weight was a useful variable for policy decisions and found that the answer depends on the choice of utility function. 
+Namely, we found that mean weight was useful in the trophy fishing setting and, surprisingly, not in the yield maximizing and risk averse settings.
+
 ```{bibliography}
 :style: alpha
 ```
