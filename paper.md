@@ -56,7 +56,7 @@ It is in these decision-making contexts that RL shows promise, and could serve a
 In the absence of tractable analytical or dynamic programming solutions to feedback policy design in fisheries, simulation-based approaches like Management Strategy Evaluation (MSE) have been used to evaluate trade-offs among alternative feedback policies or harvest control rules [@punt2016management]. 
 In MSE, analysts first specify policies to test a priori, and only after the specification of a policy set is simulation then used to quantify the relative performance of those policies against explicit objective(s). 
 While extensive application of the MSE approach has shown it to be a useful tool for informing harvest policy (e.g., [@edwards2016management]), it remains limited to select among the a priori policy set chosen by analysts. 
-Phrased differently, if a particular policy is not included a priori due to a lack of creativity on behalf of analysts or perhaps due to the constraints of national legislation (e.g., see [@dfo2009]), then it simply is not possible to learn whether some alternative harvest control rule might outperform those tested. 
+Phrased differently, if a particular policy is not included a priori due to a lack of creativity on behalf of analysts or perhaps due to the constraints of national legislation (e.g., see [@dfo2006]), then it simply is not possible to learn whether some alternative harvest control rule might outperform those tested. 
 In the context of feedback policy design this may be problematic, because feedback policy design is often counterintuitive, and because analysts typically limit themselves to 1-dimensional control rules based on stock biomass [@punt2022framework;@sainsbury2000design]. 
 For multidimensional population dynamics models (e.g., age-structured models, or community models), there is no theoretical guarantee that a single quantity (e.g. stock biomass) is sufficient to specify the optimal harvesting rate (see, e.g., discussion in @walters2002stock).
 
@@ -80,7 +80,10 @@ This is noteworthy because nearly all of the theoretical work underpinning harve
 In this paper, we apply RL and Bayesian optimization to the problem of designing harvest control rules (HCRs) for partially-observed age-structured populations exhibiting highly variable recruitment dynamics (see Fig. 1a). 
 Specifically, we use RL methodologies to explore whether multi-dimensional control rules—particularly rules depending on the total stock biomass and the mean fish weight—might be helpful for managing age-structured, spasmodically recruiting, populations. 
 We focus our case study on a recreational Walleye fishery managed via harvest lottery in Alberta, Canada (see @sullivan2003active), as recent work showed these populations recovered from collapse due in part to large positive recruitment anomalies [@post2002canada; @cahill2022unveiling]. 
-We also compare the policies obtained by numerical optimization with a rectilinear ‘default’ precautionary rule recommended by Canada [@dfo2009].  
+We also compare the policies obtained by numerical optimization with a rectilinear ‘default’ precautionary rule recommended by Canada [@dfo2006].
+
+We evaluate HCRs with three types of utility functions: total harvest (i.e., yield maximizing), a risk-averse utility that prioritizes inter-annual consistency in catch, and a trophy fishing utility in which only sufficiently large fish are valued by harvesters (see Fig. 1b). 
+We optimize and evaluate four classes of HCRs: 1) constant fishing mortality rate ($F_{MSY}$), 2) a rectilinear precautionary rule derived from $F_{MSY}$ and the biomass at which surplus production is maximized $B_{MSY}$ (see [@dfo2006; Fig. 1] for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see Fig. 1c).
 
 ```{bibliography}
 :style: alpha
