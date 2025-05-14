@@ -192,6 +192,35 @@ while the system dynamics unfold in the high-dimensional space defined by the bi
 It is also worth noting that while the model dynamics are Markovian in the full state space, the dynamics of these two observed states are not, making this a so-called Partially Observed Markov Decision Process, or POMDP. 
 This real-world problem that surveys provide imperfect information on overall abundance leads to a mathematical inconvenience that significantly increases the technical difficulty  of finding an optimal solution using classical tools like dynamic programming, and, as a result, the analysis of ecological POMDP problems has been restricted to models that make simpler ecological assumptions  (e.g., see @williams2022partial). 
 
+## Utility models
+
+We consider three utility models. 
+1. *Total harvest utility* (i.e., *yield maximizing*): the utility at a time-step $t$ is given by the total harvested biomass at that time-step,
+$$
+  U_{yield}(t) = \sum_{a=1}^{20} H_a(t) W_a.
+$$
+2. *Risk averse utility*: a hyperbolic additive risk-averse utility function (also known as ‘HARA utility’) which values inter-annual stability in harvests,
+$$
+  U_{\text{HARA}}(t) = U_{yield}(t)^{\gamma},
+$$
+where the parameter $\gamma=0.6$ parametrizes the risk aversion (see, e.g., @collie2021harvest).
+Notice that the power of $\gamma$ attenuates the utility derived from large harvests.
+Thus, low-and-stable harvests can perform relatively better with respect to $U_{\text{HARA}}$ than large-but-sparse harvest peaks.[^opportunity]
+We note that this is similar to using the natural log of catches as is commonly done in MSE.
+Here the specific risk aversion $\gamma$ is set to a specific value for clarity, and we note that this parameterization converges on total harvest utility as  $\gamma\rightarrow1.0$.
+3. *Trophy fishing utility*: here, harvested fish only contribute to the utility if they are above a certain size (age) class, $a > a_{thr.}$,
+$$
+  U_{trophy}(t) = \sum_{a>a_{thr.}} H_a(t) W_a,
+$$
+and we set $a_{thr.}=10$.
+
+We considered utility functions one and two because they represent commonly acknowledged goals of fisheries management, that is maximizing yield and stabilizing harvests, which are to some degree at odds with one another and represent high harvest rates and high interannual variability in catches (maximizing yield) or low, but consistent harvest rates (maximizing risk-averse utility; see also @walters1996fixed; @collie2021harvest). 
+Moreover we included the trophy fishing function to explore how our analysis would change for more complex, size-dependent, utility functions. 
+Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers only desire to retain large trophy-sized fish rather than valuing fish of any size equally (e.g., see @murphy1996fisheries; @licandeo2020management).
+
+
+
+[^opportunity]: In other words, the opportunity cost of a large harvest plays a smaller role the lower $\gamma$ is.
 
 
 ```{bibliography}
