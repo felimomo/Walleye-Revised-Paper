@@ -134,12 +134,12 @@ and $a_{hv}=5$ is the age at half harvest vulnerability.
 Notice that even for a high net fishing mortality rate, e.g. , the actual fishing mortality rate enacted on young age classes remains low, which is a common assumption in many recreational fisheries (e.g., see @golden2022focusing).
 The spawning stock biomass is $SSB_t$, 
 \begin{align}
-  SSB_t &= \sum_{a=1}^{20} wt_a N_a / 
+  SSB_t &= \sum_{a=1}^{20} W_a N_a / 
   \left(
     1 + e^{-(a - a_{hm})/2}
   \right)\, ,
 \end{align}
-where $wt_a$ is the average weight-at-age and $a_{hm}=6$ is the age at 50\% maturity (see @cahill2022unveiling for more details).
+where $W_a$ is the average weight-at-age and $a_{hm}=6$ is the age at 50\% maturity (see @cahill2022unveiling for more details).
 The parameters $\alpha$ and $\beta$ describe the juvenile survival as a function of $SSB_t$. 
 
 The model has stochastic dynamics via the parameter $r_t$, which is independently sampled at each timestep. 
@@ -155,7 +155,42 @@ Simulations were run for 1000 time-steps in an attempt to capture the long-term 
 Specifically, the expected number of large recruitment years (i.e. ‘‘successful’’ Bernoulli trials for $r_t$) over a period of 1000 time-steps is 25, which was judged to be high enough to capture the dynamics arising from a particular HCR. 
 Using nomenclature from the RL literature, we also refer to these 1000 time-step simulations as *episodes*.
 
+## Observations
 
+We model observations by simulating a gillnetting survey carried out by a management agency tasked with monitoring and managing the fishery. 
+These observations are then subsequently used by the HCR to set a fishing mortality for a specific  time-step. 
+We consider two types of observations. 
+The first is an estimate of the stock biomass vulnerable to the management agency’s survey gear,
+\begin{align}
+  B_{survey} = \sum_{a=1}^{20}
+  S_a W_a N_a,
+\end{align}
+where $S_a$ is the vulnerability-at-age of the survey.
+We model $S_a$ as increasing with fish length, and use a von Bertalanffy function to describe length-at-age,
+\begin{align}
+S_a \propto (1 - e^{\kappa a})^\varphi,
+\end{align}
+with $\kappa=0.23$ and $\varphi=2.02$ (see @cahill2022unveiling for more details).
+A second observation we consider is the *mean weight* of fish in the survey,
+$$
+\bar{W}_{survey} = B_{survey} / N_{survey},
+$$
+with
+$$
+N_{survey} = \sum_{a=1}^{20} N_a S_a.
+$$
+Mean weight is easy for managers to observe and is important to consider in the context of spasmodically recruiting populations, since large recruitment events are correlated with dips in the mean weight of fish in the population.
+
+We model observations as imperfect, with a multiplicative Gaussian observation error.
+That is, policies do not observe $(B_{survey},\, \bar{W}_{survey})$ but rather, $(e_B B_{survey},\, e_W \bar{W}_{survey})$, where $e_B$ and $e_W$ are randomly sampled each time-step according to
+$$
+e_B, \, e_W \sim N(\mu=1,\, \sigma=0.1).
+$$
+
+Here we emphasize that the system is thus only *partially* observed [@memarzadeh2019resolving]: 
+while the system dynamics unfold in the high-dimensional space defined by the biomass of each age class, most harvest control rules used to manage fisheries only observe some total measurement of stock biomass and apply a recommended Total Allowable Catch (TAC) based on this number. 
+It is also worth noting that while the model dynamics are Markovian in the full state space, the dynamics of these two observed states are not, making this a so-called Partially Observed Markov Decision Process, or POMDP. 
+This real-world problem that surveys provide imperfect information on overall abundance leads to a mathematical inconvenience that significantly increases the technical difficulty  of finding an optimal solution using classical tools like dynamic programming, and, as a result, the analysis of ecological POMDP problems has been restricted to models that make simpler ecological assumptions  (e.g., see @williams2022partial). 
 
 
 
