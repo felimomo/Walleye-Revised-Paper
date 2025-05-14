@@ -238,7 +238,7 @@ F_t &= Y_2, \quad && \text{for } B_{survey}(t) > X_2.
 \end{alignat}
 For a visual guide of this policy, see @dfo2006, Fig. 2. 
 In the literature, the parameters of this policy are often fixed at some fraction of the biomass at which the fishery maximizes average surplus production, $B_0$. 
-A common choice is  $X_1=0.4 B_{MSY}$, and $X_2=0.8 B_{MSY}$. 
+A common choice is  $X_1=0.4 B_{MSY}$, $X_2=0.8 B_{MSY}$ and $Y_2=F_{MSY}$. 
 We call this specific realization of the HCR the *constrained precautionary policy (cPP)*. 
 In contrast, when we refer to the precautionary policy whose parameters $(X_1,\, X_2,\, Y_2)$ have been numerically optimized as the *optimized precautionary policy (oPP)*. 
 We evaluate both of these HCRs in relation to our chosen utility functions.
@@ -247,16 +247,17 @@ We collectively refer to the three policy types described above as *fixed polici
 The process of optimizing these fixed policies is loosely inspired by MSE, where several competing policies are evaluated using dynamic simulations [@punt2014fisheries]. 
 However, with the exception of the cPP our approach differs from MSE in that we explicitly search across a continuous  space of potential parameter values using Bayesian optimization procedures (see below).
 
-_**Reinforcement learning policies.**_
-
-This policy uses a neural network to express the harvest control rule. 
+_**Reinforcement learning policies.**_ This policy uses a neural network to express the harvest control rule. 
 We explore two cases: one where only the stock biomass observation is used, and one where an additional mean weight observation is used. 
 Mathematically,
 $$
   F_t = f_\theta(\text{Obs}_t),
 $$
-where $f_\theta$ is a neural network with parameters $\theta$, and $\text{Obs}_t$ represents the observations obtained at time-step $t$.
+where $f_\theta$ is a neural network with parameters $\theta$, and $\text{Obs}_t$ are the observations obtained at time-step $t$.
 
+We optimized two different scenarios: one in which only the biomass observation is used (i.e. $\text{Obs}_t = B_{survey}$), and another in which biomass and mean weight were both used ($\text{Obs}_t = (B_{survey}, \bar{W}_{survey})$).
+In the 1-observation scenario, we used a 3-layer feed-forward network with layer sizes 64, 32, 16,
+while in the 2-observation scenario, we used layer sizes of 256, 64, 16.
 
 
 <!-- --------- -->
@@ -264,6 +265,8 @@ where $f_\theta$ is a neural network with parameters $\theta$, and $\text{Obs}_t
 <!-- --------- -->
 
 [^opportunity]: In other words, the opportunity cost of a large harvest plays a smaller role the lower $\gamma$ is.
+
+[^networks]: We experimented using a [64,32,16] feed-forward network for the two-observation case, as well as other network geometries including thinner networks, wider networks, and deeper networks with 4 or 5 layers. Among the geometries we tested, we found that all policies either performed equally well or worse (in terms of average utility) to the geometries we present here. Because of this, we will not describe in detail these explorations. This paper's companion open-source code at https://github.com/boettiger-lab/rl4fisheries facilitates this exploration for the interested reader.
 
 
 ```{bibliography}
