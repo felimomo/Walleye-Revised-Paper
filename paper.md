@@ -344,7 +344,7 @@ Finally, with respect to trophy fishing, we observed that the 2-observation RL p
 
 ::: -->
 
-```{csv-table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = F^*/\mathrm{rew}(F^*)$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=$
+```{csv-table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=72.5/1000$. Thus $B_{MSY}=1.015$.
 :label: params-table
 :header: Parameter, Harvested Biomass,HARA,Trophy Fishing
 
@@ -362,12 +362,11 @@ cPP Y2,0.071,0.060,0.060
 :label: rew-table
 :header: Policy,Biomass Harvested Util.,HARA Util.,Trophy Fishing Util.
 
-1 obs. RL,**186.8 +/- 26.9**,**100.8 +/- 19.7**,35.7 +/- 6.9
-2 obs. RL,154.9 +/- 24.7,**101.4 +/- 19.4**,**61.7 +/- 12.0**
-oPP,**188.0 +/- 27.6**,**108.2 +/- 19.7**,36.0 +/- 6.6
-FMSY,**174.7 +/- 26.6**,72.5 +/- 18.8,35.9 +/- 7.7
-cPP,157.6 +/- 27.5,84.6 +/- 17.7,37.3 +/- 7.8
-
+1 obs. RL,**100.8 +/- 19.7**,**186.8 +/- 26.9**,35.7 +/- 6.9
+2 obs. RL,**101.4 +/- 19.4**,154.9 +/- 24.7,**61.7 +/- 12.0**
+FMSY,72.5 +/- 18.8,**174.7 +/- 26.6**,35.9 +/- 7.7
+oPP,**108.2 +/- 19.7**,**188.0 +/- 27.6**,36.0 +/- 6.6
+cPP,84.6 +/- 17.7,157.6 +/- 27.5,37.3 +/- 7.8
 ```
 
 
