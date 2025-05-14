@@ -326,7 +326,60 @@ After optimizing each HCR, we simulated $n=500$ episodes and recorded the total 
 Moreover, to get a more detailed comparison of the dynamics induced by each HCR, we simulated an additional episode where we recorded the stock biomass, mean fish weight and fishing mortality. 
 To improve comparisons between policies, we used the same time-series of stochastic deviations $\{r_t\}_{t=1, \dots, 1000}$ across all of the latter set of simulations.
 
+# Results
 
+In Table 1 we show the parameter values obtained for the optimized fixed policies. 
+The episode utilities obtained by these policies are displayed in Table 2 and Fig. 2. 
+With respect to total harvest, the control with highest utility was the optimized precautionary policy, and all other HCRs except for  were within one standard deviation of its performance. With respect to HARA, the 1-observation RL policy was the highest performing control, and all other HCRs were within a standard deviation of its performance except for the 2-observation RL control. 
+Finally, with respect to trophy fishing, we observed that the 2-observation RL policy performed significantly better than all other policies tested.
+
+
+<!-- :::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = F^*/\mathrm{rew}(F^*)$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$.
+:label: fixed1
+:align: center
+
+| Policy | Harvested Biomass | HARA | Trophy Fishing | 
+| --- | --- | --- | --- |
+| $F_{MSY}$ | baz | bim | alt |
+
+::: -->
+
+```{csv-table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = F^*/\mathrm{rew}(F^*)$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=$
+:label: params-table
+:header: Parameter, Harvested Biomass,HARA,Trophy Fishing
+
+FMSY,0.0714,0.060,0.060
+oPP X1,0.368,3.408e-05,9.323e-05
+oPP X2,1.925,3.408,9.323
+oPP Y2,0.8,0.502,0.549
+cPP X1,0.418,0.418,0.418
+cPP X2,0.836,0.836,0.836
+cPP Y2,0.071,0.060,0.060
+
+```
+
+```{csv-table} Summary statistics of the reward distributions shown in Fig. 2. In each column, the highlighted results are within a standard deviation of the best performing policy.
+:label: rew-table
+:header: Policy,Biomass Harvested Util.,HARA Util.,Trophy Fishing Util.
+
+1 obs. RL,**186.8 +/- 26.9**,**100.8 +/- 19.7**,35.7 +/- 6.9
+2 obs. RL,154.9 +/- 24.7,**101.4 +/- 19.4**,**61.7 +/- 12.0**
+oPP,**188.0 +/- 27.6**,**108.2 +/- 19.7**,36.0 +/- 6.6
+FMSY,**174.7 +/- 26.6**,72.5 +/- 18.8,35.9 +/- 7.7
+cPP,157.6 +/- 27.5,84.6 +/- 17.7,37.3 +/- 7.8
+
+```
+
+
+```{figure} figures/rewards.jpeg
+:name: rewards
+:width: 75000px
+:align: center
+
+Reward distributions for each of the five optimized policies in each of the three scenarios. 
+These distributions were interpolated from the total utility obtained in n=500 simulated episodes. 
+See associated Jupyter notebooks for details on this.
+```
 
 
 <!-- --------- -->
