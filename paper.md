@@ -306,7 +306,19 @@ Here we consider observations of the total stock biomass and the mean fish weigh
 The simulation is broken down into time-steps. At the beginning of each time-step, the agent prescribes an action that it applies to the environment. 
 Subsequently, the environment changes its internal state due to this action taken by the agent, and outputs an observation and a reward back to the agent. 
 The observation is used by the agent to take the next action. 
-A visualization of this is shown in @lapeyrolerie2022deep, Fig. 1. 
+A visualization of this is shown in @lapeyrolerie2022deep, Fig. 1.
+
+In the classic example of an Atari video-games,[^atari] the agent fills in the role of the person playing the game, while the environment is the game itself. 
+In the context of this work, one can think of the manager prescribing a TAC as the RL agent making decisions given some partially observable fish population (or environment).
+We call *training* the process by which the agent optimizes the values of the neural network weights $\theta$ (i.e., the process by which the RL algorithm optimizes the HCR). 
+During training, the agent collects data on time-step interactions with the environment, slowly learning which actions to avoid given an observation, and which actions to encourage. 
+This is done, in broad terms, using a variation of *stochastic gradient descent*, which takes advantage of the fact that gradients of the reward space can be efficiently computed on neural networks using *back propagation* (for an introduction to back propagation, see @rojas2013neural. 
+
+A variety of algorithms exist for training RL agents, each with its strengths and drawbacks. 
+Here we focus on the *Proximal Policy Optimization* algorithm (PPO), which has been shown to perform well over a broad set of benchmark environments [@schulman2017proximal].[^tqc]
+It moreover has also been shown to have a strong performance in problems related to population dynamics [@lapeyrolerie2022deep; @montealegre2023pretty]. 
+As mentioned, the neural networks we use in our results are rather modest in size—with only a few thousand parameters. 
+The training times were also modest, comprising 6 million time-steps, or a bit under two hours of training on a commercial GPU.
 
 <!-- --------- -->
 <!-- Footnotes -->
@@ -317,6 +329,10 @@ A visualization of this is shown in @lapeyrolerie2022deep, Fig. 1.
 [^networks]: We experimented using a [64,32,16] feed-forward network for the two-observation case, as well as other network geometries including thinner networks, wider networks, and deeper networks with 4 or 5 layers. Among the geometries we tested, we found that all policies either performed equally well or worse (in terms of average utility) to the geometries we present here. Because of this, we will not describe in detail these explorations. This paper's companion open-source code at https://github.com/boettiger-lab/rl4fisheries facilitates this exploration for the interested reader.
 
 [^tune]: Found at https://github.com/boettiger-lab/rl4fisheries/blob/main/scripts/tune.py
+
+[^atari]: Atari video-game environments have established themselves as a benchmark with which to test RL algorithms. For more information on these environments, see https://gymnasium.farama.org/environments/atari/
+
+[^tqc]: We tested certain other RL algorithms, such as the *Truncated Quantile Critics (TQC)* algorithm, as well. However, we found it hard to match the performance of PPO. Because of this, we do not include the analysis of policies obtained with these other algorithms here. The companion source code allows the user to easily reproduce our analysis for PPO and other RL algorithms.
 
 ```{bibliography}
 :style: alpha
