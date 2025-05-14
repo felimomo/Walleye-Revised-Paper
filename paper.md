@@ -142,7 +142,7 @@ The spawning stock biomass is $SSB_t$,
 where $W_a$ is the average weight-at-age and $a_{hm}=6$ is the age at 50\% maturity (see @cahill2022unveiling for more details).
 The parameters $\alpha$ and $\beta$ describe the juvenile survival as a function of $SSB_t$. 
 
-The model has stochastic dynamics via the parameter $r_t$, which is independently sampled at each timestep. 
+The model has stochastic dynamics via the parameter $r_t$, which is independently sampled at each time-step. 
 There are two types of events for the variable $r_t$: 
 1) A normal recruitment year, in which $r_t$ is a log-normal variable $r_t\sim \mathrm{lognorm}(\mu=0, \sigma=1)$ (see, e.g., @quinn1999quantitative).
 2) A large recruitment year, in which $r_t\sim \mathrm{unif}(10,30)$.
@@ -223,7 +223,45 @@ We considered utility functions one and two because they represent commonly ackn
 Moreover we included the trophy fishing function to explore how our analysis would change for more complex, size-dependent, utility functions. 
 Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers only desire to retain large trophy-sized fish rather than valuing fish of any size equally (e.g., see @murphy1996fisheries; @licandeo2020management).
 
+## Harvest control strategies
 
+We consider three classes of harvest control policy functions:
+
+_**FMSY.**_ In this strategy, the agent applies the same instantaneous fishing mortality rate  each year that leads to the highest long-term yield on average [@hilborn1992harvest].
+
+_**Precautionary policies.**_ A piece-wise linear HCR determined by three parameters: two stock biomass reference points $X_1$, $X_2$, and the fishing mortality at high stock biomass, $Y_2$. The HCR is given by the following equations:
+\begin{alignat}{2}
+F_t &= 0, \quad && \text{for } B_{survey}(t) < X_1,\\
+F_t &= \frac{B_{survey}(t) - X_1}{X_2 - X_1}\times Y_2, 
+  \quad && \text{for } X_1 \leq B_{survey}(t) \leq X_2,\\
+F_t &= Y_2, \quad && \text{for } B_{survey}(t) > X_2.
+\end{alignat}
+For a visual guide of this policy, see @dfo2006, Fig. 2. 
+In the literature, the parameters of this policy are often fixed at some fraction of the biomass at which the fishery maximizes average surplus production, $B_0$. 
+A common choice is  $X_1=0.4 B_{MSY}$, and $X_2=0.8 B_{MSY}$. 
+We call this specific realization of the HCR the *constrained precautionary policy (cPP)*. 
+In contrast, when we refer to the precautionary policy whose parameters $(X_1,\, X_2,\, Y_2)$ have been numerically optimized as the *optimized precautionary policy (oPP)*. 
+We evaluate both of these HCRs in relation to our chosen utility functions.
+
+We collectively refer to the three policy types described above as *fixed policies*, in the sense that their functional form is fixed *a priori* before the optimization begins. 
+The process of optimizing these fixed policies is loosely inspired by MSE, where several competing policies are evaluated using dynamic simulations [@punt2014fisheries]. 
+However, with the exception of the cPP our approach differs from MSE in that we explicitly search across a continuous  space of potential parameter values using Bayesian optimization procedures (see below).
+
+_**Reinforcement learning policies.**_
+
+This policy uses a neural network to express the harvest control rule. 
+We explore two cases: one where only the stock biomass observation is used, and one where an additional mean weight observation is used. 
+Mathematically,
+$$
+  F_t = f_\theta(\text{Obs}_t),
+$$
+where $f_\theta$ is a neural network with parameters $\theta$, and $\text{Obs}_t$ represents the observations obtained at time-step $t$.
+
+
+
+<!-- --------- -->
+<!-- Footnotes -->
+<!-- --------- -->
 
 [^opportunity]: In other words, the opportunity cost of a large harvest plays a smaller role the lower $\gamma$ is.
 
