@@ -255,7 +255,14 @@ $$
 $$
 where $f_\theta$ is a neural network with parameters $\theta$, and $\text{Obs}_t$ are the observations obtained at time-step $t$.
 
-We optimized two different scenarios: one in which only the biomass observation is used (i.e. $\text{Obs}_t = B_{survey}$), and another in which biomass and mean weight were both used ($\text{Obs}_t = (B_{survey}, \bar{W}_{survey})$).
+We optimized two different scenarios: one in which only the biomass observation is used,
+$$
+  \text{Obs}_t = B_{survey}(t),
+$$
+and another in which biomass and mean weight were both used
+$$
+  \text{Obs}_t = (B_{survey}(t),\, \bar{W}_{survey}(t)).
+$$
 In the 1-observation scenario, we used a 3-layer feed-forward network with layer sizes [64, 32, 16],
 while in the 2-observation scenario, we used layer sizes of [256, 64, 16].[^networks]
 
