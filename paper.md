@@ -214,6 +214,11 @@ $$
 $$
 and we set $a_{thr.}=10$.
 
+We optimize the performance of policies with respect to the total utility obtained over an episode, i.e.,
+$$
+U = \sum_t U(t).
+$$
+
 We considered utility functions one and two because they represent commonly acknowledged goals of fisheries management, that is maximizing yield and stabilizing harvests, which are to some degree at odds with one another and represent high harvest rates and high interannual variability in catches (maximizing yield) or low, but consistent harvest rates (maximizing risk-averse utility; see also @walters1996fixed; @collie2021harvest). 
 Moreover we included the trophy fishing function to explore how our analysis would change for more complex, size-dependent, utility functions. 
 Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers only desire to retain large trophy-sized fish rather than valuing fish of any size equally (e.g., see @murphy1996fisheries; @licandeo2020management).
