@@ -320,6 +320,15 @@ It moreover has also been shown to have a strong performance in problems related
 As mentioned, the neural networks we use in our results are rather modest in size—with only a few thousand parameters. 
 The training times were also modest, comprising 6 million time-steps, or a bit under two hours of training on a commercial GPU.
 
+## Policy evaluation
+
+After optimizing each HCR, we simulated $n=500$ episodes and recorded the total utility received in each episode. 
+Moreover, to get a more detailed comparison of the dynamics induced by each HCR, we simulated an additional episode where we recorded the stock biomass, mean fish weight and fishing mortality. 
+To improve comparisons between policies, we used the same time-series of stochastic deviations $\{r_t\}_{t=1, \dots, 1000}$ across all of the latter set of simulations.
+
+
+
+
 <!-- --------- -->
 <!-- Footnotes -->
 <!-- --------- -->
