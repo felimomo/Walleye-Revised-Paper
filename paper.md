@@ -266,6 +266,47 @@ $$
 In the 1-observation scenario, we used a 3-layer feed-forward network with layer sizes [64, 32, 16],
 while in the 2-observation scenario, we used layer sizes of [256, 64, 16].[^networks]
 
+## Bayesian optimization of ‘‘fixed policy’’ controls
+
+We used the framework of Bayesian optimization to find optimal parameters for the fixed policy HCRs. 
+A general introduction to this type of algorithm may be found on [@frazier2018tutorial;@skopt]. 
+Bayesian optimization algorithms solve the problem of minimizing an unknown objective function  which one can only query with some stochasticity, i.e. where instead of being able to compute $f(x,\, y,\, z,\, \dots)$ exactly, we are only able to compute $f(x,\, y,\, z,\, \dots)+r$, where $r$ is random noise. 
+Thus, this type of algorithm is designed to be able to approximate a solution to the minimization problem
+$$
+  \mathrm{argmax}_{x,y,z,\dots}\, f(x,\, y,\, z,\, \dots)
+$$
+even when one can only evaluate $f$ ‘‘imperfectly.’’
+These algorithms are most useful in scenarios where evaluating $f$ is computationally expensive because they tend to require much fewer function evaluations of $f$ than brute force optimization approaches.
+
+In our case, the arguments $(x,\, y,\, z,\, \dots)$ are the parameters in the HCR function. 
+That is, for the precautionary policy, the arguments are $(X_1,\, X_2,\, Y_2)$, whereas for the $F_{MSY}$ policy, the only argument is the mortality rate $F$. We maximize the average utility obtained by a policy by optimizing over these parameters. For example, for the constant mortality mortality policy,
+$$
+  \mathrm{argmax}_F\, \mathbb{E}[U(F)],
+$$
+where $U(F)$ is the utility obtained by simulating an episode using a constant mortality $F$. 
+Note that $U(F)$ is thus a random variable since the dynamics are stochastic.
+
+Because of our system's high stochasticity, evaluating the mean episode reward afforded by any policy requires taking the average across many episodes. 
+In  our case we used 200 episodes. 
+
+We used the Gaussian process minimizer algorithm from the *scikit-optimize* Python package to perform this optimization, and allowed the algorithm to evaluate the objective function at 70 different points. 
+The number of points was chosen heuristically as it appeared high enough for the optimization to converge, but remained low enough to provide reasonable runtimes. 
+Further details of how this optimization procedure is performed may be found in the companion open-source code.[^tune]
+
+## Harvest control via neural network: reinforcement learning optimization
+
+Here we give a small overview of the RL methods we used to optimize neural network policies. 
+For a broader introduction to RL, its methods, and applications in quantitative ecology, see [@lapeyrolerie2022deep]. 
+Reinforcement learning is a class of strategies to approach sequential decision problems in which a simulated *‘‘agent’’* interacts with a simulated *‘‘environment’’*. 
+The agent here represents the decision-maker, who observes and acts on the environment. 
+In the context of our paper, the agent is a manager tasked with making a quota decision each year, while the environment is an age-structured model of the fish population. 
+In RL, the agent can be restricted to only observe partial information about the state of the environment. 
+Here we consider observations of the total stock biomass and the mean fish weight, but emphasize that additional observations could be passed to the agent.
+
+The simulation is broken down into time-steps. At the beginning of each time-step, the agent prescribes an action that it applies to the environment. 
+Subsequently, the environment changes its internal state due to this action taken by the agent, and outputs an observation and a reward back to the agent. 
+The observation is used by the agent to take the next action. 
+A visualization of this is shown in @lapeyrolerie2022deep, Fig. 1. 
 
 <!-- --------- -->
 <!-- Footnotes -->
@@ -275,6 +316,7 @@ while in the 2-observation scenario, we used layer sizes of [256, 64, 16].[^netw
 
 [^networks]: We experimented using a [64,32,16] feed-forward network for the two-observation case, as well as other network geometries including thinner networks, wider networks, and deeper networks with 4 or 5 layers. Among the geometries we tested, we found that all policies either performed equally well or worse (in terms of average utility) to the geometries we present here. Because of this, we will not describe in detail these explorations. This paper's companion open-source code at https://github.com/boettiger-lab/rl4fisheries facilitates this exploration for the interested reader.
 
+[^tune]: Found at https://github.com/boettiger-lab/rl4fisheries/blob/main/scripts/tune.py
 
 ```{bibliography}
 :style: alpha
