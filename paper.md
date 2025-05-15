@@ -334,29 +334,22 @@ With respect to total harvest, the control with highest utility was the optimize
 Finally, with respect to trophy fishing, we observed that the 2-observation RL policy performed significantly better than all other policies tested.
 
 
-<!-- :::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = F^*/\mathrm{rew}(F^*)$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$.
+:::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=72.5/1000$. Thus $B_{MSY}=1.015$.
 :label: fixed1
 :align: center
 
-| Policy | Harvested Biomass | HARA | Trophy Fishing | 
-| --- | --- | --- | --- |
-| $F_{MSY}$ | baz | bim | alt |
-
-::: -->
-
-```{csv-table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=72.5/1000$. Thus $B_{MSY}=1.015$.
-:label: params-table
-:header: Parameter, Harvested Biomass,HARA,Trophy Fishing
-
-FMSY,0.0714,0.060,0.060
-oPP X1,0.368,3.408e-05,9.323e-05
-oPP X2,1.925,3.408,9.323
-oPP Y2,0.8,0.502,0.549
-cPP X1,0.418,0.418,0.418
-cPP X2,0.836,0.836,0.836
-cPP Y2,0.071,0.060,0.060
-
-```
+| **Policy**    | **Harvested Biomass** | **HARA**        | **Trophy Fishing** | 
+| ---       | ---               | ---         | ---            |
+| $F_{MSY}$ | $F=0.0714$        | $F=0.060$   | $F=0.060$      |
+|           | ---               | ---         | ---            |
+|           | $X_1=0.368$       | $X_1=0.000$ | $X_1=0.000$    |
+| oPP       | $X_2=1.925$       | $X_2=3.408$ | $X_2=9.323$    |
+|           | $Y_2=0.8$         | $Y_2=0.502$ | $Y_2=0.549$    |
+|           | ---               | ---         | ---            |
+|           | $X_1=0.418$       | $X_1=0.418$ | $X_1=0.418$    |
+| cPP       | $X_2=0.836$       | $X_2=0.836$ | $X_2=0.836$    |
+|           | $Y_2=0.071$       | $Y_2=0.060$ | $Y_2=0.060$    |
+:::
 
 ```{csv-table} Summary statistics of the reward distributions shown in Fig. 2. In each column, the highlighted results are within a standard deviation of the best performing policy.
 :label: rew-table
