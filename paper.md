@@ -198,11 +198,11 @@ This real-world problem that surveys provide imperfect information on overall ab
 We consider three utility models. 
 1. *Total harvest utility* (i.e., *yield maximizing*): the utility at a time-step $t$ is given by the total harvested biomass at that time-step,
 $$
-  U_{yield}(t) = \sum_{a=1}^{20} H_a(t) W_a.
+  U_{HB}(t) = \sum_{a=1}^{20} H_a(t) W_a.
 $$
 2. *Risk averse utility*: a hyperbolic additive risk-averse utility function (also known as ‘HARA utility’) which values inter-annual stability in harvests,
 $$
-  U_{\text{HARA}}(t) = U_{yield}(t)^{\gamma},
+  U_{\text{HARA}}(t) = U_{HB}(t)^{\gamma},
 $$
 where the parameter $\gamma=0.6$ parametrizes the risk aversion (see, e.g., @collie2021harvest).
 Notice that the power of $\gamma$ attenuates the utility derived from large harvests.
@@ -338,7 +338,7 @@ The HCRs are visualized in Fig. 3, where we plot fishing mortality as a function
 We discuss these plots in the following paragraphs.
 
 
-:::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=72.5/1000$. Thus $B_{MSY}=1.015$.
+:::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{HB}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=72.5/1000$. Thus $B_{MSY}=1.015$.
 :label: tab:fixed-params
 :align: center
 
