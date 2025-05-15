@@ -328,14 +328,17 @@ To improve comparisons between policies, we used the same time-series of stochas
 
 # Results
 
-In Table 1 we show the parameter values obtained for the optimized fixed policies. 
-The episode utilities obtained by these policies are displayed in Table 2 and Fig. 2. 
+In {ref}`tab:fixed-params` we show the parameter values obtained for the optimized fixed policies. 
+The episode utilities obtained by these policies are displayed in {ref}`tab:rew-table` and {ref}`fig:rewards`. 
 With respect to total harvest, the control with highest utility was the optimized precautionary policy, and all other HCRs except for  were within one standard deviation of its performance. With respect to HARA, the 1-observation RL policy was the highest performing control, and all other HCRs were within a standard deviation of its performance except for the 2-observation RL control.[^counter-intuitive]
 Finally, with respect to trophy fishing, we observed that the 2-observation RL policy performed significantly better than all other policies tested.
 
+The HCRs are visualized in Fig. 3, where we plot fishing mortality as a function of stock biomass. 
+We discuss these plots in the following paragraphs.
+
 
 :::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=72.5/1000$. Thus $B_{MSY}=1.015$.
-:label: fixed1
+:label: tab:fixed-params
 :align: center
 
 | **Policy**    | **Harvested Biomass** | **HARA**        | **Trophy Fishing** | 
@@ -352,7 +355,7 @@ Finally, with respect to trophy fishing, we observed that the 2-observation RL p
 :::
 
 ```{csv-table} Summary statistics of the reward distributions shown in Fig. 2. In each column, the highlighted results are within a standard deviation of the best performing policy.
-:label: rew-table
+:label: tab:rew-table
 :header: Policy,Biomass Harvested Util.,HARA Util.,Trophy Fishing Util.
 
 1 obs. RL,**100.8 +/- 19.7**,**186.8 +/- 26.9**,35.7 +/- 6.9
@@ -364,7 +367,7 @@ cPP,84.6 +/- 17.7,157.6 +/- 27.5,37.3 +/- 7.8
 
 
 ```{figure} figures/rewards.jpeg
-:name: rewards
+:name: fig:rewards
 :width: 75000px
 :align: center
 
@@ -373,6 +376,28 @@ These distributions were interpolated from the total utility obtained in n=500 s
 See associated Jupyter notebooks for details on this.
 ```
 
+```{figure} figures/policies.jpeg
+:name: fig:policies
+:width: 75000px
+:align: center
+
+Optimized policy functions for each of the scenarios. 
+Top row: policies which only use the vulnerable biomass observation to inform fishing mortality. 
+Bottom row: 2-Observation RL policy, where fishing mortality is informed by the vulnerable biomass observation as well as the mean fish weight observation.
+The dependence of fishing mortality on mean weight is displayed with the color code (a gradient between green at high mean weight and violet at low mean weight).
+```
+*Harvested biomass utility (left column)*. 
+Here we see that the optimized precautionary policy and the 1-observation RL policy found a similar biomass threshold of about 0.5 below which no harvests are performed. In the 2-observation RL policy this behavior is different ({ref}`fig:rewards`, lower left): for populations with low mean weight the threshold depends on mean weight (see violet lines therein), whereas for populations with sufficiently high mean weight (green lines) the threshold vanishes.
+
+*HARA utility (middle column)*. 
+Here we see that none of the policies display a threshold below which fishing mortality is zero, indicating that, even at low fish populations, these optimized policies do not recommend fishery closures. 
+Moreover, we observe the similarity between the 1-observation RL policy and optimized precautionary policy, which are the highest performing policies for this utility (see {ref}`tab:rew-table`). 
+It is also worth noting that the 1-observable policies obtained (top middle) contain many geometrically distinct control rules which all perform similarly to one another ({ref}`tab:rew-table`).
+
+*Trophy fishing utility (right column)*. 
+Here, the 2-observable RL rule has, counter-intuitively, a high mortality at low stock biomasses, and low mortality at high stock biomasses. 
+This control has a very strong dependence on mean weight ({ref}`fig:policies`, bottom right). 
+In contrast, 1-observable policies tended to have a very flat shape ({ref}`fig:policies`, top left), with mortality values hovering around values of 0.5 - 1.5. 
 
 
 
@@ -390,7 +415,7 @@ See associated Jupyter notebooks for details on this.
 
 [^tqc]: We tested certain other RL algorithms, such as the *Truncated Quantile Critics (TQC)* algorithm, as well. However, we found it hard to match the performance of PPO. Because of this, we do not include the analysis of policies obtained with these other algorithms here. The companion source code allows the user to easily reproduce our analysis for PPO and other RL algorithms.
 
-[^counter-intuitive] It is counter-intuitive that the 2-observation RL policy performs worse than its 1-observation counterpart since the space of 2-observation policies contains the space of 1-observation policies. We address this point in the discussion section.
+[^counter-intuitive]: It is counter-intuitive that the 2-observation RL policy performs worse than its 1-observation counterpart since the space of 2-observation policies contains the space of 1-observation policies. We address this point in the discussion section.
 
 ```{bibliography}
 :style: alpha
