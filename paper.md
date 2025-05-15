@@ -399,6 +399,32 @@ Here, the 2-observable RL rule has, counter-intuitively, a high mortality at low
 This control has a very strong dependence on mean weight ({ref}`fig:policies`, bottom right). 
 In contrast, 1-observable policies tended to have a very flat shape ({ref}`fig:policies`, top left), with mortality values hovering around values of 0.5 - 1.5. 
 
+**TBD references** In Fig. 4 we display time-series for episode simulations using the optimized HCRs. The most prominent feature is in the 2-Obs. RL policy simulation in the trophy fishing scenario (Fig. 4, lower right): here, in contrast to all other time-series, harvests are performed in pulses. This phenomenon of pulsed harvests is reproduced, to a lesser extent, in the 2-observation RL policy for the total harvest scenario (lower left). Finally, notice that all 1-observation policies in the HARA utility scenario have similar time-series, which was expected given their similar performances (Table 2). In the latter time-series, harvests are lower and more stable over time as compared to the total harvest scenario—this was also expected given that peaks of high harvest are proportionally less rewarded in the HARA utility with respect to the total harvest utility.
+
+```{figure} figures/eps-um1.jpeg
+:name: fig:policies
+:width: 75000px
+:align: center
+
+First 400 time-steps for an episode simulated with each of the HCRs optimized for *Total harvest utility*. 
+```
+
+```{figure} figures/eps-um2.jpeg
+:name: fig:policies
+:width: 75000px
+:align: center
+
+First 400 time-steps for an episode simulated with each of the HCRs optimized for *HARA utility*. 
+```
+
+```{figure} figures/eps-um3.jpeg
+:name: fig:policies
+:width: 75000px
+:align: center
+
+First 400 time-steps for an episode simulated with each of the HCRs optimized for *Trophy fishing utility*. 
+```
+
 
 
 <!-- --------- -->
