@@ -330,7 +330,7 @@ To improve comparisons between policies, we used the same time-series of stochas
 
 In Table 1 we show the parameter values obtained for the optimized fixed policies. 
 The episode utilities obtained by these policies are displayed in Table 2 and Fig. 2. 
-With respect to total harvest, the control with highest utility was the optimized precautionary policy, and all other HCRs except for  were within one standard deviation of its performance. With respect to HARA, the 1-observation RL policy was the highest performing control, and all other HCRs were within a standard deviation of its performance except for the 2-observation RL control. 
+With respect to total harvest, the control with highest utility was the optimized precautionary policy, and all other HCRs except for  were within one standard deviation of its performance. With respect to HARA, the 1-observation RL policy was the highest performing control, and all other HCRs were within a standard deviation of its performance except for the 2-observation RL control.[^counter-intuitive]
 Finally, with respect to trophy fishing, we observed that the 2-observation RL policy performed significantly better than all other policies tested.
 
 
@@ -374,6 +374,8 @@ See associated Jupyter notebooks for details on this.
 ```
 
 
+
+
 <!-- --------- -->
 <!-- Footnotes -->
 <!-- --------- -->
@@ -387,6 +389,8 @@ See associated Jupyter notebooks for details on this.
 [^atari]: Atari video-game environments have established themselves as a benchmark with which to test RL algorithms. For more information on these environments, see https://gymnasium.farama.org/environments/atari/
 
 [^tqc]: We tested certain other RL algorithms, such as the *Truncated Quantile Critics (TQC)* algorithm, as well. However, we found it hard to match the performance of PPO. Because of this, we do not include the analysis of policies obtained with these other algorithms here. The companion source code allows the user to easily reproduce our analysis for PPO and other RL algorithms.
+
+[^counter-intuitive] It is counter-intuitive that the 2-observation RL policy performs worse than its 1-observation counterpart since the space of 2-observation policies contains the space of 1-observation policies. We address this point in the discussion section.
 
 ```{bibliography}
 :style: alpha
