@@ -220,6 +220,7 @@ $$
 U = \sum_t U(t).
 $$
 
+
 We considered utility functions one and two because they represent commonly acknowledged goals of fisheries management, that is maximizing yield and stabilizing harvests, which are to some degree at odds with one another and represent high harvest rates and high interannual variability in catches (maximizing yield) or low, but consistent harvest rates (maximizing risk-averse utility; see also @walters1996fixed; @collie2021harvest). 
 Moreover we included the trophy fishing function to explore how our analysis would change for more complex, size-dependent, utility functions. 
 Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers only desire to retain large trophy-sized fish rather than valuing fish of any size equally (e.g., see @murphy1996fisheries; @licandeo2020management).
@@ -344,7 +345,7 @@ We discuss these plots in the following paragraphs.
 
 | **Policy**    | **Harvested Biomass** | **HARA**        | **Trophy Fishing** | 
 | ---       | ---               | ---         | ---            |
-| $F_{MSY}$ | $F=0.0714$        | $F=0.060$   | $F=0.060$      |
+| $F_{MSY}$ | $F=0.071$        | $F=0.060$   | $F=0.060$      |
 |           | ---               | ---         | ---            |
 |           | $X_1=0.368$       | $X_1=0.000$ | $X_1=0.000$    |
 | oPP       | $X_2=1.925$       | $X_2=3.408$ | $X_2=9.323$    |
@@ -359,10 +360,10 @@ We discuss these plots in the following paragraphs.
 :label: tab:rew-table
 :header: Policy,Biomass Harvested Util.,HARA Util.,Trophy Fishing Util.
 
-1 obs. RL,**100.8 +/- 19.7**,**186.8 +/- 26.9**,35.7 +/- 6.9
-2 obs. RL,**101.4 +/- 19.4**,154.9 +/- 24.7,**61.7 +/- 12.0**
-FMSY,72.5 +/- 18.8,**174.7 +/- 26.6**,35.9 +/- 7.7
-oPP,**108.2 +/- 19.7**,**188.0 +/- 27.6**,36.0 +/- 6.6
+1 obs. RL,**100.8** +/- 19.7,**186.8** +/- 26.9,35.7 +/- 6.9
+2 obs. RL,**101.4** +/- 19.4,154.9 +/- 24.7,**61.7** +/- 12.0
+FMSY,72.5 +/- 18.8,**174.7** +/- 26.6,35.9 +/- 7.7
+oPP,**108.2** +/- 19.7,**188.0** +/- 27.6,36.0 +/- 6.6
 cPP,84.6 +/- 17.7,157.6 +/- 27.5,37.3 +/- 7.8
 ```
 
@@ -438,7 +439,7 @@ First 400 time-steps for an episode simulated with each of the HCRs optimized fo
 <!-- Footnotes -->
 <!-- --------- -->
 
-[^opportunity]: In other words, the opportunity cost of a large harvest plays a smaller role the lower $\gamma$ is.
+[^opportunity]: In other words, the opportunity cost of a large harvest plays a smaller role the lower $\gamma$ is. Notice, further, that the exponent of $\gamma$ modifies the units of the utility (as opposed to other utility functions, $U_{HARA}$ does not have units of mass), as well as the scale at which utility varies. As we will see show in the results section, the biomass harvested at each time-step is typically $U_{HB}(t)<1$, and thus one can generally expect that $U_{HARA} > U_{HB}$.
 
 [^networks]: We experimented using a [64,32,16] feed-forward network for the two-observation case, as well as other network geometries including thinner networks, wider networks, and deeper networks with 4 or 5 layers. Among the geometries we tested, we found that all policies either performed equally well or worse (in terms of average utility) to the geometries we present here. Because of this, we will not describe in detail these explorations. This paper's companion open-source code at https://github.com/boettiger-lab/rl4fisheries facilitates this exploration for the interested reader.
 
