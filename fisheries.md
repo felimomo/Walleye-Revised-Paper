@@ -227,7 +227,8 @@ Size dependence can be particularly relevant in cases where machinery to process
 
 ## Harvest control strategies
 
-We consider three classes of harvest control policy functions:
+Here we describe the three classes of HCRs we consider in this paper.
+We refer to them interchangeably as *control rules*, *rules* or *policies* throughout.
 
 _**FMSY.**_ In this strategy, the agent applies the same instantaneous fishing mortality rate  each year that leads to the highest long-term yield on average [@hilborn1992harvest].
 
@@ -257,11 +258,11 @@ $$
 $$
 where $f_\theta$ is a neural network with parameters $\theta$, and $\text{Obs}_t$ are the observations obtained at time-step $t$.
 
-We optimized two different scenarios: one in which only the biomass observation is used,
+We optimized two different scenarios: one single-observation RL policy (*1RL*) in which only the biomass observation is used,
 $$
   \text{Obs}_t = B_{survey}(t),
 $$
-and another in which biomass and mean weight were both used
+and a two-observation RL policy (*2RL*) in which biomass and mean weight were both used
 $$
   \text{Obs}_t = (B_{survey}(t),\, \bar{W}_{survey}(t)).
 $$
@@ -391,21 +392,24 @@ Top row: policies which only use the vulnerable biomass observation to inform fi
 Bottom row: 2-Observation RL policy, where fishing mortality is informed by the vulnerable biomass observation as well as the mean fish weight observation.
 The dependence of fishing mortality on mean weight is displayed with the color code (a gradient between green at high mean weight and violet at low mean weight).
 ```
-*Harvested biomass utility (left column)*. 
-Here we see that the optimized precautionary policy and the 1-observation RL policy found a similar biomass threshold of about 0.5 below which no harvests are performed. In the 2-observation RL policy this behavior is different ({ref}`fig:rewards`, lower left): for populations with low mean weight the threshold depends on mean weight (see violet lines therein), whereas for populations with sufficiently high mean weight (green lines) the threshold vanishes.
+*Harvested biomass utility ({ref}`fig:policies`, left column)*. 
+In this scenario, both precautionary policies share a very similar $X_1$ threshold value (see {ref}`tab:fixed-params`), and the single-observation RL policy has a similar threshold. 
+The two-observation RL control, exhibits a similar behavior, with the value of the threshold varying with mean weight.
+At high mean weight $\bar{W}_{survey}(t)$, harvest mortality becomes high even at low biomasses $B_{survey}(t)$ (yellow hue), whereas at low mean weight harvests are suppressed (purple hue).
 
-*HARA utility (middle column)*. 
-Here we see that none of the policies display a threshold below which fishing mortality is zero, indicating that, even at low fish populations, these optimized policies do not recommend fishery closures. 
-Moreover, we observe the similarity between the 1-observation RL policy and optimized precautionary policy, which are the highest performing policies for this utility (see {ref}`tab:rew-table`). 
-It is also worth noting that the 1-observable policies obtained (top middle) contain many geometrically distinct control rules which all perform similarly to one another ({ref}`tab:rew-table`).
+*HARA utility ({ref}`fig:policies`, middle column)*. 
+Here, the threshold behavior which characterized HCRs in the previous paragraph disappears for all policies except for *cPP*.
+This fits the intuition that low-and-stable yield performs better with respect to HARA utility than sparse fishing peaks.
+Both highest-performing policies here, *oPP* and single-observation RL, converge to a linear control with similar slopes and similar intersection with the axis $F=F_{MSY}$.
+Moreover, the 2 obs. RL control rule seems to learn that mean weight does not play an important role in the decision problem, and thus harvest variations as a function of $\bar{W}_{survey}$ are comparably small.
 
-*Trophy fishing utility (right column)*. 
-Here, the 2-observable RL rule has, counter-intuitively, a high mortality at low stock biomasses, and low mortality at high stock biomasses. 
-This control has a very strong dependence on mean weight ({ref}`fig:policies`, bottom right). 
-In contrast, 1-observable policies tended to have a very flat shape ({ref}`fig:policies`, top left), with mortality values hovering around values of 0.5 - 1.5. 
-
-Episode simulations using the optimized policies for each utility function are displayed in {numref}`fig:eps-um1`, {numref}`fig:eps-um2`, and {numref}`fig:eps-um3`.
-**Insert description here.**
+*Trophy fishing utility ({ref}`fig:policies`, right column)*. 
+Two things are note-worthy in this scenario.
+First, that the significant difference in HCR shapes for single-observation rules lead to negligible differences in episode utility obtained (see {ref}`tab:rewards` and {ref}`fig:rewards`).
+Second, the high variability that the 2RL rule has as a function of observed mean weight.
+In contrast to single-observation rules, whose harvest mortalities vary in the range of 0-0.25 for typical observed biomasses, notice that that the two-observation policy reaches harvest mortalities up to $F\approx 0.75$ for high mean weight observations.
+This is mirrored in {ref}`fig:eps-um3`, where we can see that fishing is performed in pulses the 2RL, in contrast to the smooth variation in harvest mortality as a function of time observed in other policies.
+Although the 2RL timeseries in {ref}`fig:eps-um3` is characterized by peaks and fishery closures, notice that prolonged fishery closures are also prominent in the cPP and oPP timeseries.
 
 ```{figure} figures/eps-um1.jpeg
 :name: fig:eps-um1
