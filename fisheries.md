@@ -150,7 +150,7 @@ There are two types of events for the variable $r_t$:
 We use a Bernoulli trial with $\mathrm{Pr.}=0.025$ to decide whether a large recruitment event happens.
 Large recruitment events are rare in any one fishery, however their occurrence happens at a rate much higher than would be predicted by the log-normal distribution alone [@cahill2022unveiling].
 Our model for $r_t$ is a minimalistic description of this dynamic which has explicit control over the rate of large recruitment events.
-We contrast recruitment timeseries for our model with timeseries using log-normal stochasticity in an appendix.
+We contrast recruitment time-series for our model with time-series using log-normal stochasticity in an appendix.
 
 Simulations were run for 1000 time-steps in an attempt to capture the long-term effects of HCRs on population dynamics and performance criteria. 
 Specifically, the expected number of large recruitment years (i.e. ‘‘successful’’ Bernoulli trials for $r_t$) over a period of 1000 time-steps is 25, which was judged to be high enough to capture the dynamics arising from a particular HCR. 
@@ -394,22 +394,27 @@ The dependence of fishing mortality on mean weight is displayed with the color c
 ```
 *Harvested biomass utility ({ref}`fig:policies`, left column)*. 
 In this scenario, both precautionary policies share a very similar $X_1$ threshold value (see {ref}`tab:fixed-params`), and the single-observation RL policy has a similar threshold. 
-The two-observation RL control, exhibits a similar behavior, with the value of the threshold varying with mean weight.
+The two-observation RL control, exhibits a similar threshold behavior, with the value of the threshold varying with mean weight.
 At high mean weight $\bar{W}_{survey}(t)$, harvest mortality becomes high even at low biomasses $B_{survey}(t)$ (yellow hue), whereas at low mean weight harvests are suppressed (purple hue).
+Inspecting the time-series associated to the 1RL and oPP rules in {ref}`fig:eps-um1`, we can see that the quick increase in fish mortality as a function of $B_{survey}$ leads to a stable (this behaviour is reminiscent of bang-bang policies, see e.g. @walters1978ecological).
 
 *HARA utility ({ref}`fig:policies`, middle column)*. 
 Here, the threshold behavior which characterized HCRs in the previous paragraph disappears for all policies except for *cPP*.
 This fits the intuition that low-and-stable yield performs better with respect to HARA utility than sparse fishing peaks.
 Both highest-performing policies here, *oPP* and single-observation RL, converge to a linear control with similar slopes and similar intersection with the axis $F=F_{MSY}$.
-Moreover, the 2 obs. RL control rule seems to learn that mean weight does not play an important role in the decision problem, and thus harvest variations as a function of $\bar{W}_{survey}$ are comparably small.
+Moreover, the 2RL rule seems to learn that mean weight does not play an important role in the decision problem, and thus harvest variations as a function of $\bar{W}_{survey}$ are comparably small.
+In its corresponding time-series ({fig}`fig:eps-um2`), we see that in this scenario the 2RL policy is rather noisy, with persistent variability in harvest mortality over time.
+This hints at the possibility of using smoothing techniques for this policy.
+Such techniques have been shown to lead to improvements in policy performance and interpretability in stochastic control scenarios [@montealegre2023pretty].
+This exploration, however, is outside the scope of the present paper.
 
 *Trophy fishing utility ({ref}`fig:policies`, right column)*. 
 Two things are note-worthy in this scenario.
-First, that the significant difference in HCR shapes for single-observation rules lead to negligible differences in episode utility obtained (see {ref}`tab:rewards` and {ref}`fig:rewards`).
+First, that the significant difference in HCR shapes for single-observation rules lead to negligible differences in episode utility obtained (see {ref}`tab:rew-table` and {ref}`fig:rewards`).
 Second, the high variability that the 2RL rule has as a function of observed mean weight.
 In contrast to single-observation rules, whose harvest mortalities vary in the range of 0-0.25 for typical observed biomasses, notice that that the two-observation policy reaches harvest mortalities up to $F\approx 0.75$ for high mean weight observations.
 This is mirrored in {ref}`fig:eps-um3`, where we can see that fishing is performed in pulses the 2RL, in contrast to the smooth variation in harvest mortality as a function of time observed in other policies.
-Although the 2RL timeseries in {ref}`fig:eps-um3` is characterized by peaks and fishery closures, notice that prolonged fishery closures are also prominent in the cPP and oPP timeseries.
+Although the 2RL time-series in {ref}`fig:eps-um3` is characterized by peaks and fishery closures, notice that prolonged fishery closures are also prominent the cPP time-series and that prolonged periods of low harvests are also present in the oPP time-series.
 
 ```{figure} figures/eps-um1.jpeg
 :name: fig:eps-um1
