@@ -330,12 +330,13 @@ To improve comparisons between policies, we used the same time-series of stochas
 
 # Results
 
-In {ref}`tab:fixed-params` we show the parameter values obtained for the optimized fixed policies. 
-The episode utilities obtained by these policies are displayed in {ref}`tab:rew-table` and {ref}`fig:rewards`. 
-With respect to total harvest, the control with highest utility was the optimized precautionary policy, and all other HCRs except for  were within one standard deviation of its performance. With respect to HARA, the 1-observation RL policy was the highest performing control, and all other HCRs were within a standard deviation of its performance except for the 2-observation RL control.[^counter-intuitive]
-Finally, with respect to trophy fishing, we observed that the 2-observation RL policy performed significantly better than all other policies tested.
+In {ref}`tab:fixed-params` we show the parameter values obtained for the optimized fixed HCRs. 
+The episode utilities obtained by these HCRs are displayed in {ref}`tab:rew-table` and {ref}`fig:rewards`. 
+With respect to the harvested biomass and HARA utilities, we find that *oPP* consistently outperforms the other HCRs tested, with *1 obs. RL* trailing close behind.
+In particular, we observe the counter-intuitive result that with respect to HARA utility, 2 obs. RL underperforms with respect to both its single-observation counterpart and *oPP*.[^counter-intuitive]
+With respect to trophy fishing we find the opposite trend: the *2 obs. RL* policy receives about 60\% more utility than all other HCRs.
 
-The HCRs are visualized in Fig. 3, where we plot fishing mortality as a function of stock biomass. 
+The optimized HCRs are visualized in Fig. 3, where we plot fishing mortality as a function of stock biomass. 
 We discuss these plots in the following paragraphs.
 
 
