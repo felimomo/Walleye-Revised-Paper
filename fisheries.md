@@ -145,7 +145,8 @@ The parameters $\alpha$ and $\beta$ describe the juvenile survival as a function
 
 The model has stochastic dynamics via the parameter $r_t$, which is independently sampled at each time-step. 
 There are two types of events for the variable $r_t$: 
-1) A normal recruitment year, in which $r_t$ is a log-normal variable $r_t\sim \mathrm{lognorm}(\mu=0, \sigma=1)$ (see, e.g., @quinn1999quantitative).
+1) A normal recruitment year, in which $r_t$ is a scaled-down log-normal variable $r_t\sim \kappa \mathrm{lognorm}(\mu=0, \sigma=1)$ (see, e.g., @quinn1999quantitative).
+The value of $\kappa$ was chosen so that $\mathrm{E}[r_t]=1$.
 2) A large recruitment year, in which $r_t\sim \mathrm{unif}(10,30)$.
 We use a Bernoulli trial with $\mathrm{Pr.}=0.025$ to decide whether a large recruitment event happens.
 Large recruitment events are rare in any one fishery, however their occurrence happens at a rate much higher than would be predicted by the log-normal distribution alone [@cahill2022unveiling].
