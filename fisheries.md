@@ -118,7 +118,7 @@ Unless stated otherwise parameter values for all relationships are drawn from av
 ## Population dynamics
 
 A finding of @cahill2022unveiling was that recruitment dynamics were highly variable and/or spasmodic (see also @caddy1983historical). 
-Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(N_1,\dots,N_{20})$. 
+Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(N_1,\dots,N_{20})$ with units of $\text{N}\cdot\text{ha}^-1$. 
 Recruitment was modeled via the Beverton-Holt equation 
 \begin{alignat}{2}
 N_1(t+1) &= \alpha\, r_t SSB_t / (1 + \beta SSB_t), \quad &&\\
@@ -141,6 +141,7 @@ The spawning stock biomass is $SSB_t$,
   \right)\, ,
 \end{align}
 where $W_a$ is the average weight-at-age and $a_{hm}=6$ is the age at 50\% maturity (see @cahill2022unveiling for more details).
+All biomass quantities in this paper, including $SSB_t$, are in units of $\text{kg} \cdot \text{ha}^{-1}$.
 The parameters $\alpha$ and $\beta$ describe the juvenile survival as a function of $SSB_t$. 
 
 The model has stochastic dynamics via the parameter $r_t$, which is independently sampled at each time-step. 
@@ -239,7 +240,8 @@ Size dependence can be particularly relevant in cases where machinery to process
 Here we describe the three classes of HCRs we consider in this paper.
 We refer to them interchangeably as *control rules*, *rules* or *policies* throughout.
 
-_**FMSY.**_ In this strategy, the agent applies the same instantaneous fishing mortality rate  each year that leads to the highest long-term yield on average [@hilborn1992harvest].
+_**Constant mortality policy at FMSY.**_ In this strategy, the agent applies the same instantaneous fishing mortality rate  each year that leads to the highest long-term yield on average [@hilborn1992harvest].
+For convenience, we will refer to this control rule as *FMSY*.
 
 _**Precautionary policies.**_ A piece-wise linear HCR determined by three parameters: two stock biomass reference points $X_1$, $X_2$, and the fishing mortality at high stock biomass, $Y_2$. The HCR is given by the following equations:
 \begin{alignat}{2}
@@ -341,47 +343,46 @@ Finally, in order to compare policy responses in the aftermath of a large recrui
 That is, for these simulations we used
 \begin{align}
   r_1 &\sim \mathrm{Unif}(10,\, 30),\\
-  r_t &\sim \mathrm{lognorm}(0,\, 1), \quad t>1.
+  r_t &\sim \mathrm{lognorm}(0,\, 0.4), \quad t>1.
 \end{align}
 
 # Results
 
 In {ref}`tab:fixed-params` we show the parameter values obtained for the optimized fixed HCRs. 
 The episode utilities obtained by these HCRs are displayed in {ref}`tab:rew-table` and {ref}`fig:rewards`. 
-With respect to the $U_{yield}$ and $U_{HARA}$ utilities, we find that *oPP* consistently outperforms the other HCRs tested, with *1 obs. RL* trailing close behind.
-In particular, we observe the counter-intuitive result that with respect to HARA utility, 2 obs. RL underperforms with respect to both its single-observation counterpart and *oPP*.[^counter-intuitive]
-With respect to trophy fishing we find the opposite trend: the *2 obs. RL* policy receives about 60\% more utility than all other HCRs.
+With respect to the $U_{yield}$ and $U_{HARA}$ utilities, we find that nearly all policies obtain essentially equal amounts of utility—-the only exception being the cPP policy which underperforms relative to the other policies in the HARA scenario.
+In contrast to this, in the trophy fishing scenario (right column), we see that the 2RL control obtains about 30\% more utility than other policies.
 
 The optimized HCRs are visualized in Fig. 3, where we plot fishing mortality as a function of stock biomass. 
 We discuss these plots in the following paragraphs.
 
 
-:::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=72.5/1000$. Thus $B_{MSY}=1.015$.
+:::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.132$, and by using Table 2 we find that $\mathrm{rew}(F^*)=237/1000$. Thus $B_{MSY}=1.813$.
 :label: tab:fixed-params
 :align: center
 
 | **Policy**    | **Yield** | **HARA**        | **Trophy Fishing** | 
 | ---       | ---               | ---         | ---            |
-| $F_{MSY}$ | $F=0.071$         | $F=0.060$   | $F=0.060$      |
+| $F_{MSY}$ | $F=0.132$         | $F=0.129$   | $F=0.084$      |
 |           | ---               | ---         | ---            |
-|           | $X_1=0.368$       | $X_1=0.000$ | $X_1=0.000$    |
-| oPP       | $X_2=1.925$       | $X_2=3.408$ | $X_2=9.323$    |
-|           | $Y_2=0.8$         | $Y_2=0.502$ | $Y_2=0.549$    |
+|           | $X_1=0.422$       | $X_1=0.301$ | $X_1=0.000$    |
+| oPP       | $X_2=2.132$       | $X_2=0.734$ | $X_2=5.751$    |
+|           | $Y_2=0.633$       | $Y_2=0.179$ | $Y_2=0.323$    |
 |           | ---               | ---         | ---            |
-|           | $X_1=0.418$       | $X_1=0.418$ | $X_1=0.418$    |
-| cPP       | $X_2=0.836$       | $X_2=0.836$ | $X_2=0.836$    |
-|           | $Y_2=0.071$       | $Y_2=0.060$ | $Y_2=0.060$    |
+|           | $X_1=0.725$       | $X_1=0.725$ | $X_1=0.725$    |
+| cPP       | $X_2=1.451$       | $X_2=1.451$ | $X_2=1.451$    |
+|           | $Y_2=0.132$       | $Y_2=0.129$ | $Y_2=0.084$    |
 :::
 
 ```{csv-table} Summary statistics of the reward distributions shown in Fig. 2. In each column, the highlighted results are within a standard deviation of the best performing policy.
 :label: tab:rew-table
 :header: Policy,Yield Util.,HARA Util.,Trophy Fishing Util.
 
-1 obs. RL,**100.8** +/-- 19.7,**186.8** +/-- 26.9,35.7 +/-- 6.9
-2 obs. RL,**101.4** +/-- 19.4,154.9 +/-- 24.7,**61.7** +/-- 12.0
-FMSY,72.5 +/-- 18.8,**174.7** +/-- 26.6,35.9 +/-- 7.7
-oPP,**108.2** +/-- 19.7,**188.0** +/-- 27.6,36.0 +/-- 6.6
-cPP,84.6 +/-- 17.7,157.6 +/-- 27.5,37.3 +/-- 7.8
+oPP,   *252.82* +/-- 25.31, *401.73* +/-- 20.93,  88.51   +/-- 7.17
+cPP,   *228.64* +/-- 25.03,  364.55  +/-- 25.94,  91.34   +/-- 8.76 
+FMSY,  *237.28* +/-- 22.68, *400.58* +/-- 20.67,  96.44   +/-- 8.24
+1RL,   *250.25* +/-- 22.82, *402.43* +/-- 21.14,  92.73   +/-- 7.13
+2RL,   *249.47* +/-- 23.86, *391.27* +/-- 21.51, *126.90* +/-- 12.80
 ```
 
 
@@ -408,29 +409,27 @@ Bottom row: 2-Observation RL policy, where fishing mortality is informed by the 
 The dependence of fishing mortality on mean weight is displayed with the color code (a gradient between green at high mean weight and violet at low mean weight).
 ```
 *Yield utility ({ref}`fig:policies`, left column)*. 
-In this scenario, both precautionary policies share a very similar $X_1$ threshold value (see {ref}`tab:fixed-params`), and the single-observation RL policy has a similar threshold. 
-The two-observation RL control, exhibits a similar threshold behavior, with the value of the threshold varying with mean weight.
-At high mean weight $\bar{W}_{survey}(t)$ (yellow hue), harvest mortality becomes high even at low biomasses $B_{survey}(t)$, whereas at low mean weight harvests are suppressed (purple hue).
-Inspecting the time-series associated to the 1RL and oPP rules in {ref}`fig:eps-um1`, we can see that the quick increase in fish mortality as a function of $B_{survey}$ leads to a stable (this behaviour is reminiscent of bang-bang policies, see e.g. @walters1978ecological).
+In this scenario we observe a wide variety of policy shapes ({ref}`fig:policies`) leading to very similar episode utility distributions ({ref}`fig:rewards`, {ref}`tab:rew-table`). 
+Moreover, in {ref}`fig:eps-um1` we observe that these different policies indeed lead to quite different dynamical patterns for the fishing mortality.
+Our results suggest that there is a wide variety of control strategies available to a manager that lead to essentially equal behavior in long-term yield.
+For example we observe may contrast the pulsed-fishing behavior of 2RL with FMSY, with the other policies' behavior lying somewhere in the spectrum between these two extremes. 
+Thus, it appears that other performance criteria should be used in addition to yield for the harvest control problem in this scenario.
 
 *HARA utility ({ref}`fig:policies`, middle column)*. 
-Here, the threshold behavior which characterized HCRs in the previous paragraph disappears for all policies except for *cPP*.
-This fits the intuition that low-and-stable yield performs better with respect to HARA utility than sparse fishing peaks.
-Both highest-performing policies here, *oPP* and single-observation RL, converge to a linear control with similar slopes and similar intersection with the axis $F=F_{MSY}$.
-Moreover, the 2RL rule seems to learn that mean weight does not play an important role in the decision problem, and thus harvest variations as a function of $\bar{W}_{survey}$ are comparably small for wide ranges of mean weight observations.
-However, we do observe that 2RL converges to zero harvests at low mean weight.
-In its corresponding time-series ({ref}`fig:eps-um2`), we see that in this scenario the 2RL policy is rather noisy, with persistent variability in harvest mortality over time.
-This hints at the possibility of using smoothing techniques for this policy.
-Such techniques have been shown to lead to improvements in policy performance and interpretability in stochastic control scenarios [@montealegre2023pretty].
-This exploration, however, is outside the scope of the present paper.
+In this case, in contrast to the former scenario, we see that all policies converge to similar behavior to FMSY, with relatively flat $F$ curves as a function of biomass.
+This behavior can be confirmed in {ref}`fig:eps-um2`, in which we see that for all policies, $F_t$ seems to hover around the FMSY value $F\approx 0.12$ ({ref}`tab:fixed-params`).
+We observe that the 2RL rule leads to noisy behavior which we believe is due to the observational noise coupled with the strong dependence of the policy on mean weight observations.
+We believe that using a moving average window for mean weight observations, together with using larger networks and longer training times, could help to smooth this behavior.
+However this exploration would be of limited interest due to the expectation that this way the 2RL policy would converge to FMSY.
 
-*Trophy fishing utility ({ref}`fig:policies`, right column)*. 
-Two things are note-worthy in this scenario.
-First, that the significant difference in HCR shapes for single-observation rules lead to negligible differences in episode utility obtained (see {ref}`tab:rew-table` and {ref}`fig:rewards`).
-Second, the high variability that the 2RL rule has as a function of observed mean weight.
-In contrast to single-observation rules, whose harvest mortalities vary in the range of 0-0.25 for typical observed biomasses, notice that that the two-observation policy reaches harvest mortalities up to $F\approx 0.75$ for high mean weight observations.
-This is mirrored in {ref}`fig:eps-um3`, where we can see that fishing is performed in pulses the 2RL, in contrast to the smooth variation in harvest mortality as a function of time observed in other policies.
-Although the 2RL time-series in {ref}`fig:eps-um3` is characterized by peaks and fishery closures, notice that prolonged fishery closures are also prominent the cPP time-series and that prolonged periods of low harvests are also present in the oPP time-series.
+*Trophy fishing utility ({ref}`fig:policies`, right column)*.
+As previously pointed out, in this scenario we observe a marked advantage for 2RL with respect to all other policies in terms of utility obtained.
+This improved performance is associated with the fishing pulses performed by 2RL ({ref}`fig:eps-um3`).
+To better understand this difference in behavior between 2RL and other policies, we display a zomm into the same time-series in {ref}`fig:eps-um3-zoom`, together with the times of large recruitment years.
+Here we see that, by avoiding fishing in the years subsequent to a recruitment pulse, the 2RL agent is able to perform a large fishing pulse ($F\approx0.75$) on a population with high biomass and mean weight (with the class of the fishing pulse at $t\approx 320$ being about 10-15 years old at the time of the pulse).
+In contrast, the other optimized policies have relatively stable fishing mortalities over time, with little response to large year classes.
+Because of this, our results suggest that in cases where there is a strong age-dependence on utility, managers face a trade-off between policy stability and long-term expected utility.
+
 
 ```{figure} figures/eps-um1-nores.jpeg
 :name: fig:eps-um1
@@ -459,17 +458,21 @@ First 400 time-steps for an episode simulated with each of the HCRs optimized fo
 First 400 time-steps for an episode simulated with each of the HCRs optimized for *Trophy fishing utility*. 
 ```
 
+```{figure} figures/eps-um3-nores-zoom.jpeg
+:name: fig:eps-um3-zoom
+:label: fig:eps-um3-zoom
+:width: 75000px
+:align: center
+
+A zoom into part of the episode for the trophy utility scenario. 
+We display large recruitment years as vertical dotted lines.
+```
+
 In {ref}`fig:aftermath` we display the reponse of each optimized policy (in each of the utility scenarios) in the aftermath of a large recruitment year.
 Right after the large recruitment year there is a dip in both the observed mean weight as well as the observed stock biomass.
 The latter is due to the fact that survey vulnerability at-age is low for small age classes ({ref}`fig:at-age`).
-Moreover, one can observe that the curves for oPP and Fmsy are nearly identical across all plots.
-This is due to the fact that, shortly after a large recruitment year, the observed stock biomass increases significantly above $B_{MSY}$ so that both policies' fishing mortality rates coincide (see $F$ plots in the third row).
-In this figure we note the fishing pulses for oPP and the RL policies optimized for yield (left column).
-Moreover, for policies optimized for HARA utility (middle column), we note that fishing mortalities display less of a pulse structure---opting to have instead lower but more stable harvests.
-Finally, in the trophy fishing scenario (right column), we can see two qualities that characterize the 2RL response:
-First, the delayed fishing mortality pulse which ramps up between time-steps 10-15 post-recruitment pulse.
-Second, the fact that although the rewards obtained are larger than other policies, by the end of the 30 time-steps the spawning stock biomass (SSB) for 2RL remains significantly larger than for other policies.
-This means that if a second recruitment pulse were to happen here, the biomass produced by that recruitment pulse would be proportionally higher than for other policies. 
+Similarly, the pronounced dip in mean weight at $t\approx5$ (rather than the dip being at $t=0$) is explained by the age-sensitivity of surveys.
+In this plot, we observe that the 2RL fishing pulse in the trophy fishing scenario (right column) happens approximately between timesteps 8 and 15, around the age at which the large recruitment generation starts generating utility.
 
 
 ```{figure} figures/aftermath-full.jpeg
@@ -485,6 +488,8 @@ Additionally, we display the dynamics arising without fishing for comparison.
 ```
 
 # Discussion
+
+**To include:** "(this behaviour is reminiscent of bang-bang policies, see e.g. @walters1978ecological)"
 
 Feedback policy design remains a difficult problem for resource management, particularly in the context of age- or size-structure, assessment errors in abundance estimates, and for fisheries with highly variable or spasmodic recruitment dynamics (e.g., see @walters1986adaptive; @caddy1983historical; @walters2002stock; @williams2022partial). 
 Using simulated data in which these complexities were present, we have shown how RL can be used to inform or aid in harvest control rule design. 
