@@ -145,8 +145,7 @@ The parameters $\alpha$ and $\beta$ describe the juvenile survival as a function
 
 The model has stochastic dynamics via the parameter $r_t$, which is independently sampled at each time-step. 
 There are two types of events for the variable $r_t$: 
-1) A normal recruitment year, in which $r_t$ is a scaled-down log-normal variable $r_t\sim \kappa \mathrm{lognorm}(\mu=0, \sigma=1)$ (see, e.g., @quinn1999quantitative).
-The value of $\kappa$ was chosen so that $\mathrm{E}[r_t]=1$.
+1) A normal recruitment year, in which $r_t$ is a scaled-down log-normal variable $r_t\sim \mathrm{lognorm}(\mu=0, \sigma=0.4)$ (see, e.g., @quinn1999quantitative).
 2) A large recruitment year, in which $r_t\sim \mathrm{unif}(10,30)$.
 We use a Bernoulli trial with $\mathrm{Pr.}=0.025$ to decide whether a large recruitment event happens.
 Large recruitment events are rare in any one fishery, however their occurrence happens at a rate much higher than would be predicted by the log-normal distribution alone [@cahill2022unveiling].
@@ -386,7 +385,7 @@ cPP,84.6 +/-- 17.7,157.6 +/-- 27.5,37.3 +/-- 7.8
 ```
 
 
-```{figure} figures/rewards.jpeg
+```{figure} figures/rewards-nores.jpeg
 :name: fig:rewards
 :label: fig:rewards
 :width: 75000px
@@ -397,7 +396,7 @@ These distributions were interpolated from the total utility obtained in n=500 s
 See associated Jupyter notebooks for details on this.
 ```
 
-```{figure} figures/policies.jpeg
+```{figure} figures/policies-nores.jpeg
 :name: fig:policies
 :label: fig:policies
 :width: 75000px
@@ -433,7 +432,7 @@ In contrast to single-observation rules, whose harvest mortalities vary in the r
 This is mirrored in {ref}`fig:eps-um3`, where we can see that fishing is performed in pulses the 2RL, in contrast to the smooth variation in harvest mortality as a function of time observed in other policies.
 Although the 2RL time-series in {ref}`fig:eps-um3` is characterized by peaks and fishery closures, notice that prolonged fishery closures are also prominent the cPP time-series and that prolonged periods of low harvests are also present in the oPP time-series.
 
-```{figure} figures/eps-um1.jpeg
+```{figure} figures/eps-um1-nores.jpeg
 :name: fig:eps-um1
 :width: 75000px
 :align: center
@@ -442,7 +441,7 @@ Although the 2RL time-series in {ref}`fig:eps-um3` is characterized by peaks and
 First 400 time-steps for an episode simulated with each of the HCRs optimized for *Total harvest utility*. 
 ```
 
-```{figure} figures/eps-um2.jpeg
+```{figure} figures/eps-um2-nores.jpeg
 :name: fig:eps-um2
 :label: fig:eps-um2
 :width: 75000px
@@ -451,7 +450,7 @@ First 400 time-steps for an episode simulated with each of the HCRs optimized fo
 First 400 time-steps for an episode simulated with each of the HCRs optimized for *HARA utility*. 
 ```
 
-```{figure} figures/eps-um3.jpeg
+```{figure} figures/eps-um3-nores.jpeg
 :name: fig:eps-um3
 :label: fig:eps-um3
 :width: 75000px
