@@ -171,7 +171,7 @@ We model $S_a$ as increasing with fish length, and use a von Bertalanffy functio
 \begin{align}
 S_a \propto (1 - e^{\kappa a})^\varphi,
 \end{align}
-with $\kappa=0.23$ and $\varphi=2.02$ (see @cahill2022unveiling for more details).
+with $\kappa=0.23$ and $\varphi=2.02$ ({ref}`fig:at-age`, see @cahill2022unveiling for more details).
 A second observation we consider is the *mean weight* of fish in the survey,
 $$
 \bar{W}_{survey} = B_{survey} / N_{survey},
@@ -181,6 +181,15 @@ $$
 N_{survey} = \sum_{a=1}^{20} N_a S_a.
 $$
 Mean weight is easy for managers to observe and is important to consider in the context of spasmodically recruiting populations, since large recruitment events are correlated with dips in the mean weight of fish in the population.
+
+```{figure} figures/at-age.jpeg
+:name: fig:at-age
+:label: fig:at-age
+:width: 50000px
+:align: center
+
+Weight, survey vulnerability, and harvest vulnerability at-age.
+```
 
 We model observations as imperfect, with a multiplicative Gaussian observation error.
 That is, policies do not observe $(B_{survey},\, \bar{W}_{survey})$ but rather, $(e_B B_{survey},\, e_W \bar{W}_{survey})$, where $e_B$ and $e_W$ are randomly sampled each time-step according to
@@ -196,13 +205,13 @@ This real-world problem that surveys provide imperfect information on overall ab
 ## Utility models
 
 We consider three utility models. 
-1. *Total harvest utility* (i.e., *yield maximizing*): the utility at a time-step $t$ is given by the total harvested biomass at that time-step,
+1. *Yield utility* (i.e., *yield maximizing*): the utility at a time-step $t$ is given by the total harvested biomass at that time-step,
 $$
-  U_{HB}(t) = \sum_{a=1}^{20} H_a(t) W_a.
+  U_{yield}(t) = \sum_{a=1}^{20} H_a(t) W_a.
 $$
 2. *Risk averse utility*: a hyperbolic additive risk-averse utility function (also known as ‘HARA utility’) which values inter-annual stability in harvests,
 $$
-  U_{\text{HARA}}(t) = U_{HB}(t)^{\gamma},
+  U_{\text{HARA}}(t) = U_{yield}(t)^{\gamma},
 $$
 where the parameter $\gamma=0.6$ parametrizes the risk aversion (see, e.g., @collie2021harvest).
 Notice that the power of $\gamma$ attenuates the utility derived from large harvests.
@@ -328,12 +337,18 @@ The training times were also modest, comprising 6 million time-steps, or a bit u
 After optimizing each HCR, we simulated $n=500$ episodes and recorded the total utility received in each episode. 
 Moreover, to get a more detailed comparison of the dynamics induced by each HCR, we simulated an additional episode where we recorded the stock biomass, mean fish weight and fishing mortality. 
 To improve comparisons between policies, we used the same time-series of stochastic deviations $\{r_t\}_{t=1, \dots, 1000}$ across all of the latter set of simulations.
+Finally, in order to compare policy responses in the aftermath of a large recruitment year, we performed $n=500$ simulations of short time-series (30 time-steps) in which the first year was a large recruitment year, and the subsequent years had normal recruitment.
+That is, for these simulations we used
+\begin{align}
+  r_1 &\sim \mathrm{Unif}(10,\, 30),\\
+  r_t &\sim \mathrm{lognorm}(0,\, 1), \quad t>1.
+\end{align}
 
 # Results
 
 In {ref}`tab:fixed-params` we show the parameter values obtained for the optimized fixed HCRs. 
 The episode utilities obtained by these HCRs are displayed in {ref}`tab:rew-table` and {ref}`fig:rewards`. 
-With respect to the harvested biomass and HARA utilities, we find that *oPP* consistently outperforms the other HCRs tested, with *1 obs. RL* trailing close behind.
+With respect to the $U_{yield}$ and $U_{HARA}$ utilities, we find that *oPP* consistently outperforms the other HCRs tested, with *1 obs. RL* trailing close behind.
 In particular, we observe the counter-intuitive result that with respect to HARA utility, 2 obs. RL underperforms with respect to both its single-observation counterpart and *oPP*.[^counter-intuitive]
 With respect to trophy fishing we find the opposite trend: the *2 obs. RL* policy receives about 60\% more utility than all other HCRs.
 
@@ -341,13 +356,13 @@ The optimized HCRs are visualized in Fig. 3, where we plot fishing mortality as 
 We discuss these plots in the following paragraphs.
 
 
-:::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{HB}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=72.5/1000$. Thus $B_{MSY}=1.015$.
+:::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.0714$, and by using Table 2 we find that $\mathrm{rew}(F^*)=72.5/1000$. Thus $B_{MSY}=1.015$.
 :label: tab:fixed-params
 :align: center
 
-| **Policy**    | **Harvested Biomass** | **HARA**        | **Trophy Fishing** | 
+| **Policy**    | **Yield** | **HARA**        | **Trophy Fishing** | 
 | ---       | ---               | ---         | ---            |
-| $F_{MSY}$ | $F=0.071$        | $F=0.060$   | $F=0.060$      |
+| $F_{MSY}$ | $F=0.071$         | $F=0.060$   | $F=0.060$      |
 |           | ---               | ---         | ---            |
 |           | $X_1=0.368$       | $X_1=0.000$ | $X_1=0.000$    |
 | oPP       | $X_2=1.925$       | $X_2=3.408$ | $X_2=9.323$    |
@@ -360,13 +375,13 @@ We discuss these plots in the following paragraphs.
 
 ```{csv-table} Summary statistics of the reward distributions shown in Fig. 2. In each column, the highlighted results are within a standard deviation of the best performing policy.
 :label: tab:rew-table
-:header: Policy,Biomass Harvested Util.,HARA Util.,Trophy Fishing Util.
+:header: Policy,Yield Util.,HARA Util.,Trophy Fishing Util.
 
-1 obs. RL,**100.8** +/- 19.7,**186.8** +/- 26.9,35.7 +/- 6.9
-2 obs. RL,**101.4** +/- 19.4,154.9 +/- 24.7,**61.7** +/- 12.0
-FMSY,72.5 +/- 18.8,**174.7** +/- 26.6,35.9 +/- 7.7
-oPP,**108.2** +/- 19.7,**188.0** +/- 27.6,36.0 +/- 6.6
-cPP,84.6 +/- 17.7,157.6 +/- 27.5,37.3 +/- 7.8
+1 obs. RL,**100.8** +/-- 19.7,**186.8** +/-- 26.9,35.7 +/-- 6.9
+2 obs. RL,**101.4** +/-- 19.4,154.9 +/-- 24.7,**61.7** +/-- 12.0
+FMSY,72.5 +/-- 18.8,**174.7** +/-- 26.6,35.9 +/-- 7.7
+oPP,**108.2** +/-- 19.7,**188.0** +/-- 27.6,36.0 +/-- 6.6
+cPP,84.6 +/-- 17.7,157.6 +/-- 27.5,37.3 +/-- 7.8
 ```
 
 
@@ -392,18 +407,19 @@ Top row: policies which only use the vulnerable biomass observation to inform fi
 Bottom row: 2-Observation RL policy, where fishing mortality is informed by the vulnerable biomass observation as well as the mean fish weight observation.
 The dependence of fishing mortality on mean weight is displayed with the color code (a gradient between green at high mean weight and violet at low mean weight).
 ```
-*Harvested biomass utility ({ref}`fig:policies`, left column)*. 
+*Yield utility ({ref}`fig:policies`, left column)*. 
 In this scenario, both precautionary policies share a very similar $X_1$ threshold value (see {ref}`tab:fixed-params`), and the single-observation RL policy has a similar threshold. 
 The two-observation RL control, exhibits a similar threshold behavior, with the value of the threshold varying with mean weight.
-At high mean weight $\bar{W}_{survey}(t)$, harvest mortality becomes high even at low biomasses $B_{survey}(t)$ (yellow hue), whereas at low mean weight harvests are suppressed (purple hue).
+At high mean weight $\bar{W}_{survey}(t)$ (yellow hue), harvest mortality becomes high even at low biomasses $B_{survey}(t)$, whereas at low mean weight harvests are suppressed (purple hue).
 Inspecting the time-series associated to the 1RL and oPP rules in {ref}`fig:eps-um1`, we can see that the quick increase in fish mortality as a function of $B_{survey}$ leads to a stable (this behaviour is reminiscent of bang-bang policies, see e.g. @walters1978ecological).
 
 *HARA utility ({ref}`fig:policies`, middle column)*. 
 Here, the threshold behavior which characterized HCRs in the previous paragraph disappears for all policies except for *cPP*.
 This fits the intuition that low-and-stable yield performs better with respect to HARA utility than sparse fishing peaks.
 Both highest-performing policies here, *oPP* and single-observation RL, converge to a linear control with similar slopes and similar intersection with the axis $F=F_{MSY}$.
-Moreover, the 2RL rule seems to learn that mean weight does not play an important role in the decision problem, and thus harvest variations as a function of $\bar{W}_{survey}$ are comparably small.
-In its corresponding time-series ({fig}`fig:eps-um2`), we see that in this scenario the 2RL policy is rather noisy, with persistent variability in harvest mortality over time.
+Moreover, the 2RL rule seems to learn that mean weight does not play an important role in the decision problem, and thus harvest variations as a function of $\bar{W}_{survey}$ are comparably small for wide ranges of mean weight observations.
+However, we do observe that 2RL converges to zero harvests at low mean weight.
+In its corresponding time-series ({ref}`fig:eps-um2`), we see that in this scenario the 2RL policy is rather noisy, with persistent variability in harvest mortality over time.
 This hints at the possibility of using smoothing techniques for this policy.
 Such techniques have been shown to lead to improvements in policy performance and interpretability in stochastic control scenarios [@montealegre2023pretty].
 This exploration, however, is outside the scope of the present paper.
@@ -443,13 +459,67 @@ First 400 time-steps for an episode simulated with each of the HCRs optimized fo
 First 400 time-steps for an episode simulated with each of the HCRs optimized for *Trophy fishing utility*. 
 ```
 
+In {ref}`fig:aftermath` we display the reponse of each optimized policy (in each of the utility scenarios) in the aftermath of a large recruitment year.
+Right after the large recruitment year there is a dip in both the observed mean weight as well as the observed stock biomass.
+The latter is due to the fact that survey vulnerability at-age is low for small age classes ({ref}`fig:at-age`).
+Moreover, one can observe that the curves for oPP and Fmsy are nearly identical across all plots.
+This is due to the fact that, shortly after a large recruitment year, the observed stock biomass increases significantly above $B_{MSY}$ so that both policies' fishing mortality rates coincide (see $F$ plots in the third row).
+In this figure we note the fishing pulses for oPP and the RL policies optimized for yield (left column).
+Moreover, for policies optimized for HARA utility (middle column), we note that fishing mortalities display less of a pulse structure---opting to have instead lower but more stable harvests.
+Finally, in the trophy fishing scenario (right column), we can see two qualities that characterize the 2RL response:
+First, the delayed fishing mortality pulse which ramps up between time-steps 10-15 post-recruitment pulse.
+Second, the fact that although the rewards obtained are larger than other policies, by the end of the 30 time-steps the spawning stock biomass (SSB) for 2RL remains significantly larger than for other policies.
+This means that if a second recruitment pulse were to happen here, the biomass produced by that recruitment pulse would be proportionally higher than for other policies. 
+
+
+```{figure} figures/aftermath-full.jpeg
+:name: fig:aftermath
+:label: fig:aftermath
+:width: 80000px
+:align: center
+
+Policy interactions with our dynamical model in the timesteps following a large year class.
+For each optimized policy, we simulated 500 time-series of 30 time-steps in which the first time-step is a large recruitment year and the subsequent time-steps are normal recruitment years.
+We plot the average response for each policy and shade the error bar region.
+Additionally, we display the dynamics arising without fishing for comparison.
+```
+
+# Discussion
+
+Feedback policy design remains a difficult problem for resource management, particularly in the context of age- or size-structure, assessment errors in abundance estimates, and for fisheries with highly variable or spasmodic recruitment dynamics (e.g., see @walters1986adaptive; @caddy1983historical; @walters2002stock; @williams2022partial). 
+Using simulated data in which these complexities were present, we have shown how RL can be used to inform or aid in harvest control rule design. 
+As such, our work represents an extension of early dynamic programming and analytical operations research used to find optimal policies for simple ecological models with explicit performance criteria (e.g., @walters1975optimal; @walters1978ecological; @walters1996fixed; @reed1974stochastic), and upon which nearly all of the precautionary harvest control rules used worldwide are currently based (see @restrepo1999precautionary; @free2023harvest). 
+In doing so, this work provides an additional computational framework that can be used to explore feedback policy design in more realistic ecological settings like those that simply break existing tools or approaches due to challenges arising from the “curse of dimensionality” [@woodward2005living; @marescot2013complex; @reimer2022structural]. 
+We discuss our findings on managing fish populations with highly variable recruitment and the implications of these methodological advances below.
+
+In terms of designing harvest control rules for stocks with highly variable recruitment, we demonstrated that feedback policies optimized with regard to explicit performance criteria such as yield or HARA utility typically outperformed the “default” control rules that fixed control rule parameters at predetermined values (i.e. fractions of BMSY or FMSY; @dfo2009). 
+While perhaps unsurprising, this result highlights an underappreciated contradiction regarding the current use of default feedback policies when managing fish stocks. 
+For example, managers of fisheries falling under federal jurisdiction in the United States are required by law to maintain stocks at levels that maximize sustainable harvests, but this same legislation also mandates the use of default control rules with rectilinear forms similar to those tested here [@act1996magnuson; @dfo2009; @free2023harvest]. 
+Given we showed that policies where parameters were optimized with regard to a yield objective outperformed the default policy in terms of yields obtained, it appears incorrect to suggest or imply that a default harvest control rule is also capable of maximizing long-term sustainable harvests. 
+
+The addition of mean weight as an observation input did not improve the performance of harvest control rules over simpler control rule forms if managers were only interested in maximizing yield or minimizing inter-annual variability of harvests, and when the fishing vulnerability schedule does not include high harvest rates on younger ages. 
+This speaks to the counterintuitive nature of feedback control (e.g., see @moxnes2003uncertain), particularly given the fact that dynamics of the system depends on the full state of the system rather than on only the stock biomass (the strong state dependence of the dynamics of fisheries with highly variable recruitment is discussed in @caddy1983historical, @licandeo2020management). 
+It would thus be natural to expect that this would render stock biomass-based control rules ineffective when compared to policies which use further information about the age structure of the population for decision-making. 
+These findings show that many of the 1-D feedback policies discovered during the 1960s-1990s using dynamic programming and analytical methods (e.g., see @walters1969generalized, @walters1975optimal, @walters1978ecological, @walters1996fixed) were able to perform as well as the much more complicated policies we considered using RL. 
+This finding surprised us, and appears to reinforce a general result in the literature relating to the fundamental trade-off between policies that seek to maximize yield via constant escapement-like policies vs. 
+HARA utility-like policies that reduce fishing mortality to low values and stabilize harvests through time (@walters1996fixed; @collie2021harvest). 
+It seems that even in situations with highly variable recruitment, the policies that emerge when optimizing for yield or HARA utility represent opposite ends of the sustainable feedback policy spectrum, and ultimately imply fundamentally different trade-offs and system dynamics. 
+
+In contrast to yield or HARA utility, the trophy utility policies that did not value small fish led to a dependence of the best fishing rate each year on stock biomass and the average size of fish, which essentially avoided harvest when a dominant cohort entered the population and drove mean size of the population down. 
+For this performance criterion, the best policies for maximizing yield of large or trophy sized fish waited until a strong cohort introduced by a recruitment pulse reached larger body size (i.e., until mean weight was higher). 
+This resulted in a time-dependent pulse fishing pattern, as was first shown by @walters1969generalized when capturing and killing fish of all ages is unavoidable (see also @botsford1985optimal). 
+Results for this performance metric illustrate the scalability and generalizability of RL to new problems (see also @sutton), as these methods free the analyst from having to intuit the nuances of feedback control in specific situations. 
+We believe such a tool may prove particularly useful when managers are interested in more complex objectives (e.g., @hilborn1992objectives; @pascoe2017modelling, @salomon2023disrupting; @silver2022fish; @vaca2006analysis) or in ecological settings in which there are no theoretical guarantees that the 1-D harvest control rules based on stock biomass will remain effective (e.g., see discussion in @walters2002stock). 
+Moreover, recent literature has explored the importance of including complex environmental and multi-species interactions in fisheries management (e.g. @perryman2021review). 
+In this setting RL could also be a promising tool in a manager’s repertoire.
+
 
 
 <!-- --------- -->
 <!-- Footnotes -->
 <!-- --------- -->
 
-[^opportunity]: In other words, the opportunity cost of a large harvest plays a smaller role the lower $\gamma$ is. Notice, further, that the exponent of $\gamma$ modifies the units of the utility (as opposed to other utility functions, $U_{HARA}$ does not have units of mass), as well as the scale at which utility varies. As we will see show in the results section, the biomass harvested at each time-step is typically $U_{HB}(t)<1$, and thus one can generally expect that $U_{HARA} > U_{HB}$.
+[^opportunity]: In other words, the opportunity cost of a large harvest plays a smaller role the lower $\gamma$ is. Notice, further, that the exponent of $\gamma$ modifies the units of the utility (as opposed to other utility functions, $U_{HARA}$ does not have units of mass), as well as the scale at which utility varies. As we will see show in the results section, the biomass harvested at each time-step is typically $U_{yield}(t)<1$, and thus one can generally expect that $U_{HARA} > U_{yield}$.
 
 [^networks]: We experimented using a [64,32,16] feed-forward network for the two-observation case, as well as other network geometries including thinner networks, wider networks, and deeper networks with 4 or 5 layers. Among the geometries we tested, we found that all policies either performed equally well or worse (in terms of average utility) to the geometries we present here. Because of this, we will not describe in detail these explorations. This paper's companion open-source code at https://github.com/boettiger-lab/rl4fisheries facilitates this exploration for the interested reader.
 
