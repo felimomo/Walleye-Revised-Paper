@@ -149,8 +149,8 @@ There are two types of events for the variable $r_t$:
 1) A normal recruitment year, in which $r_t$ is a scaled-down log-normal variable $r_t\sim \mathrm{lognorm}(\mu=0, \sigma=0.4)$ (see, e.g., @quinn1999quantitative).
 2) A large recruitment year, in which $r_t\sim \mathrm{unif}(10,30)$.
 We use a Bernoulli trial with $\mathrm{Pr.}=0.025$ to decide whether a large recruitment event happens.
-Large recruitment events are rare in any one fishery, however their occurrence happens at a rate much higher than would be predicted by the log-normal distribution alone [@cahill2022unveiling].
 
+Large recruitment events are rare in any one fishery, however their occurrence happens at a rate much higher than would be predicted by the log-normal distribution alone [@cahill2022unveiling].
 Our model for $r_t$ is a minimalistic description of this dynamic which has explicit control over the rate of large recruitment events.
 One can qualitatively see concordance between the biomass observation time-series obtained using our model for $r_t$ (see, e.g., {ref}`fig:eps-um1`) and patterns found in the literature (for example, see Fig. 9 in @cahill2022unveiling, although that figure is in units of numbers of fish, rather than biomass, observed in surveys).
 
