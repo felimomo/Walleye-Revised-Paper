@@ -397,17 +397,6 @@ These distributions were interpolated from the total utility obtained in n=500 s
 See associated Jupyter notebooks for details on this.
 ```
 
-```{figure} figures/policies-nores.jpeg
-:name: fig:policies
-:label: fig:policies
-:width: 75000px
-:align: center
-
-Optimized policy functions for each of the scenarios. 
-Top row: policies which only use the vulnerable biomass observation to inform fishing mortality. 
-Bottom row: 2-Observation RL policy, where fishing mortality is informed by the vulnerable biomass observation as well as the mean fish weight observation.
-The dependence of fishing mortality on mean weight is displayed with the color code (a gradient between green at high mean weight and violet at low mean weight).
-```
 *Yield utility ({ref}`fig:policies`, left column)*. 
 In this scenario we observe a wide variety of policy shapes ({ref}`fig:policies`) leading to very similar episode utility distributions ({ref}`fig:rewards`, {ref}`tab:rew-table`). 
 Moreover, in {ref}`fig:eps-um1` we observe that these different policies indeed lead to quite different dynamical patterns for the fishing mortality.
@@ -425,11 +414,29 @@ However this exploration would be of limited interest due to the expectation tha
 *Trophy fishing utility ({ref}`fig:policies`, right column)*.
 As previously pointed out, in this scenario we observe a marked advantage for 2RL with respect to all other policies in terms of utility obtained.
 This improved performance is associated with the fishing pulses performed by 2RL ({ref}`fig:eps-um3`).
-To better understand this difference in behavior between 2RL and other policies, we display a zomm into the same time-series in {ref}`fig:eps-um3-zoom`, together with the times of large recruitment years.
+While the increase of fishing mortality with respect to mean weight by the 2RL policy ({ref}`fig:policies`) is clear, this policy has a highly non-intuitive property of decreasing mortality with biomass at high biomasses.
+To understand the behavior of the 2RL policy, and its difference with respect to other policies we display a zoom into the same time-series in {ref}`fig:eps-um3-zoom`, together with the times of large recruitment years.
 Here we see that, by avoiding fishing in the years subsequent to a recruitment pulse, the 2RL agent is able to perform a large fishing pulse ($F\approx0.75$) on a population with high biomass and mean weight (with the class of the fishing pulse at $t\approx 320$ being about 10-15 years old at the time of the pulse).
 In contrast, the other optimized policies have relatively stable fishing mortalities over time, with little response to large year classes.
 Because of this, our results suggest that in cases where there is a strong age-dependence on utility, managers face a trade-off between policy stability and long-term expected utility.
 
+In {ref}`fig:aftermath` we display the reponse of each optimized policy (in each of the utility scenarios) in the aftermath of a large recruitment year.
+Right after the large recruitment year there is a dip in both the observed mean weight as well as the observed stock biomass.
+The latter is due to the fact that survey vulnerability at-age is low for small age classes ({ref}`fig:at-age`).
+Similarly, the pronounced dip in mean weight at $t\approx5$ (rather than the dip being at $t=0$) is explained by the age-sensitivity of surveys.
+In this plot, we observe that the 2RL fishing pulse in the trophy fishing scenario (right column) happens approximately between timesteps 8 and 15, around the age at which the large recruitment generation starts generating utility.
+
+```{figure} figures/policies-nores.jpeg
+:name: fig:policies
+:label: fig:policies
+:width: 75000px
+:align: center
+
+Optimized policy functions for each of the scenarios. 
+Top row: policies which only use the vulnerable biomass observation to inform fishing mortality. 
+Bottom row: 2-Observation RL policy, where fishing mortality is informed by the vulnerable biomass observation as well as the mean fish weight observation.
+The dependence of fishing mortality on mean weight is displayed with the color code (a gradient between green at high mean weight and violet at low mean weight).
+```
 
 ```{figure} figures/eps-um1-nores.jpeg
 :name: fig:eps-um1
@@ -468,12 +475,6 @@ A zoom into part of the episode for the trophy utility scenario.
 We display large recruitment years as vertical dotted lines.
 ```
 
-In {ref}`fig:aftermath` we display the reponse of each optimized policy (in each of the utility scenarios) in the aftermath of a large recruitment year.
-Right after the large recruitment year there is a dip in both the observed mean weight as well as the observed stock biomass.
-The latter is due to the fact that survey vulnerability at-age is low for small age classes ({ref}`fig:at-age`).
-Similarly, the pronounced dip in mean weight at $t\approx5$ (rather than the dip being at $t=0$) is explained by the age-sensitivity of surveys.
-In this plot, we observe that the 2RL fishing pulse in the trophy fishing scenario (right column) happens approximately between timesteps 8 and 15, around the age at which the large recruitment generation starts generating utility.
-
 
 ```{figure} figures/aftermath-full.jpeg
 :name: fig:aftermath
@@ -489,35 +490,71 @@ Additionally, we display the dynamics arising without fishing for comparison.
 
 # Discussion
 
-**To include:** "(this behaviour is reminiscent of bang-bang policies, see e.g. @walters1978ecological)"
-
 Feedback policy design remains a difficult problem for resource management, particularly in the context of age- or size-structure, assessment errors in abundance estimates, and for fisheries with highly variable or spasmodic recruitment dynamics (e.g., see @walters1986adaptive; @caddy1983historical; @walters2002stock; @williams2022partial). 
 Using simulated data in which these complexities were present, we have shown how RL can be used to inform or aid in harvest control rule design. 
 As such, our work represents an extension of early dynamic programming and analytical operations research used to find optimal policies for simple ecological models with explicit performance criteria (e.g., @walters1975optimal; @walters1978ecological; @walters1996fixed; @reed1974stochastic), and upon which nearly all of the precautionary harvest control rules used worldwide are currently based (see @restrepo1999precautionary; @free2023harvest). 
 In doing so, this work provides an additional computational framework that can be used to explore feedback policy design in more realistic ecological settings like those that simply break existing tools or approaches due to challenges arising from the “curse of dimensionality” [@woodward2005living; @marescot2013complex; @reimer2022structural]. 
 We discuss our findings on managing fish populations with highly variable recruitment and the implications of these methodological advances below.
 
-In terms of designing harvest control rules for stocks with highly variable recruitment, we demonstrated that feedback policies optimized with regard to explicit performance criteria such as yield or HARA utility typically outperformed the “default” control rules that fixed control rule parameters at predetermined values (i.e. fractions of BMSY or FMSY; @dfo2009). 
+We find that, strikingly, vast differences in optimized policies can have negligible effects in long-term yield.
+Thus, in the scenario where maximizing long-term yield is prioritized (such as fisheries falling under federal United States jurisdiction, [@act1996magnuson]), there is a fair deal of flexibility in exploring other performance metrics.
+In this case, the coincidence in average long-term yield could be a platform with which to promote diversity within the priorities represented in the fishery's decision problem.
+Our work, moreover, points at the necessity to develop methodologies that can efficiently navigate this space of highly-performant policies, particularly in order to explore the tradeoffs that appear within this space with respect to performance metrics beyond the optimized metric.
+In other words, they point at the fact that finding one optimal policy might be less informative about the control problem than learning to navigate the space of near-optimal policies effectively.
+It is important to use best practices for community and stake-holder engagement within this process, as is emphasized in MSE [@punt2016management].
+Such a framework could leverage the advantages offered by RL (namely, the ability of optimizing policies with several observations, and with no *a-priori* hypothesis of the funcional form of the HCR), with the emphasis on social responsibility and informed consent embraced by the MSE frameowork.
+Developing such a framework is beyond the scope of the current paper.
+
+Moreover, we find the surprising result that mean weight observations seem to matter little in decision-making for two very different utility functions ($U_{yield}$ and $U_{HARA}$).
+Our hypothesis at the start of the project was that this type of observation would lead to improvents in utility across the board, due to the fact that large recruitment events---and their associated effects on mean fish weight---are the drivers of the population dynamics in spasmodically recruiting fisheries. 
+(For example, this pattern is observed in @cahill2022unveiling, where large recruitment pulses are associated with the revitalization of fish populations which had been in a collapsed state for years.)
+This speaks to the counterintuitive nature of feedback control (e.g., see @moxnes2003uncertain), particularly given the fact that dynamics of the system depends on the full state of the system rather than on only the stock biomass (the strong state dependence of the dynamics of fisheries with highly variable recruitment is discussed in @caddy1983historical, @licandeo2020management). 
+It would thus be natural to expect that this would render stock biomass-based control rules ineffective when compared to policies which use further information about the age structure of the population for decision-making. 
+These findings show that many of the 1-D feedback policies discovered during the 1960s-1990s using dynamic programming and analytical methods (e.g., see @walters1969generalized, @walters1975optimal, @walters1978ecological, @walters1996fixed) were able to perform as well as the much more complicated policies we considered using RL. 
+This finding surprised us, and appears to reinforce a general result in the literature relating to the fundamental trade-off between policies that seek to maximize yield via constant escapement-like policies vs. 
+HARA utility-like policies that reduce fishing mortality to low values and stabilize harvests through time (@walters1996fixed; @collie2021harvest).
+
+
+<!-- In terms of designing harvest control rules for stocks with highly variable recruitment, we demonstrated that feedback policies optimized with regard to explicit performance criteria such as yield or HARA utility typically outperformed the “default” control rules that fixed control rule parameters at predetermined values (i.e. fractions of BMSY or FMSY; @dfo2009). 
 While perhaps unsurprising, this result highlights an underappreciated contradiction regarding the current use of default feedback policies when managing fish stocks. 
 For example, managers of fisheries falling under federal jurisdiction in the United States are required by law to maintain stocks at levels that maximize sustainable harvests, but this same legislation also mandates the use of default control rules with rectilinear forms similar to those tested here [@act1996magnuson; @dfo2009; @free2023harvest]. 
-Given we showed that policies where parameters were optimized with regard to a yield objective outperformed the default policy in terms of yields obtained, it appears incorrect to suggest or imply that a default harvest control rule is also capable of maximizing long-term sustainable harvests. 
+Given we showed that policies where parameters were optimized with regard to a yield objective outperformed the default policy in terms of yields obtained, it appears incorrect to suggest or imply that a default harvest control rule is also capable of maximizing long-term sustainable harvests.  -->
 
-The addition of mean weight as an observation input did not improve the performance of harvest control rules over simpler control rule forms if managers were only interested in maximizing yield or minimizing inter-annual variability of harvests, and when the fishing vulnerability schedule does not include high harvest rates on younger ages. 
+<!-- The addition of mean weight as an observation input did not improve the performance of harvest control rules over simpler control rule forms if managers were only interested in maximizing yield or minimizing inter-annual variability of harvests, and when the fishing vulnerability schedule does not include high harvest rates on younger ages. 
 This speaks to the counterintuitive nature of feedback control (e.g., see @moxnes2003uncertain), particularly given the fact that dynamics of the system depends on the full state of the system rather than on only the stock biomass (the strong state dependence of the dynamics of fisheries with highly variable recruitment is discussed in @caddy1983historical, @licandeo2020management). 
 It would thus be natural to expect that this would render stock biomass-based control rules ineffective when compared to policies which use further information about the age structure of the population for decision-making. 
 These findings show that many of the 1-D feedback policies discovered during the 1960s-1990s using dynamic programming and analytical methods (e.g., see @walters1969generalized, @walters1975optimal, @walters1978ecological, @walters1996fixed) were able to perform as well as the much more complicated policies we considered using RL. 
 This finding surprised us, and appears to reinforce a general result in the literature relating to the fundamental trade-off between policies that seek to maximize yield via constant escapement-like policies vs. 
 HARA utility-like policies that reduce fishing mortality to low values and stabilize harvests through time (@walters1996fixed; @collie2021harvest). 
-It seems that even in situations with highly variable recruitment, the policies that emerge when optimizing for yield or HARA utility represent opposite ends of the sustainable feedback policy spectrum, and ultimately imply fundamentally different trade-offs and system dynamics. 
+It seems that even in situations with highly variable recruitment, the policies that emerge when optimizing for yield or HARA utility represent opposite ends of the sustainable feedback policy spectrum, and ultimately imply fundamentally different trade-offs and system dynamics.  -->
 
 In contrast to yield or HARA utility, the trophy utility policies that did not value small fish led to a dependence of the best fishing rate each year on stock biomass and the average size of fish, which essentially avoided harvest when a dominant cohort entered the population and drove mean size of the population down. 
 For this performance criterion, the best policies for maximizing yield of large or trophy sized fish waited until a strong cohort introduced by a recruitment pulse reached larger body size (i.e., until mean weight was higher). 
-This resulted in a time-dependent pulse fishing pattern, as was first shown by @walters1969generalized when capturing and killing fish of all ages is unavoidable (see also @botsford1985optimal). 
+This resulted in a time-dependent pulse fishing pattern reminiscent of bang-bang policies (see, e.g., @walters1978ecological), that was first shown to be optimal by @walters1969generalized when capturing and killing fish of all ages is unavoidable (see also @botsford1985optimal). 
 Results for this performance metric illustrate the scalability and generalizability of RL to new problems (see also @sutton), as these methods free the analyst from having to intuit the nuances of feedback control in specific situations. 
 We believe such a tool may prove particularly useful when managers are interested in more complex objectives (e.g., @hilborn1992objectives; @pascoe2017modelling, @salomon2023disrupting; @silver2022fish; @vaca2006analysis) or in ecological settings in which there are no theoretical guarantees that the 1-D harvest control rules based on stock biomass will remain effective (e.g., see discussion in @walters2002stock). 
 Moreover, recent literature has explored the importance of including complex environmental and multi-species interactions in fisheries management (e.g. @perryman2021review). 
 In this setting RL could also be a promising tool in a manager’s repertoire.
 
+# Future work
+
+As fish populations are strained by climate change, ecosystem loss and overexploitation, fishery scientists are increasingly faced with the question of how best to use available observations to inform fishing quotas. 
+While a wealth of observations are gathered in many fisheries, these observations are traditionally aggregated into an estimated stock size which is used to make quantitative policy recommendations. In this work we showed that additional observations can be used in certain scenarios to improve the utility of quantitative policies. 
+Our analysis included observations on age structure, however, our methodology can accommodate for more complex models with environmental interactions affecting the fish population, and with observations of environmental indicator variables, as well as estimates for other species population sizes. 
+In these more complex contexts, the question of whether there exists a ‘‘pretty good’’ policy that takes into account this additional information would be very interesting to explore. 
+In particular, a compelling question is whether policies using multiple observations can side-step the trade-off between long-term sustainability and long-term yield which can occur for MSY-based policies in scenarios with complex population dynamics [@montealegre2023pretty]. 
+
+RL methods offer potential in managing replicated systems (Hansen et al. 2015; Walters 1986), where several interconnected fish stocks—such as salmon within a watershed or multiple lakes across a region—must be managed together. 
+When stock dynamics are interdependent, the problem becomes high-dimensional, with all stock biomasses jointly influencing quota decisions. 
+This complexity creates space for RL to uncover policy strategies beyond traditional heuristics, including independent or rotating harvest rules (Walters 1986).
+
+As pointed out in the discussion section, our results suggest that some performance metrics in harvest control problems can lead to a host of very different policies with similar performances (in our case, $U_{yield}$ led to this behavior).
+This presents an opportunity to encourage genuine stake-holder and community involvement in significantly influencing policy decisions within a space of highly-performant policies.
+Thus, although utility function design has been a traditional approach to represent differing priorities involved in the control problem, our results suggest that even when the utility function is fixed (e.g. by law), there is ample opportunity for representing diversity in voices and priorities within the decision problem.
+Here we believe that the flexibility offered by the RL framework to easily optimize using different configurations of observations and actions available in the control problem provides an opportunity to explore this diversity above and beyond what previous optimization methods have allowed.
+Importantly, RL algorithms can use spatially and temporally complex observations in the optimization problem, allowing one to numerically optimize policies which use, e.g., sequences of yearly observations to inform decisions.
+While we do not explore this angle of the problem in the present paper, our associated open source code allows the user to engage in this type of optimization using the `FrameStackedAsmEnv` environment to train RL algorithms.
+We believe that this ability of RL algorithms to handle complex observations, which lie well beyond the capabilities of dynamical programming or optimal control theory, is of general interest beyond the study of spasmodic fisheries.
 
 
 <!-- --------- -->
