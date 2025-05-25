@@ -242,7 +242,7 @@ Here we describe the three classes of HCRs we consider in this paper.
 We refer to them interchangeably as *control rules*, *rules* or *policies* throughout.
 
 _**Optimal constant mortality policy.**_ In this strategy, the agent applies the same instantaneous fishing mortality rate  each year that leads to the highest long-term utility on average [@hilborn1992harvest].
-In the case where utility is equal to yield, the optimal constant mortality is equal to the MSY fishing mortality, FMSY.
+In the case where utility is equal to yield, the optimal constant mortality is equal to the MSY fishing mortality, $F_{MSY}$.
 Because of this, we will refer to this control rule as *FMSY* for conciseness.
 
 _**Precautionary policies.**_ A piece-wise linear HCR determined by three parameters: two stock biomass reference points $X_1$, $X_2$, and the fishing mortality at high stock biomass, $Y_2$. The HCR is given by the following equations:
