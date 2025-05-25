@@ -151,7 +151,7 @@ There are two types of events for the variable $r_t$:
 We use a Bernoulli trial with $\mathrm{Pr.}=0.025$ to decide whether a large recruitment event happens.
 Large recruitment events are rare in any one fishery, however their occurrence happens at a rate much higher than would be predicted by the log-normal distribution alone [@cahill2022unveiling].
 Our model for $r_t$ is a minimalistic description of this dynamic which has explicit control over the rate of large recruitment events.
-We contrast recruitment time-series for our model with time-series using log-normal stochasticity in an appendix.
+One can qualitatively see concordance between the biomass observation time-series obtained using our model for $r_t$ (see, e.g., {ref}`fig:eps-um1`) and patterns found in the literature (for example, see Fig. 9 in @cahill2022unveiling, although that figure is in units of numbers of fish, rather than biomass, observed in surveys).
 
 Simulations were run for 1000 time-steps in an attempt to capture the long-term effects of HCRs on population dynamics and performance criteria. 
 Specifically, the expected number of large recruitment years (i.e. ‘‘successful’’ Bernoulli trials for $r_t$) over a period of 1000 time-steps is 25, which was judged to be high enough to capture the dynamics arising from a particular HCR. 
