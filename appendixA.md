@@ -41,8 +41,8 @@ Such a small value of $k$ was deemed necessary in order to capture the quick obs
 While we did experiment with smoothing on other scenarios, only in this scenario did smoothing have a measurable (if small) effect on the reward distribution.
 
 In {ref}`fig:app-rewards` we can see that 2RL$_3$ slightly outperforms 2RL.
-This improvement is rather small and, on it's own, it would hardly be convincing enough to choose one policy over the other.
-This change in policy, however, also leads to a smoother policy curve as a function of time, as can be observed in {ref}`fig:app-timeseries`.
+This improvement on it's own would hardly be a convincing reason to choose one policy over the other.
+This change in policy, however, also leads to a smoother time-series for fishing mortality, as can be observed in {ref}`fig:app-timeseries`.
 Thus, this policy maintains (if, ever so slightly, improves) the utility obtained by 2RL, while reducing to an extent the interannual variability in fishing mortality present in the 2RL time-series.
 We further visualize the two policies, 2RL and 2RL$_3$, as heatmaps over the 2-dimensional space of observations in {ref}`fig:app-normal-policy` and {ref}`fig:app-smoothed-policy`.
 
