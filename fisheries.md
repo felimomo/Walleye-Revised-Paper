@@ -109,7 +109,7 @@ Namely, we found that mean weight was useful in the trophy fishing setting and, 
 
 A collection of 15-30 walleye lakes in Alberta are managed using a Special Harvest License (SHL), which enables managers to assign a Total Allowable Catch (TAC) to limit harvest, and which is unique for inland recreational fisheries in North America. 
 Presently, managers use an indicator-based approach to set TACs in any particular year based on standardized gill-netting surveys occuring in fall. 
-However, @cahill2022unveiling showed that harvestable surplus existed in many systems even though many management plans stated the goal of seeking to harvest for maximum sustainable yield. 
+However, @cahill2022unveiling showed that harvestable surplus existed in many systems even though many management plans stated the goal of seeking to harvest for maximum sustainable yield (MSY). 
 Consequently, we aim to improve the scientific defensibility of this harvest allocation process in the Alberta SHL walleye program. 
 To do so, we extended a standard age-structured population dynamics model of walleye described in detail in @cahill2022unveiling and use it to simulate realistic population dynamics. 
 Briefly, we model population processes such growth in numbers at age through time as a function of Beverton-Holt stock-recruitment (see below), von Bertalanffy somatic growth in length-at-age (see @cahill2022unveiling), and total mortality as an additive process assuming total instantaneous mortality Z is equal to instantaneous natural mortality M plus fishing mortality rates imposed by recreational harvesters and which is modulated by vulnerability at age. 
@@ -241,8 +241,9 @@ Size dependence can be particularly relevant in cases where machinery to process
 Here we describe the three classes of HCRs we consider in this paper.
 We refer to them interchangeably as *control rules*, *rules* or *policies* throughout.
 
-_**Constant mortality policy at FMSY.**_ In this strategy, the agent applies the same instantaneous fishing mortality rate  each year that leads to the highest long-term yield on average [@hilborn1992harvest].
-For convenience, we will refer to this control rule as *FMSY*.
+_**Optimal constant mortality policy.**_ In this strategy, the agent applies the same instantaneous fishing mortality rate  each year that leads to the highest long-term utility on average [@hilborn1992harvest].
+In the case where utility is equal to yield, the optimal constant mortality is equal to the MSY fishing mortality, FMSY.
+Because of this, we will refer to this control rule as *FMSY* for conciseness.
 
 _**Precautionary policies.**_ A piece-wise linear HCR determined by three parameters: two stock biomass reference points $X_1$, $X_2$, and the fishing mortality at high stock biomass, $Y_2$. The HCR is given by the following equations:
 \begin{alignat}{2}
