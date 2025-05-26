@@ -86,7 +86,7 @@ The state of the population is specified by the biomass in each size class, i.e.
 Policy decisions are based on either one or two observations are gathered out of this 20-dimensional vector (middle box). 
 These observations are gathered through a simulated survey conducted by the fishery management. 
 Vulnerable biomass: the total biomass vulnerable to the survey gear, mean fish weight: the mean weight of fish caught in the survey. 
-A quantitative policy uses these observations to fix an instantaneous fishing mortality (left box). b) We optimize policies in three scenarios with differing utility functions. 
+A quantitative policy uses these observations to fix an instantaneous fishing exploitation rate (left box). b) We optimize policies in three scenarios with differing utility functions. 
 Total harvest: long-term yield. Hyperbolic additive risk-averse (HARA): a risk-averse utility function which penalizes inter-annual variability. 
 Trophy fishing: a utility function which only values large fish, while small fish do not contribute to the utility. c) Four types of policies are optimized. The first three policies—FMSY, Precautionary Policy, and 1-Observation ML—use only the vulnerable biomass observation, whereas 2-Observation ML uses both observations.
 ```
@@ -99,7 +99,7 @@ We focus our case study on a recreational Walleye fishery managed via harvest lo
 We also compare the policies obtained by numerical optimization with a rectilinear ‘default’ precautionary rule recommended by Canada [@dfo2006].
 
 We evaluate HCRs with three types of utility functions: total harvest (i.e., yield maximizing), a risk-averse utility that prioritizes inter-annual consistency in catch, and a trophy fishing utility in which only sufficiently large fish are valued by harvesters (see Fig. 1b). 
-We optimize and evaluate four classes of HCRs: 1) constant fishing mortality rate ($F_{MSY}$), 2) a rectilinear precautionary rule derived from $F_{MSY}$ and the biomass at which surplus production is maximized $B_{MSY}$ (see [@dfo2006; Fig. 1] for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see Fig. 1c).
+We optimize and evaluate four classes of HCRs: 1) constant exploitation rate ($F^*$), 2) a rectilinear precautionary rule derived from $F^*$ and the biomass at which surplus production is maximized $B^*$ (see [@dfo2009; Fig. 1] for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see Fig. 1c).
 
 We found that considerable gains can be achieved in performance by precautionary policies by optimizing policy parameters. 
 By using an RL methodology we explored whether mean weight was a useful variable for policy decisions and found that the answer depends on the choice of utility function. 
@@ -132,7 +132,7 @@ The harvest-at-age is $H_a(t) = F_t V_a N_a(t)$, where $F_t$ is the harvest mort
   \frac{1}{1 + e^{-(a-a_{hv})/2}}\, ,
 \end{align}
 and $a_{hv}=5$ is the age at half harvest vulnerability.
-Notice that even for a high net fishing mortality rate, e.g. , the actual fishing mortality rate enacted on young age classes remains low, which is a common assumption in many recreational fisheries (e.g., see @golden2022focusing).
+Notice that even for a high exploitation rate $F$ the actual fishing mortality rate enacted on young age classes remains low, which is a common assumption in many recreational fisheries (e.g., see @golden2022focusing).
 The spawning stock biomass is $SSB_t$, 
 \begin{align}
   SSB_t &= \sum_{a=1}^{20} W_a N_a / 
@@ -161,7 +161,7 @@ Using nomenclature from the RL literature, we also refer to these 1000 time-step
 ## Observations
 
 We model observations by simulating a gillnetting survey carried out by a management agency tasked with monitoring and managing the fishery. 
-These observations are then subsequently used by the HCR to set a fishing mortality for a specific  time-step. 
+These observations are then subsequently used by the HCR to set a fishing exploitation rate for a specific  time-step. 
 We consider two types of observations. 
 The first is an estimate of the stock biomass vulnerable to the management agency’s survey gear,
 \begin{align}
@@ -241,11 +241,11 @@ Size dependence can be particularly relevant in cases where machinery to process
 Here we describe the three classes of HCRs we consider in this paper.
 We refer to them interchangeably as *control rules*, *rules* or *policies* throughout.
 
-_**Optimal constant mortality policy.**_ In this strategy, the agent applies the same instantaneous fishing mortality rate  each year that leads to the highest long-term utility on average [@hilborn1992harvest].
-In the case where utility is equal to yield, the optimal constant mortality is equal to the MSY fishing mortality, $F_{MSY}$.
+_**Optimal constant exploitation rate policy.**_ In this strategy, the agent applies the same instantaneous fishing exploitation rate  rate  each year that leads to the highest long-term utility on average [@hilborn1992harvest].
+In the case where utility is equal to yield, the optimal constant exploitation rate is equal to the MSY fishing exploitation rate, $F_{MSY}$.
 Because of this, we will refer to this control rule as *FMSY* for conciseness.
 
-_**Precautionary policies.**_ A piece-wise linear HCR determined by three parameters: two stock biomass reference points $X_1$, $X_2$, and the fishing mortality at high stock biomass, $Y_2$. The HCR is given by the following equations:
+_**Precautionary policies.**_ A piece-wise linear HCR determined by three parameters: two stock biomass reference points $X_1$, $X_2$, and the fishing exploitation rate at high stock biomass, $Y_2$. The HCR is given by the following equations:
 \begin{alignat}{2}
 F_t &= 0, \quad && \text{for } B_{survey}(t) < X_1,\\
 F_t &= \frac{B_{survey}(t) - X_1}{X_2 - X_1}\times Y_2, 
@@ -295,15 +295,15 @@ even when one can only evaluate $f$ ‘‘imperfectly.’’
 These algorithms are most useful in scenarios where evaluating $f$ is computationally expensive because they tend to require much fewer function evaluations of $f$ than brute force optimization approaches.
 
 In our case, the arguments $(x,\, y,\, z,\, \dots)$ are the parameters in the HCR function. 
-That is, for the precautionary policy, the arguments are $(X_1,\, X_2,\, Y_2)$, whereas for the $F_{MSY}$ policy, the only argument is the mortality rate $F$. We maximize the average utility obtained by a policy by optimizing over these parameters. For example, for the constant mortality mortality policy,
+That is, for the precautionary policy, the arguments are $(X_1,\, X_2,\, Y_2)$, whereas for the $F_{MSY}$ policy, the only argument is the exploitation rate $F$. We maximize the average utility obtained by a policy by optimizing over these parameters. For example, for the constant exploitation rate policy,
 $$
   \mathrm{argmax}_F\, \mathbb{E}[U(F)],
 $$
-where $U(F)$ is the utility obtained by simulating an episode using a constant mortality $F$. 
+where $U(F)$ is the utility obtained by simulating an episode using a constant rate $F$. 
 Note that $U(F)$ is thus a random variable since the dynamics are stochastic.
 
 Because of our system's high stochasticity, evaluating the mean episode reward afforded by any policy requires taking the average across many episodes. 
-In  our case we used 200 episodes. 
+In  our case we used 200 episodes.
 
 We used the Gaussian process minimizer algorithm from the *scikit-optimize* Python package to perform this optimization, and allowed the algorithm to evaluate the objective function at 70 different points. 
 The number of points was chosen heuristically as it appeared high enough for the optimization to converge, but remained low enough to provide reasonable runtimes. 
@@ -339,7 +339,7 @@ The training times were also modest, comprising 6 million time-steps, or a bit u
 ## Policy evaluation
 
 After optimizing each HCR, we simulated $n=500$ episodes and recorded the total utility received in each episode. 
-Moreover, to get a more detailed comparison of the dynamics induced by each HCR, we simulated an additional episode where we recorded the stock biomass, mean fish weight and fishing mortality. 
+Moreover, to get a more detailed comparison of the dynamics induced by each HCR, we simulated an additional episode where we recorded the stock biomass, mean fish weight and exploitation rate. 
 To improve comparisons between policies, we used the same time-series of stochastic deviations $\{r_t\}_{t=1, \dots, 1000}$ across all of the latter set of simulations.
 Finally, in order to compare policy responses in the aftermath of a large recruitment year, we performed $n=500$ simulations of short time-series (30 time-steps) in which the first year was a large recruitment year, and the subsequent years had normal recruitment.
 That is, for these simulations we used
@@ -355,11 +355,11 @@ The episode utilities obtained by these HCRs are displayed in {ref}`tab:rew-tabl
 With respect to the $U_{yield}$ and $U_{HARA}$ utilities, we find that nearly all policies obtain essentially equal amounts of utility—-the only exception being the cPP policy which underperforms relative to the other policies in the HARA scenario.
 In contrast to this, in the trophy fishing scenario (right column), we see that the 2RL control obtains about 30\% more utility than other policies.
 
-The optimized HCRs are visualized in Fig. 3, where we plot fishing mortality as a function of stock biomass. 
+The optimized HCRs are visualized in Fig. 3, where we plot exploitation rate as a function of stock biomass. 
 We discuss these plots in the following paragraphs.
 
 
-:::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant mortality policy policy, and where $F^*$ is the constant mortality rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.132$, and by using Table 2 we find that $\mathrm{rew}(F^*)=237/1000$. Thus $B_{MSY}=1.813$.
+:::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant exploitation rate policy policy, and where $F^*$ is the constant exploitation rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.132$, and by using Table 2 we find that $\mathrm{rew}(F^*)=237/1000$. Thus $B_{MSY}=1.813$.
 :label: tab:fixed-params
 :align: center
 
@@ -401,7 +401,7 @@ See associated Jupyter notebooks for details on this.
 
 *Yield utility ({ref}`fig:policies`, left column)*. 
 In this scenario we observe a wide variety of policy shapes ({ref}`fig:policies`) leading to very similar episode utility distributions ({ref}`fig:rewards`, {ref}`tab:rew-table`). 
-Moreover, in {ref}`fig:eps-um1` we observe that these different policies indeed lead to quite different dynamical patterns for the fishing mortality.
+Moreover, in {ref}`fig:eps-um1` we observe that these different policies indeed lead to quite different dynamical patterns for the exploitation rate.
 Our results suggest that there is a wide variety of control strategies available to a manager that lead to essentially equal behavior in long-term yield.
 For example we observe may contrast the pulsed-fishing behavior of 2RL with FMSY, with the other policies' behavior lying somewhere in the spectrum between these two extremes. 
 Thus, it appears that other performance criteria should be used in addition to yield for the harvest control problem in this scenario.
@@ -416,7 +416,7 @@ However this exploration would be of limited interest due to the expectation tha
 *Trophy fishing utility ({ref}`fig:policies`, right column)*.
 As previously pointed out, in this scenario we observe a marked advantage for 2RL with respect to all other policies in terms of utility obtained.
 This improved performance is associated with the fishing pulses performed by 2RL ({ref}`fig:eps-um3`).
-While the increase of fishing mortality with respect to mean weight by the 2RL policy ({ref}`fig:policies`) is clear, this policy has a highly non-intuitive property of decreasing mortality with biomass at high biomasses.
+While the increase of exploitation rate with respect to mean weight by the 2RL policy ({ref}`fig:policies`) is clear, this policy has a highly non-intuitive property of decreasing exploitation with increasing biomass at high biomasses.
 To understand the behavior of the 2RL policy, and its difference with respect to other policies we display a zoom into the same time-series in {ref}`fig:eps-um3-zoom`, together with the times of large recruitment years.
 Here we see that, by avoiding fishing in the years subsequent to a recruitment pulse, the 2RL agent is able to perform a large fishing pulse ($F\approx0.75$) on a population with high biomass and mean weight (with the class of the fishing pulse at $t\approx 320$ being about 10-15 years old at the time of the pulse).
 In contrast, the other optimized policies have relatively stable fishing mortalities over time, with little response to large year classes.
@@ -435,9 +435,9 @@ In this plot, we observe that the 2RL fishing pulse in the trophy fishing scenar
 :align: center
 
 Optimized policy functions for each of the scenarios. 
-Top row: policies which only use the vulnerable biomass observation to inform fishing mortality. 
-Bottom row: 2-Observation RL policy, where fishing mortality is informed by the vulnerable biomass observation as well as the mean fish weight observation.
-The dependence of fishing mortality on mean weight is displayed with the color code (a gradient between green at high mean weight and violet at low mean weight).
+Top row: policies which only use the vulnerable biomass observation to inform exploitation rate. 
+Bottom row: 2-Observation RL policy, where exploitation rate is informed by the vulnerable biomass observation as well as the mean fish weight observation.
+The dependence of exploitation rate on mean weight is displayed with the color code (a gradient between green at high mean weight and violet at low mean weight).
 ```
 
 ```{figure} figures/eps-um1-nores.jpeg
@@ -514,7 +514,7 @@ This speaks to the counterintuitive nature of feedback control (e.g., see @moxne
 It would thus be natural to expect that this would render stock biomass-based control rules ineffective when compared to policies which use further information about the age structure of the population for decision-making. 
 These findings show that many of the 1-D feedback policies discovered during the 1960s-1990s using dynamic programming and analytical methods (e.g., see @walters1969generalized, @walters1975optimal, @walters1978ecological, @walters1996fixed) were able to perform as well as the much more complicated policies we considered using RL. 
 This finding surprised us, and appears to reinforce a general result in the literature relating to the fundamental trade-off between policies that seek to maximize yield via constant escapement-like policies vs. 
-HARA utility-like policies that reduce fishing mortality to low values and stabilize harvests through time (@walters1996fixed; @collie2021harvest).
+HARA utility-like policies that reduce the exploitation rate to low values and stabilize harvests through time (@walters1996fixed; @collie2021harvest).
 
 
 <!-- In terms of designing harvest control rules for stocks with highly variable recruitment, we demonstrated that feedback policies optimized with regard to explicit performance criteria such as yield or HARA utility typically outperformed the “default” control rules that fixed control rule parameters at predetermined values (i.e. fractions of BMSY or FMSY; @dfo2009). 
