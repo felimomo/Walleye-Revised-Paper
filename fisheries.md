@@ -76,8 +76,8 @@ In inland systems, Walleye Sander vitreus in Lake Erie increased from low abunda
 In these examples, large recruitment events affected both population status and the users who rely upon those populations; however, such events are almost always written off as “environmental effects” and are notoriously difficult to predict with the reliability needed to inform feedback policy design (see @myers1998environment; @punt2014fisheries).
 
 ```{figure} figures/conceptual.jpeg
-:name: conceptual
-:label: conceptual
+:name: fig:conceptual
+:label: fig:conceptual
 :width: 70000px
 :align: center
 
@@ -93,13 +93,13 @@ Trophy fishing: a utility function which only values large fish, while small fis
 
 Little work has examined the implications of infrequent large recruitment events on the performance of feedback policies in age-structured populations, even though feedback policies are now considered the de facto standard for managing fisheries exploitation worldwide (see @free2023harvest; @silvar2022empirical; however, see @licandeo2020management). 
 This is noteworthy because nearly all of the theoretical work underpinning harvest control rule or feedback policy design has assumed populations exhibit uncorrelated recruitment anomalies originating from standard, stationary statistical distributions (see @walters1975optimal; @walters1978ecological; @reed1979optimal; however see @parma1990experimental; @hawkshaw2015harvest).
-In this paper, we apply RL and Bayesian optimization to the problem of designing harvest control rules (HCRs) for partially-observed age-structured populations exhibiting highly variable recruitment dynamics (see Fig. 1a). 
+In this paper, we apply RL and Bayesian optimization to the problem of designing harvest control rules (HCRs) for partially-observed age-structured populations exhibiting highly variable recruitment dynamics (see {ref}`fig:conceptual`a). 
 Specifically, we use RL methodologies to explore whether multi-dimensional control rules—particularly rules depending on the total stock biomass and the mean fish weight—might be helpful for managing age-structured, spasmodically recruiting, populations. 
 We focus our case study on a recreational Walleye fishery managed via harvest lottery in Alberta, Canada (see @sullivan2003active), as recent work showed these populations recovered from collapse due in part to large positive recruitment anomalies [@post2002canada; @cahill2022unveiling]. 
 We also compare the policies obtained by numerical optimization with a rectilinear ‘default’ precautionary rule recommended by Canada [@dfo2006].
 
-We evaluate HCRs with three types of utility functions: total harvest (i.e., yield maximizing), a risk-averse utility that prioritizes inter-annual consistency in catch, and a trophy fishing utility in which only sufficiently large fish are valued by harvesters (see Fig. 1b). 
-We optimize and evaluate four classes of HCRs: 1) constant exploitation rate ($F^*$), 2) a rectilinear precautionary rule derived from $F^*$ and the biomass at which surplus production is maximized $B^*$ (see [@dfo2009; Fig. 1] for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see Fig. 1c).
+We evaluate HCRs with three types of utility functions: total harvest (i.e., yield maximizing), a risk-averse utility that prioritizes inter-annual consistency in catch, and a trophy fishing utility in which only sufficiently large fish are valued by harvesters (see {ref}`fig:conceptual`b). 
+We optimize and evaluate four classes of HCRs: 1) constant exploitation rate ($F^*$), 2) a rectilinear precautionary rule derived from $F^*$ and the biomass at which surplus production is maximized $B^*$ (see [@dfo2009; Fig. 1] for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see {ref}`fig:conceptual`c).
 
 We found that considerable gains can be achieved in performance by precautionary policies by optimizing policy parameters. 
 By using an RL methodology we explored whether mean weight was a useful variable for policy decisions and found that the answer depends on the choice of utility function. 
@@ -252,7 +252,7 @@ F_t &= \frac{B_{survey}(t) - X_1}{X_2 - X_1}\times Y_2,
   \quad && \text{for } X_1 \leq B_{survey}(t) \leq X_2,\\
 F_t &= Y_2, \quad && \text{for } B_{survey}(t) > X_2.
 \end{alignat}
-For a visual guide of this policy, see @dfo2006, Fig. 2. 
+For a visual guide of this policy, see @dfo2009, Fig. 1. 
 In the literature, the parameters of this policy are often fixed at some fraction of the biomass at which the fishery maximizes average surplus production, $B_0$. 
 A common choice is  $X_1=0.4 B_{MSY}$, $X_2=0.8 B_{MSY}$ and $Y_2=F_{MSY}$. 
 We call this specific realization of the HCR the *constrained precautionary policy (cPP)*. 
@@ -361,7 +361,7 @@ The episode utilities obtained by these HCRs are displayed in {ref}`tab:rew-tabl
 With respect to the $U_{yield}$ and $U_{HARA}$ utilities, we find that nearly all policies obtain essentially equal amounts of utility—-the only exception being the cPP policy which underperforms relative to the other policies in the HARA scenario.
 In contrast to this, in the trophy fishing scenario (right column), we see that the 2RL control obtains about 30\% more utility than other policies.
 
-The optimized HCRs are visualized in Fig. 3, where we plot exploitation rate as a function of stock biomass. 
+The optimized HCRs are visualized in {ref}`fig:policies`, where we plot exploitation rate as a function of stock biomass. 
 We discuss these plots in the following paragraphs.
 
 
@@ -382,7 +382,7 @@ We discuss these plots in the following paragraphs.
 |           | $Y_2=0.132$       | $Y_2=0.129$ | $Y_2=0.084$    |
 :::
 
-```{csv-table} Summary statistics of the reward distributions shown in Fig. 2. In each column, the highlighted results are within a standard deviation of the best performing policy.
+```{csv-table} Summary statistics of the reward distributions shown in {ref}`fig:rewards`. In each column, the highlighted results are within a standard deviation of the best performing policy.
 :label: tab:rew-table
 :header: Policy,Yield Util.,HARA Util.,Trophy Fishing Util.
 
