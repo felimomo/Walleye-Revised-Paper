@@ -382,7 +382,7 @@ We discuss these plots in the following paragraphs.
 |           | $Y_2=0.132$       | $Y_2=0.129$ | $Y_2=0.084$    |
 :::
 
-```{csv-table} Summary statistics of the reward distributions shown in {ref}`fig:rewards`. In each column, the highlighted results are within a standard deviation of the best performing policy.
+```{csv-table} Summary statistics of the reward distributions for optimized policies. In each column, the highlighted utilities are within a standard deviation of the best-performing policy.
 :label: tab:rew-table
 :header: Policy,Yield Util.,HARA Util.,Trophy Fishing Util.
 
