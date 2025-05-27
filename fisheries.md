@@ -85,7 +85,7 @@ Conceptual framework for our methodology. a) The dynamics of a Walleye populatio
 The state of the population is specified by the biomass in each size class, i.e. the system's state is 20-dimensional. 
 Policy decisions are based on either one or two observations are gathered out of this 20-dimensional vector (middle box). 
 These observations are gathered through a simulated survey conducted by the fishery management. 
-Vulnerable biomass: the total biomass vulnerable to the survey gear, mean fish weight: the mean weight of fish caught in the survey. 
+Vulnerable biomass: the total biomass vulnerable to the survey gear, mean fish weight: the mean weight of vulnerable to the survey equipment. 
 A quantitative policy uses these observations to fix an instantaneous fishing exploitation rate (left box). b) We optimize policies in three scenarios with differing utility functions. 
 Total harvest: long-term yield. Hyperbolic additive risk-averse (HARA): a risk-averse utility function which penalizes inter-annual variability. 
 Trophy fishing: a utility function which only values large fish, while small fish do not contribute to the utility. c) Four types of policies are optimized. The first three policies—FMSY, Precautionary Policy, and 1-Observation ML—use only the vulnerable biomass observation, whereas 2-Observation ML uses both observations.
