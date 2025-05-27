@@ -540,7 +540,7 @@ This resulted in a time-dependent pulse fishing pattern reminiscent of bang-bang
 In {ref}`fig:aftermath` (right column, third row), we see that on average 2RL policies produce a fishing pulse between timesteps 8-15 after the recruitment pulse, that is during the time-period in which the large cohort reaches a valuable age.
 After this, 2RL fishes slightly below the optimal constant exploitation rate on average, however, inspecting {ref}`fig:eps-um3-zoom` we see that this average behavior may include smaller fishing spikes together with periods of no exploitation.
 This behavior speaks to the tradeoff between total utility accrued on the one hand, and stability of utility over time on the other.
-Given the extreme non-linearity of our trophy utility function---in which fish below a threshold age provide no utility---the tradeoff tilts the balance against stability (see, e.g., the reward curve in {ref}`fig:eps-um3=zoom`, right column, fourth row).
+Given the extreme non-linearity of our trophy utility function---in which fish below a threshold age provide no utility---the tradeoff tilts the balance against stability (see, e.g., the reward curve in {ref}`fig:eps-um3-zoom`, right column, fourth row).
 However, we believe that our results point at a potentially more general pattern in which non-trivial age-dependence within the utility function makes age-structure observations (such as mean weight) valuable for the decision problem.
 In this more general scenario the trade-off between stability and total utility can be expected to appear as well, albeit not necessarily with the same resulting tilt towards total utility.
 
