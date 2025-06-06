@@ -43,6 +43,11 @@ bibliography:
   - refs.bib
 ---
 
+<!-- tbd: 
+1. order references alphabetically
+2. add line numbers with: https://texdoc.org/serve/lineno/0 
+-->
+
 # Introduction
 
 
@@ -126,7 +131,7 @@ N_a(t+1) &= s\times (N_{a-1}(t) - H_{a-1}(t)), \quad && 1 < a <20,\\
 N_{20}(t+1) &= s\times \left(N_{20}(t) - H_{20}(t) + N_{19}(t) - H_{19}(t)\right). \quad &&
 \end{alignat}
 Here we use the following notations: 
-The harvest-at-age is $H_a(t) = F_t V_a N_a(t)$, where $F_t$ is the harvest mortality rate, $V_a$ is the *harvest vulnerability at age*,
+The harvest-at-age is $H_a(t) = F_t V_a N_a(t)$, where $F_t\in[0,1]$ is the harvest exploitation rate, $V_a$ is the *harvest vulnerability at age*,
 \begin{align}
   V_a &= 
   \frac{1}{1 + e^{-(a-a_{hv})/2}}\, ,
@@ -236,6 +241,13 @@ We considered utility functions one and two because they represent commonly ackn
 Moreover we included the trophy fishing function to explore how our analysis would change for more complex, size-dependent, utility functions. 
 Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers only desire to retain large trophy-sized fish rather than valuing fish of any size equally (e.g., see @murphy1996fisheries; @licandeo2020management).
 
+Within MSE practice, it is common for complex performance metrics containing different competing objectives to be used.
+This expresses the social complexity associated with effective fishery management, in which a variety of stakeholders---with different economic realities and different cultural backgrounds---are affected by policy decisions.
+Defining the performance metrics used in MSE usually involves an active involvement of the spectrum of stakeholders.
+This process was outside the scope of the present study, and thus we have chosen to derive our results in a series of simple utility models which express distinct objectives clearly.
+We believe that our results provide a useful guide to understand the optimization problem with respect to more complex mixed utility models.[^comparisons]
+
+
 ## Harvest control strategies
 
 Here we describe the three classes of HCRs we consider in this paper.
@@ -253,8 +265,8 @@ F_t &= \frac{B_{survey}(t) - X_1}{X_2 - X_1}\times Y_2,
 F_t &= Y_2, \quad && \text{for } B_{survey}(t) > X_2.
 \end{alignat}
 For a visual guide of this policy, see @dfo2009, Fig. 1. 
-In the literature, the parameters of this policy are often fixed at some fraction of the biomass at which the fishery maximizes average surplus production, $B_0$. 
-A common choice is  $X_1=0.4 B_{MSY}$, $X_2=0.8 B_{MSY}$ and $Y_2=F_{MSY}$. 
+In the literature, the parameters of this policy are often fixed at some fraction of the biomass at which the fishery maximizes average surplus production, $B^*$. 
+A common choice is  $X_1=0.4 B^*$, $X_2=0.8 B^*$ and $Y_2=F^*$, where $F^*$ is the constant exploitation rate which maximizes expected harvested biomass.[^classic] 
 We call this specific realization of the HCR the *constrained precautionary policy (cPP)*. 
 In contrast, when we refer to the precautionary policy whose parameters $(X_1,\, X_2,\, Y_2)$ have been numerically optimized as the *optimized precautionary policy (oPP)*. 
 We evaluate both of these HCRs in relation to our chosen utility functions.
@@ -577,6 +589,8 @@ While time complexity in observations is outside the scope of this paper, our co
 
 [^opportunity]: In other words, the opportunity cost of a large harvest plays a smaller role the lower $\gamma$ is. Notice, further, that the exponent of $\gamma$ modifies the units of the utility (as opposed to other utility functions, $U_{HARA}$ does not have units of mass), as well as the scale at which utility varies. As we will see show in the results section, the biomass harvested at each time-step is typically $U_{yield}(t)<1$, and thus one can generally expect that $U_{HARA} > U_{yield}$.
 
+[^classic]: Within classic one-dimensional models such as the logistic population growth model, systems controlled with a constant exploitation rate $F^*$ converge to an equilibrium biomass of $B^*$.
+
 [^networks]: We experimented using a [64,32,16] feed-forward network for the two-observation case, as well as other network geometries including thinner networks, wider networks, and deeper networks with 4 or 5 layers. Among the geometries we tested, we found that all policies either performed equally well or worse (in terms of average utility) to the geometries we present here. Because of this, we will not describe in detail these explorations. This paper's companion open-source code at https://github.com/boettiger-lab/rl4fisheries facilitates this exploration for the interested reader.
 
 [^tune]: Found at https://github.com/boettiger-lab/rl4fisheries/blob/main/scripts/tune.py
@@ -590,6 +604,8 @@ While time complexity in observations is outside the scope of this paper, our co
 [^additional]: We additionally optimized, *a posteriori*, fixed policies using $N=350$ and $N=450$ episodes and found essentially identical optimal utilities obtained. This further indicated that our choice of $N=250$ was sufficient for optimization.
 
 [^time-complexity]: For this, the user may use our `train.py` script with the configuration files at `hyperpars/frame_stacking`. These configuration files point the training algorithm to our `FrameStackedAsmEnv` environment in which the algorithm trains on sequences of observations of a length defined by the user.
+
+[^comparisons]: It is important to note, however, that because the scale at which utility accrued per timestep can vary between between utility models, mixed utility models should account for this in the choice of weights.
 
 ```{bibliography}
 :style: alpha
