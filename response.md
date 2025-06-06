@@ -1,5 +1,5 @@
 ---
-title: Response letter to reviews on ‘‘Using machine learning to inform harvest control rule design in complex fishery settings’’
+title: Response letter to reviews on "Using machine learning to inform harvest control rule design in complex fishery settings"
 authors:
   - name: Felipe Montealegre-Mora
     affiliations: 
@@ -41,7 +41,7 @@ Our new results include a 10\% noise on observations which we explicitly define 
 
 This change in the observation model incidentally fixed the nuisance of obtaining an under-performing 2-observation policy in the HARA utility case (mentioned in point G of the review).
 In Fig. 3 it can now be observed that the 2-observation policy performs on par with single-observation policies.
-The additional observation increases the search space for 2-observation policies, and without observational noise we did not find a 2-observation policy that matched the performance of single-observation policies (trying a variety of network structures mentioned in Footnote 4 i nthe paper).
+The additional observation increases the search space for 2-observation policies, and without observational noise we did not find a 2-observation policy that matched the performance of single-observation policies (trying a variety of network structures mentioned in Footnote 3 in the paper).
 These explorations seem to indicate that *perfect* information about the vulnerable biomass seems to be enough for the control problem in the HARA scenario.
 Our hypothesis is that, in the case of noisy observations the increased complexity of a larger search space for 2-observation policies is counteracted by the fact that the *(noisy)* mean weight observation seems to provide complementary information about the state of the system that might be lost in the *(noisy)* vulnerable biomass observation.
 
@@ -62,7 +62,7 @@ Figure 8 zooms into the time-series for policies optimized for trophy fishing---
 We expand on the tradeoff between fishing pulses and more stable fishing strategies in Appendix A specifically for the trophy fishing utility case, in which fishing pulses are used by 2-observation RL as a strategy to outperform other policies.
 In that appendix we observe that averaging observations over 3 timesteps can enable RL to not only slightly increase the average utility obtained, but also to generate smoother fishing time-series.
 
-*G.* Thanks for this comment, we now expand on the network geometries we use for 2-observation policies in Footnote 4.
+*G.* Thanks for this comment, we now expand on the network geometries we use for 2-observation policies in Footnote 3.
 As mentioned above, however, with noisy observations, the paradoxical underperformance of the 2-observation RL policy in this case disappeared.
 
 
@@ -75,9 +75,9 @@ We believe that this more straightforward pattern in the relative performance of
 We discuss these conclusions in paragraphs 2-4 of our results section.
 
 In Figures 8 and 9 we provide a more detailed picture of the behavior of policies in response to large recruitment years.
-Figure 8 addresses the differences in average behavior within a controlled setting: a setting in which year 1 is a large recruitment year and the following years are ‘‘normal’’ recruitment years.
+Figure 9 addresses the differences in average behavior within a controlled setting: a setting in which year 1 is a large recruitment year and the following years are ‘‘normal’’ recruitment years.
 This Figure allows us to tease apart how different policies lead to different average responses to an isolated large recruitment event.
-With Figure 9 we aim to clarify the role of fishing pulses in the trophy fishing scenario, where we find that mean fish weight information can be used in policy decisions to outperform single-observation policies.
+With Figure 8 we aim to clarify the role of fishing pulses in the trophy fishing scenario, where we find that mean fish weight information can be used in policy decisions to outperform single-observation policies.
 There we can see two aspects: a) the compound effect of sequences of large recruitment years, and b) the dynamical response to these by the 2-observation RL policy.
 
 In Appendix A, we moreover explore the tradeoff between pulse fishing and harvest stability.
@@ -120,4 +120,32 @@ This led to a stark under-recruitment in ‘‘normal’’ years which increase
 
 **Response to specific comments by reviewer 2:**
 
+1. Yes, the references to size-structure were leftovers of an initial draft in which many of the model details had not been worked out. We have now changed them to refer to age structure.
 
+2. **I dont know what to say about this one, haven't found the small pelagic species paper**
+
+3. Yes, this was correct. We have significantly improved the clarity and consistency of the mathematical notation we used which should hopefully avoid similar typos in the new version of the manuscript.
+
+4. We now define SSB in eq. (5). As anticipated in the review, H has units of N per hectare as required by eqs. (1)-(3). Thus, in our previous version of the paper our definition H was incorrect since it included a weight term. Consequent with this correction of the definition of H, we have updated the definition of the utility functions so that $U_{yield}$ and $U_{HARA}$ have units of weight per hectare.
+
+5. Our previous description of the stochastic model was incomplete, and this comment made us realize that. Now, in Sec. 2.1 (**lines X**), we specifiy what the distribution for $r_t$ is on a ‘‘normal’’ year. 
+From this we can obtain that the expected value for $r_t$ on such a year is approximately 1, and thus the year's average surplus production coincides with that predicted by the Beverton-Holt equation (eq. (1)). 
+Moreover, one can see in Figure 9 the timescale at which the system equilibrates after a large recruitment year. 
+(In that figure, the pink lines correspond to a policy of no fishing.)
+
+6. We now made the language regarding our observations more consistent and percise throughout the paper.
+
+7. We now show plots for survey and harvest vulnerability at-age, and for weight at-age in Figure 2. Both the survey as well as harvests have asymptotic selectivity.
+
+8. We now provide a more detailed account for our reasoning to use 200 episodes for optimization in the paragraph surrounding eq. (24) (**lines X**). 
+In the main text this argument is short, but we expand on it in Appendix B, showing that distribution of episode surplus productions has approximately converged for 200 samples.
+We expand on these arguments in Footnote 5, which gave us further heuristic evidence that 200 episodes were sufficient for optimization.
+
+9. We now made that sentence clearer and more precise.
+
+10. This led us to realize that in our original manuscript, the cPP policy (defined with respect to ‘‘BMSY’’) had a problem: indeed, in the HARA utility scenario, this quantity did not have units of biomass---as required for the policy's parameters to be correctly defined.
+This together with general comment C. above led us to redefine the cPP policy. 
+We now explicitly define the parameters $F^*$ and $B^*$ used to compute the cPP policy in Sec. 2.4 (**lines X**).
+The procedure by which $B^*$ is computed, and the value obtained, is described in the caption of Table 1.
+
+11. Figure references should now be corrected, thank you.

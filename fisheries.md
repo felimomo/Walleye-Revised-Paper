@@ -90,7 +90,7 @@ Conceptual framework for our methodology. a) The dynamics of a Walleye populatio
 The state of the population is specified by the biomass in each size class, i.e. the system's state is 20-dimensional. 
 Policy decisions are based on either one or two observations are gathered out of this 20-dimensional vector (middle box). 
 These observations are gathered through a simulated survey conducted by the fishery management. 
-Vulnerable biomass: the total biomass vulnerable to the survey gear, mean fish weight: the mean weight of vulnerable to the survey equipment. 
+Vulnerable biomass: the total biomass vulnerable to the survey gear, mean fish weight: the mean weight of fish vulnerable to the survey equipment. 
 A quantitative policy uses these observations to fix an instantaneous fishing exploitation rate (left box). b) We optimize policies in three scenarios with differing utility functions. 
 Total harvest: long-term yield. Hyperbolic additive risk-averse (HARA): a risk-averse utility function which penalizes inter-annual variability. 
 Trophy fishing: a utility function which only values large fish, while small fish do not contribute to the utility. c) Four types of policies are optimized. The first three policies—FMSY, Precautionary Policy, and 1-Observation ML—use only the vulnerable biomass observation, whereas 2-Observation ML uses both observations.
@@ -104,7 +104,7 @@ We focus our case study on a recreational Walleye fishery managed via harvest lo
 We also compare the policies obtained by numerical optimization with a rectilinear ‘default’ precautionary rule recommended by Canada [@dfo2006].
 
 We evaluate HCRs with three types of utility functions: total harvest (i.e., yield maximizing), a risk-averse utility that prioritizes inter-annual consistency in catch, and a trophy fishing utility in which only sufficiently large fish are valued by harvesters (see {ref}`fig:conceptual`b). 
-We optimize and evaluate four classes of HCRs: 1) constant exploitation rate ($F^*$), 2) a rectilinear precautionary rule derived from $F^*$ and the biomass at which surplus production is maximized $B^*$ (see [@dfo2009; Fig. 1] for a visualization), 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see {ref}`fig:conceptual`c).
+We optimize and evaluate four classes of HCRs: 1) constant exploitation rate ($F^*$), 2) a rectilinear precautionary rule (see [@dfo2009; Fig. 1] for a visualization) derived from $F^*$ and the average biomass $B^*$ to which the optimal $F^*$ policy converges to, 3) an unconstrained optimum rectilinear precautionary rule and 4) an HCR parametrized by a deep neural network using RL (see {ref}`fig:conceptual`c).
 
 We found that considerable gains can be achieved in performance by precautionary policies by optimizing policy parameters. 
 By using an RL methodology we explored whether mean weight was a useful variable for policy decisions and found that the answer depends on the choice of utility function. 
@@ -265,10 +265,18 @@ F_t &= \frac{B_{survey}(t) - X_1}{X_2 - X_1}\times Y_2,
 F_t &= Y_2, \quad && \text{for } B_{survey}(t) > X_2.
 \end{alignat}
 For a visual guide of this policy, see @dfo2009, Fig. 1. 
-In the literature, the parameters of this policy are often fixed at some fraction of the biomass at which the fishery maximizes average surplus production, $B^*$. 
-A common choice is  $X_1=0.4 B^*$, $X_2=0.8 B^*$ and $Y_2=F^*$, where $F^*$ is the constant exploitation rate which maximizes expected harvested biomass.[^classic] 
+In the literature, the parameters of this policy are often fixed using the optimal constant exploitation rate $F^*$ to define $Y_2=F^*$ (at high stock biomasses), and two reference points for stock biomass.
+Here, we use reference points defined by $X_1=0.4 B^*$ and $X_2=0.8 B^*$, where $B^*$ is a reference biomass that indicates that the stock biomass is at a ‘‘healty’’ state.
+For this, we use the simple equation:
+\begin{align}
+  B^* = \mathrm{yield}(F^*) / F^*,
+\end{align}
+where $\mathrm{yield}(F^*)$ is the average yearly yield obtained by the constant exploitation rate policy $F=F^*$.
+For models with a flat harvest vulnerability at-age, this biomass would be the average biomass obtained by the optimal constant exploitation policy $F=F^*$ since, in the average yearly yield in this case would be $\mathrm{yield}(F^*) = \mathbb{E}[\mathrm{stock biom.}] F^*$.
+In our case, the fact that our harvest vulnerability at-age is not flat precludes this simple interpretation, however we use $B^*$ as an indicator that the system is not overfished, and we use $X_1=0.4B^*$ and $X_2=0.8 B^*$.
 We call this specific realization of the HCR the *constrained precautionary policy (cPP)*. 
-In contrast, when we refer to the precautionary policy whose parameters $(X_1,\, X_2,\, Y_2)$ have been numerically optimized as the *optimized precautionary policy (oPP)*. 
+
+In contrast to cPP, we refer to the precautionary policy whose parameters $(X_1,\, X_2,\, Y_2)$ have been numerically optimized as the *optimized precautionary policy (oPP)*. 
 We evaluate both of these HCRs in relation to our chosen utility functions.
 
 We collectively refer to the three policy types described above as *fixed policies*, in the sense that their functional form is fixed *a priori* before the optimization begins. 
@@ -356,7 +364,8 @@ The training times were also modest, comprising 6 million time-steps, or a bit u
 
 ## Policy evaluation
 
-After optimizing each HCR, we simulated $n=500$ episodes and recorded the total utility received in each episode. 
+After optimizing each HCR, we simulated $n=500$ episodes and recorded utility obtained by each policy in each episode.
+We visualize this data in {ref}`fig:rewards` where the (interpolated) density of utilities obtained by each policy is plotted, and we record summary statistics for this data in {ref}`tab:rew-table`.
 Moreover, to get a more detailed comparison of the dynamics induced by each HCR, we simulated an additional episode where we recorded the stock biomass, mean fish weight and exploitation rate. 
 To improve comparisons between policies, we used the same time-series of stochastic deviations $\{r_t\}_{t=1, \dots, 1000}$ across all of the latter set of simulations.
 Finally, in order to compare policy responses in the aftermath of a large recruitment year, we performed $n=500$ simulations of short time-series (30 time-steps) in which the first year was a large recruitment year, and the subsequent years had normal recruitment.
@@ -377,7 +386,7 @@ The optimized HCRs are visualized in {ref}`fig:policies`, where we plot exploita
 We discuss these plots in the following paragraphs.
 
 
-:::{table} Optimal parameter values for fixed policies for each of the three utility models. Here we compute $B^* = \mathrm{rew}(F^*)/F^*$ where $\mathrm{rew}(F^*)$ is the average step reward obtained by the constant exploitation rate policy policy, and where $F^*$ is the constant exploitation rate that maximizes surplus production (i.e., $F^*$ is optimal with respect to $U_{yield}$). As seen in the table, $F^*=0.132$, and by using Table 2 we find that $\mathrm{rew}(F^*)=237/1000$. Thus $B_{MSY}=1.813$.
+:::{table} Optimal parameter values for fixed policies for each of the three utility models. For cPP we use $X_1=0.4 B^*$, $X_2=0.8 B^*$ and $Y_2=F^*$ as described in the methods section. As seen in the table, $F^*=0.132$, and by using Table 2 we find that $\mathrm{rew}(F^*)\approx237/1000$. Thus, $B^*=1.813$.
 :label: tab:fixed-params
 :align: center
 
