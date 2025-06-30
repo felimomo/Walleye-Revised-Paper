@@ -123,37 +123,40 @@ Unless stated otherwise parameter values for all relationships are drawn from av
 ## Population dynamics
 
 A finding of @cahill2022unveiling was that recruitment dynamics were highly variable and/or spasmodic (see also @caddy1983historical). 
-Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(N_1,\dots,N_{20})$ with units of $\text{N}\cdot\text{ha}^{-1}$. 
+Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(N_1,\dots,N_{a_{max}=20})$ with units of $\text{N}\cdot\text{ha}^{-1}$. 
 Recruitment was modeled via the Beverton-Holt equation 
-\begin{alignat}{2}
-N_1(t+1) &= \alpha\, r_t SSB_t / (1 + \beta SSB_t), \quad &&\\
-N_a(t+1) &= s\times (N_{a-1}(t) - H_{a-1}(t)), \quad && 1 < a <20,\\
-N_{20}(t+1) &= s\times \left(N_{20}(t) - H_{20}(t) + N_{19}(t) - H_{19}(t)\right). \quad &&
-\end{alignat}
-Here we use the following notations: 
-The harvest-at-age is $H_a(t) = F_t V_a N_a(t)$, where $F_t\in[0,1]$ is the harvest exploitation rate, $V_a$ is the *harvest vulnerability at age*,
-\begin{align}
-  V_a &= 
-  \frac{1}{1 + e^{-(a-a_{hv})/2}}\, ,
-\end{align}
-and $a_{hv}=5$ is the age at half harvest vulnerability.
-Notice that even for a high exploitation rate $F$ the actual fishing mortality rate enacted on young age classes remains low, which is a common assumption in many recreational fisheries (e.g., see @golden2022focusing).
-The spawning stock biomass is $SSB_t$, 
-\begin{align}
-  SSB_t &= \sum_{a=1}^{20} W_a N_a / 
-  \left(
-    1 + e^{-(a - a_{hm})/2}
-  \right)\, ,
-\end{align}
-where $W_a$ is the average weight-at-age and $a_{hm}=6$ is the age at 50\% maturity (see @cahill2022unveiling for more details).
+$$
+N_{a, t+1} = 
+\begin{cases}
+  \frac{\alpha\text{SSB}_t}{1 + \beta \text{SSB}_t} r_t, & a=1,\\
+  s_{a-1}\Big(1 - U_t v^{\text{harv.}}_{a-1}\Big) N_{a-1, t}, & 2\geq a < a_{max},
+  s_{a_{max}-1} \Big(
+    1 - U_t v^{\text{harv.}}_{a_{max}-1}
+  \Big) N_{a_{max}-1} + s_{a_max} \Big(
+    1 - U_t v^{\text{harv.}}_{a_{max}}
+  \Big) N_{a_{max}},
+\end{cases}
+$$
+with a finite exploitation rate $U_t \in [0,1]$, and a *spawning stock biomass* 
+$$
+\text{SSB}_t = \sum_a m_a W_a N_{t,a}
+$$
+where $W_a$ is the weight at-age and $m_a = 1 / (1+\exp(-(a-a_{hm})/2))$ is the maturity at-age, with $a_{hm}=6$.
+The quantity $r_t$ is random deviate describing the spasmodic recruitment patterns observed in [@cahill2022unveiling]; it is distributed as
+$$
+r_t \sim \begin{cases}
+  \text{log-norm}(\mu=0,\sigma=0.4), & \text{with probability}\ 1-p_{big},
+  \text{unif}(\text{min}=10, \text{max}=30), \text{with probability}\ p_{big},
+\end{cases}
+$$
+where $p_{big}=0.025$ is the probability of a large recruitment pulse.
+The harvest vulnerability at-age is given by
+$$
+v_a^{\text{harv.}} = \frac{1}{1 + e^{-2(a-a_{hv})}}\, ,
+$$
+with an age at half-vulnerability $a_{hv}=5$ (see @cahill2022unveiling for more details).
 All biomass quantities in this paper, including $SSB_t$, are in units of $\text{kg} \cdot \text{ha}^{-1}$.
 The parameters $\alpha$ and $\beta$ describe the juvenile survival as a function of $SSB_t$. 
-
-The model has stochastic dynamics via the parameter $r_t$, which is independently sampled at each time-step. 
-There are two types of events for the variable $r_t$: 
-1) A normal recruitment year, in which $r_t$ is a scaled-down log-normal variable $r_t\sim \mathrm{lognorm}(\mu=0, \sigma=0.4)$ (see, e.g., @quinn1999quantitative).
-2) A large recruitment year, in which $r_t\sim \mathrm{unif}(10,30)$.
-We use a Bernoulli trial with $\mathrm{Pr.}=0.025$ to decide whether a large recruitment event happens.
 
 Large recruitment events are rare in any one fishery, however their occurrence happens at a rate much higher than would be predicted by the log-normal distribution alone [@cahill2022unveiling].
 Our model for $r_t$ is a minimalistic description of this dynamic which has explicit control over the rate of large recruitment events.
@@ -171,12 +174,12 @@ We consider two types of observations.
 The first is an estimate of the stock biomass vulnerable to the management agency’s survey gear,
 \begin{align}
   B_{survey} = \sum_{a=1}^{20}
-  S_a W_a N_a,
+  V_a^{\text{surv.}} W_a N_a,
 \end{align}
-where $S_a$ is the vulnerability-at-age of the survey.
-We model $S_a$ as increasing with fish length, and use a von Bertalanffy function to describe length-at-age,
+where $V_a^{\text{surv.}}$ is the vulnerability-at-age of the survey.
+We model $V_a^{\text{surv.}}$ as increasing with fish length, and use a von Bertalanffy function to describe length-at-age,
 \begin{align}
-S_a \propto (1 - e^{\kappa a})^\varphi,
+V_a^{\text{surv.}} \propto (1 - e^{\kappa a})^\varphi,
 \end{align}
 with $\kappa=0.23$ and $\varphi=2.02$ ({ref}`fig:at-age`, see @cahill2022unveiling for more details).
 A second observation we consider is the *mean weight* of fish in the survey,
@@ -185,7 +188,7 @@ $$
 $$
 with
 $$
-N_{survey} = \sum_{a=1}^{20} N_a S_a.
+N_{survey} = \sum_{a=1}^{20} N_a V_a^{\text{surv.}}.
 $$
 Mean weight is easy for managers to observe and is important to consider in the context of spasmodically recruiting populations, since large recruitment events are correlated with dips in the mean weight of fish in the population.
 
@@ -561,9 +564,9 @@ This resulted in a time-dependent pulse fishing pattern reminiscent of bang-bang
 In {ref}`fig:aftermath` (right column, third row), we see that on average 2RL policies produce a fishing pulse between timesteps 8-15 after the recruitment pulse, that is during the time-period in which the large cohort reaches a valuable age.
 After this, 2RL fishes slightly below the optimal constant exploitation rate on average, however, inspecting {ref}`fig:eps-um3-zoom` we see that this average behavior may include smaller fishing spikes together with periods of no exploitation.
 This behavior speaks to the tradeoff between total utility accrued on the one hand, and stability of utility over time on the other.
-Given the extreme non-linearity of our trophy utility function---in which fish below a threshold age provide no utility---the tradeoff tilts the balance against stability (see, e.g., the reward curve in {ref}`fig:eps-um3-zoom`, right column, fourth row).
-However, we believe that our results point at a potentially more general pattern in which non-trivial age-dependence within the utility function makes age-structure observations (such as mean weight) valuable for the decision problem.
-In this more general scenario the trade-off between stability and total utility can be expected to appear as well, albeit not necessarily with the same resulting tilt towards total utility.
+The reinforcement learning simulated manager, when given access to mean weight observations, monitors the age composition of the population in order to decide when to harvest. 
+Fishing pulses have been shown to be optimal within other situations [@walters1969generalized], a behavior which is reproduced by our RL manager in the trophy fishing scenario. 
+In essence, the RL manager waits for large cohorts and adjusts the timing of its harvest to maximize utility from those large cohorts.
 
 Additionally, results for the trophy fishing metric illustrate the scalability and generalizability of RL to new problems (see also @sutton), as these methods free the analyst from having to intuit the nuances of feedback control in specific situations. 
 Specifically, while there is no standard functional form for HCRs dependent on biomass and mean fish weight, the flexibility of not requiring such a functional form enabled us to use RL to optimize policies in this scenario.
