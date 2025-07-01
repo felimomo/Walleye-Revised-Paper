@@ -93,7 +93,7 @@ These observations are gathered through a simulated survey conducted by the fish
 Vulnerable biomass: the total biomass vulnerable to the survey gear, mean fish weight: the mean weight of fish vulnerable to the survey equipment. 
 A quantitative policy uses these observations to fix an instantaneous fishing exploitation rate (left box). b) We optimize policies in three scenarios with differing utility functions. 
 Total harvest: long-term yield. Hyperbolic additive risk-averse (HARA): a risk-averse utility function which penalizes inter-annual variability. 
-Trophy fishing: a utility function which only values large fish, while small fish do not contribute to the utility. c) Four types of policies are optimized. The first three policies—FMSY, Precautionary Policy, and 1-Observation ML—use only the vulnerable biomass observation, whereas 2-Observation ML uses both observations.
+Trophy fishing: a utility function which only values large fish, while small fish do not contribute to the utility. c) Four types of policies are optimized. The first three policies—--constant-U, Precautionary Policy, and 1-Observation ML—use only the vulnerable biomass observation, whereas 2-Observation ML uses both observations.
 ```
 
 Little work has examined the implications of infrequent large recruitment events on the performance of feedback policies in age-structured populations, even though feedback policies are now considered the de facto standard for managing fisheries exploitation worldwide (see @free2023harvest; @silvar2022empirical; however, see @licandeo2020management). 
@@ -217,26 +217,26 @@ This real-world problem that surveys provide imperfect information on overall ab
 We consider three utility models. 
 1. *Yield utility* (i.e., *yield maximizing*): the utility at a time-step $t$ is given by the total harvested biomass at that time-step,
 $$
-  U_{yield}(t) = \sum_{a=1}^{20} H_a(t) W_a.
+  \text{Utility}_{yield}(t) = \sum_{a=1}^{20} H_a(t) W_a.
 $$
 2. *Risk averse utility*: a hyperbolic additive risk-averse utility function (also known as ‘HARA utility’) which values inter-annual stability in harvests,
 $$
-  U_{\text{HARA}}(t) = U_{yield}(t)^{\gamma},
+  \text{Utility}_{\text{HARA}}(t) = U_{yield}(t)^{\gamma},
 $$
 where the parameter $\gamma=0.6$ parametrizes the risk aversion (see, e.g., @collie2021harvest).
 Notice that the power of $\gamma$ attenuates the utility derived from large harvests.
-Thus, low-and-stable harvests can perform relatively better with respect to $U_{\text{HARA}}$ than large-but-sparse harvest peaks.[^opportunity]
+Thus, low-and-stable harvests can perform relatively better with respect to $\text{Utility}_{\text{HARA}}$ than large-but-sparse harvest peaks.[^opportunity]
 We note that this is similar to using the natural log of catches as is commonly done in MSE.
 Here the specific risk aversion $\gamma$ is set to a specific value for clarity, and we note that this parameterization converges on total harvest utility as  $\gamma\rightarrow1.0$.
 3. *Trophy fishing utility*: here, harvested fish only contribute to the utility if they are above a certain size (age) class, $a > a_{thr.}$,
 $$
-  U_{trophy}(t) = \sum_{a>a_{thr.}} H_a(t) W_a,
+  \text{Utility}_{trophy}(t) = \sum_{a>a_{thr.}} H_a(t) W_a,
 $$
 and we set $a_{thr.}=10$.
 
 We optimize the performance of policies with respect to the total utility obtained over an episode, i.e.,
 $$
-U = \sum_t U(t).
+\text{Utility} = \sum_t \text{Utility}(t).
 $$
 
 
@@ -256,28 +256,31 @@ We believe that our results provide a useful guide to understand the optimizatio
 Here we describe the three classes of HCRs we consider in this paper.
 We refer to them interchangeably as *control rules*, *rules* or *policies* throughout.
 
-_**Optimal constant exploitation rate policy.**_ In this strategy, the agent applies the same instantaneous fishing exploitation rate  rate  each year that leads to the highest long-term utility on average [@hilborn1992harvest].
-In the case where utility is equal to yield, the optimal constant exploitation rate is equal to the MSY fishing exploitation rate, $F_{MSY}$.
-Because of this, we will refer to this control rule as *FMSY* for conciseness.
+_**Optimal constant-$U$ policy.**_ In this strategy, the agent applies the same instantaneous fishing exploitation rate  rate  each year that leads to the highest long-term utility on average [@hilborn1992harvest].
+In the case where utility is equal to yield, the optimal constant exploitation rate is equal to the MSY fishing exploitation rate, $U_{MSY}$.
+Because of this, we will refer to this control rule as *UMSY* for conciseness.
 
 _**Precautionary policies.**_ A piece-wise linear HCR determined by three parameters: two stock biomass reference points $X_1$, $X_2$, and the fishing exploitation rate at high stock biomass, $Y_2$. The HCR is given by the following equations:
-\begin{alignat}{2}
-F_t &= 0, \quad && \text{for } B_{survey}(t) < X_1,\\
-F_t &= \frac{B_{survey}(t) - X_1}{X_2 - X_1}\times Y_2, 
-  \quad && \text{for } X_1 \leq B_{survey}(t) \leq X_2,\\
-F_t &= Y_2, \quad && \text{for } B_{survey}(t) > X_2.
-\end{alignat}
+$$
+U_t = 
+\begin{cases}
+  0, & B_{survey} < X_1,\\
+  \frac{B_{survey}(t) - X_1}{X_2 - X_1}\times Y_2, & X_1 \leq B_{survey}(t) \leq X_2,\\
+  Y_2, \quad && \text{for } B_{survey}(t) > X_2.
+\end{cases}
+$$
 For a visual guide of this policy, see @dfo2009, Fig. 1. 
-In the literature, the parameters of this policy are often fixed using the optimal constant exploitation rate $F^*$ to define $Y_2=F^*$ (at high stock biomasses), and two reference points for stock biomass.
+In the literature, the parameters of this policy are often fixed using the optimal constant exploitation rate $U^*$ to define $Y_2=U^*$ (at high stock biomasses), and two reference points for stock biomass.
 Here, we use reference points defined by $X_1=0.4 B^*$ and $X_2=0.8 B^*$, where $B^*$ is a reference biomass that indicates that the stock biomass is at a ‘‘healty’’ state.
 For this, we use the simple equation:
 \begin{align}
-  B^* = \mathrm{yield}(F^*) / F^*,
+\label{eq:equil}
+  B^* = \mathrm{yield}(U^*) / U^*,
 \end{align}
-where $\mathrm{yield}(F^*)$ is the average yearly yield obtained by the constant exploitation rate policy $F=F^*$.
-For models with a flat harvest vulnerability at-age, this biomass would be the average biomass obtained by the optimal constant exploitation policy $F=F^*$ since, in the average yearly yield in this case would be $\mathrm{yield}(F^*) = \mathbb{E}[\mathrm{stock biom.}] F^*$.
-In our case, the fact that our harvest vulnerability at-age is not flat precludes this simple interpretation, however we use $B^*$ as an indicator that the system is not overfished, and we use $X_1=0.4B^*$ and $X_2=0.8 B^*$.
-We call this specific realization of the HCR the *constrained precautionary policy (cPP)*. 
+where $\mathrm{yield}(U^*)$ is the average yearly yield obtained by the constant exploitation rate policy $U=U^*$.
+Eq. [](#equil) is the equilibrium biomass equation for a deterministic model in which the harvest and survey vulnerability schedules are equal to each other, ie. $v_a^{surv.}=v_a^{harv.}$.
+Although these properties are not satisfied in our model, we use $B^*$ as a reference point at which the system is likely not overfished.
+We define the *constrained precautionary policy (cPP)* to be the precautionary policy with $X_1 = 0.4 B^*$ and $X_2 = 0.8 B^*$.
 
 In contrast to cPP, we refer to the precautionary policy whose parameters $(X_1,\, X_2,\, Y_2)$ have been numerically optimized as the *optimized precautionary policy (oPP)*. 
 We evaluate both of these HCRs in relation to our chosen utility functions.
@@ -290,7 +293,7 @@ _**Reinforcement learning policies.**_ This policy uses a neural network to expr
 We explore two cases: one where only the stock biomass observation is used, and one where an additional mean weight observation is used. 
 Mathematically,
 $$
-  F_t = f_\theta(\text{Obs}_t),
+  U_t = f_\theta(\text{Obs}_t),
 $$
 where $f_\theta$ is a neural network with parameters $\theta$, and $\text{Obs}_t$ are the observations obtained at time-step $t$.
 
@@ -318,12 +321,12 @@ even when one can only evaluate $f$ ‘‘imperfectly.’’
 These algorithms are most useful in scenarios where evaluating $f$ is computationally expensive because they tend to require much fewer function evaluations of $f$ than brute force optimization approaches.
 
 In our case, the arguments $(x,\, y,\, z,\, \dots)$ are the parameters in the HCR function. 
-That is, for the precautionary policy, the arguments are $(X_1,\, X_2,\, Y_2)$, whereas for the $F_{MSY}$ policy, the only argument is the exploitation rate $F$. We maximize the average utility obtained by a policy by optimizing over these parameters. For example, for the constant exploitation rate policy,
+That is, for the precautionary policy, the arguments are $(X_1,\, X_2,\, Y_2)$, whereas for the $U_{MSY}$ policy, the only argument is the exploitation rate $F$. We maximize the average utility obtained by a policy by optimizing over these parameters. For example, for the constant exploitation rate policy,
 $$
-  \mathrm{argmax}_F\, \mathbb{E}[U(F)],
+  \mathrm{argmax}_F\, \mathbb{E}[\text{Utility}(U)],
 $$
-where $U(F)$ is the utility obtained by simulating an episode using a constant rate $F$. 
-Note that $U(F)$ is thus a random variable since the dynamics are stochastic.
+where $\text{Utility}(U)$ is the utility obtained by simulating an episode using a constant $U$. 
+Note that $\text{Utility}(U)$ is thus a random variable since the dynamics are stochastic.
 
 Because of our system's high stochasticity, evaluating the mean episode reward afforded by any policy requires taking the average across many episodes. 
 We heuristically used 250 episodes for this average.
@@ -412,7 +415,7 @@ We discuss these plots in the following paragraphs.
 
 oPP,   *252.82* +/-- 25.31, *401.73* +/-- 20.93,  88.51   +/-- 7.17
 cPP,   *228.64* +/-- 25.03,  364.55  +/-- 25.94,  91.34   +/-- 8.76 
-FMSY,  *237.28* +/-- 22.68, *400.58* +/-- 20.67,  96.44   +/-- 8.24
+UMSY,  *237.28* +/-- 22.68, *400.58* +/-- 20.67,  96.44   +/-- 8.24
 1RL,   *250.25* +/-- 22.82, *402.43* +/-- 21.14,  92.73   +/-- 7.13
 2RL,   *249.47* +/-- 23.86, *391.27* +/-- 21.51, *126.90* +/-- 12.80
 ```
@@ -433,15 +436,15 @@ See associated Jupyter notebooks for details on this.
 In this scenario we observe a wide variety of policy shapes ({ref}`fig:policies`) leading to very similar episode utility distributions ({ref}`fig:rewards`, {ref}`tab:rew-table`). 
 Moreover, in {ref}`fig:eps-um1` we observe that these different policies indeed lead to quite different dynamical patterns for the exploitation rate.
 Our results suggest that there is a wide variety of control strategies available to a manager that lead to essentially equal behavior in long-term yield.
-For example we observe may contrast the pulsed-fishing behavior of 2RL with FMSY, with the other policies' behavior lying somewhere in the spectrum between these two extremes. 
+For example we observe may contrast the pulsed-fishing behavior of 2RL with UMSY, with the other policies' behavior lying somewhere in the spectrum between these two extremes. 
 Thus, it appears that other performance criteria should be used in addition to yield for the harvest control problem in this scenario.
 
 *HARA utility ({ref}`fig:policies`, middle column)*. 
-In this case, in contrast to the former scenario, we see that all policies converge to similar behavior to FMSY, with relatively flat $F$ curves as a function of biomass.
-This behavior can be confirmed in {ref}`fig:eps-um2`, in which we see that for all policies, $F_t$ seems to hover around the FMSY value $F\approx 0.12$ ({ref}`tab:fixed-params`).
+In this case, in contrast to the former scenario, we see that all policies converge to similar behavior to UMSY, with relatively flat $F$ curves as a function of biomass.
+This behavior can be confirmed in {ref}`fig:eps-um2`, in which we see that for all policies, $F_t$ seems to hover around the UMSY value $F\approx 0.12$ ({ref}`tab:fixed-params`).
 We observe that the 2RL rule leads to noisy behavior which we believe is due to the observational noise coupled with the strong dependence of the policy on mean weight observations.
 We believe that using a moving average window for mean weight observations, together with using larger networks and longer training times, could help to smooth this behavior.
-However this exploration would be of limited interest due to the expectation that this way the 2RL policy would converge to FMSY.
+However this exploration would be of limited interest due to the expectation that this way the 2RL policy would converge to UMSY.
 
 *Trophy fishing utility ({ref}`fig:policies`, right column)*.
 As previously pointed out, in this scenario we observe a marked advantage for 2RL with respect to all other policies in terms of utility obtained.
@@ -545,7 +548,7 @@ This finding appears to reinforce a general result in the literature relating to
 HARA utility-like policies that reduce the exploitation rate to low values and stabilize harvests through time (@walters1996fixed; @collie2021harvest).
 
 
-<!-- In terms of designing harvest control rules for stocks with highly variable recruitment, we demonstrated that feedback policies optimized with regard to explicit performance criteria such as yield or HARA utility typically outperformed the “default” control rules that fixed control rule parameters at predetermined values (i.e. fractions of BMSY or FMSY; @dfo2009). 
+<!-- In terms of designing harvest control rules for stocks with highly variable recruitment, we demonstrated that feedback policies optimized with regard to explicit performance criteria such as yield or HARA utility typically outperformed the “default” control rules that fixed control rule parameters at predetermined values (i.e. fractions of BMSY or UMSY; @dfo2009). 
 While perhaps unsurprising, this result highlights an underappreciated contradiction regarding the current use of default feedback policies when managing fish stocks. 
 For example, managers of fisheries falling under federal jurisdiction in the United States are required by law to maintain stocks at levels that maximize sustainable harvests, but this same legislation also mandates the use of default control rules with rectilinear forms similar to those tested here [@act1996magnuson; @dfo2009; @free2023harvest]. 
 Given we showed that policies where parameters were optimized with regard to a yield objective outperformed the default policy in terms of yields obtained, it appears incorrect to suggest or imply that a default harvest control rule is also capable of maximizing long-term sustainable harvests.  -->
@@ -583,7 +586,19 @@ Our analysis included observations on age structure, however, our methodology ca
 In these more complex contexts, the question of whether there exists a ‘‘pretty good’’ policy that takes into account this additional information would be very interesting to explore. 
 In particular, a compelling question is whether policies using multiple observations can side-step the trade-off between long-term sustainability and long-term yield which can occur for MSY-based policies in scenarios with complex population dynamics [@montealegre2023pretty]. 
 
-RL methods offer potential in managing replicated systems (@hansen2015learning; @walters1986adaptive), where several interconnected fish stocks—such as salmon within a watershed or multiple lakes across a region—must be managed together. 
+In this paper, we developed an age-structured fish population dynamics model specifically designed for integration with reinforcement learning (RL) methodologies. 
+As interest in RL grows within the fisheries community [@ditria2022artificial; @kuhn2025machine; @ju2025model; @montealegre2023pretty; @nicolas2020deep], our findings show that RL can identify and evaluate feedback policies in complex ecological settings that have resisted solutions via dynamic programming or analytical approaches. 
+This advance enables analysts to revisit longstanding challenges in harvesting theory that demand explicit treatment of partial observability, nonstationary ecological dynamics, and nonlinear trade-offs in utility functions—such as the trophy utility function examined here. 
+These contributions raise several unresolved but important questions: 
+Under what conditions can RL uncover "pretty good" policies—akin to Hilborn’s concept of pretty good yield—that balance competing objectives? 
+How can RL be extended to support harvesting decisions in spatially structured systems, where local heterogeneity and connectivity complicate management? 
+And how might RL help design policies that reconcile performance with justice, especially in contexts where Indigenous strategies such as rotational harvests fall outside the scope of conventional management strategy evaluation? 
+These questions present a technical challenge to harvest control theory and feedback policy design, particularly because optimization of feedback policies has historically been limited to low-dimensional policy functions that rely solely on stock biomass as the predictor for harvest. 
+We believe RL offers a flexible computational framework that makes these questions tractable and provides a path toward answering them.
+
+
+
+<!-- RL methods offer potential in managing replicated systems (@hansen2015learning; @walters1986adaptive), where several interconnected fish stocks—such as salmon within a watershed or multiple lakes across a region—must be managed together. 
 When stock dynamics are interdependent, the problem becomes high-dimensional, with all stock biomasses jointly influencing quota decisions. 
 This complexity creates space for RL to uncover policy strategies beyond traditional heuristics, including independent or rotating harvest rules [@walters1986adaptive].
 
@@ -592,7 +607,7 @@ This presents an opportunity to encourage genuine stake-holder and community inv
 This opportunity is very much in line with the spirit of MSE, in which best practices for community and stake-holder engagement are strongly emphasized [@punt2016management].
 Here, what our methodology would provide is a flexible toolbox, RL, which can be used to optimize policies dependent on potentially complex observations.
 There are many axes through which the exploration of complex observations would be highly interesting: in this paper we only considered age-structure complexity, however other natural candidates for complexity would be time complexity (i.e. decisions quantitatively informed by sequences of observations rather than single time-point observations) and space complexity (which has been shown in the recent literature to be imperative in terms of environmental justice [@silver2022fish]).
-While time complexity in observations is outside the scope of this paper, our companion code provides a framework through which the user can train RL policies in this scenario.[^time-complexity]
+While time complexity in observations is outside the scope of this paper, our companion code provides a framework through which the user can train RL policies in this scenario.[^time-complexity] -->
 
 
 <!-- --------- -->
