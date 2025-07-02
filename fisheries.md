@@ -70,7 +70,7 @@ The dynamics of age-structured populations occur in high dimensional spaces, and
 For example, in a standard  age-structured model, many small fish can have the same total biomass as a few large fish. 
 Unsurprisingly, managers might prescribe different management actions  in  these different situations (see similar arguments in @hilborn2002dark). 
 Dimensionality problems such as this makes it difficult to specify policies to test *a priori*. 
-While complexity due to age-structure makes it difficult to specify effective policies *a priori*, it also implies that managers have access to more information than total biomass in some situations—-—this additional information can be useful for informing harvesting decisions. 
+While complexity due to age-structure makes it difficult to specify effective policies *a priori*, it also implies that managers have access to more information than total biomass in some situations---this additional information can be useful for informing harvesting decisions. 
 For instance, knowing the mean fish weight in addition to total stock biomass could help the manager distinguish a population with many small fish from one with a population composed of mainly large fish. 
 Sources of additional information could be especially useful for managing fisheries with complex population dynamics.
 
@@ -123,7 +123,7 @@ Unless stated otherwise parameter values for all relationships are drawn from av
 
 ## Population dynamics
 
-A finding of @cahill2022unveiling was that recruitment dynamics were highly variable and/or spasmodic (see also @caddy1983historical). 
+A central finding of @cahill2022unveiling was that recruitment dynamics were highly variable and spasmodic (see also @caddy1983historical). 
 Thus, we model a Walleye fishery population using a discrete-time, age-structured stochastic model with 20 age classes $(N_1,\dots,N_{a_{max}=20})$ with units of $\text{N}\cdot\text{ha}^{-1}$. 
 Recruitment was modeled via the Beverton-Holt equation 
 $$
@@ -152,6 +152,7 @@ This way, the total mortality rate at-age at time-step $t$ is
 $$
 A_{a,t} = 1 - s_{a-1}\Big(1 - U_t v^{\text{harv.}}_{a}\Big).
 $$
+The parameters $\alpha$ and $\beta$ describe the juvenile survival as a function of $SSB_t$. 
 In [](#eq:popdyn), $r_t$ is random deviate describing the spasmodic recruitment patterns observed in [@cahill2022unveiling]; it is distributed as
 $$
 r_t \sim \begin{cases}
@@ -167,15 +168,14 @@ v_a^{\text{harv.}} = \frac{1}{1 + e^{-2(a-a_{hv})}}\, ,
 $$
 with an age at half-vulnerability $a_{hv}=5$ (see @cahill2022unveiling for more details).
 All biomass quantities in this paper, including $SSB_t$, are in units of $\text{kg} \cdot \text{ha}^{-1}$.
-The parameters $\alpha$ and $\beta$ describe the juvenile survival as a function of $SSB_t$. 
 
 Large recruitment events are rare in any one fishery, however their occurrence happens at a rate much higher than would be predicted by the log-normal distribution alone [@cahill2022unveiling].
 Our model for $r_t$ is a minimalistic description of this dynamic which has explicit control over the rate of large recruitment events.
-One can qualitatively see concordance between the biomass observation time-series obtained using our model for $r_t$ (see, e.g., {ref}`fig:eps-um1`) and patterns found in the literature (for example, see Fig. 9 in @cahill2022unveiling, although that figure is in units of numbers of fish, rather than biomass, observed in surveys).
+One can qualitatively see concordance between the biomass observation time-series obtained using our model for $r_t$ (see, e.g., {ref}`fig:eps-um1`) and patterns found in the literature (for example, see Fig. 9 in @cahill2022unveiling).
 
-Simulations were run for 1000 time-steps in an attempt to capture the long-term effects of HCRs on population dynamics and performance criteria. 
-Specifically, the expected number of large recruitment years (i.e. ‘‘successful’’ Bernoulli trials for $r_t$) over a period of 1000 time-steps is 25, which was judged to be high enough to capture the dynamics arising from a particular HCR. 
-Using nomenclature from the RL literature, we also refer to these 1000 time-step simulations as *episodes*.
+Simulations were run for 1000 years in an attempt to capture the long-term effects of HCRs on population dynamics and performance criteria. 
+Specifically, the expected number of large recruitment years (i.e. ‘‘successful’’ Bernoulli trials for $r_t$) over a period of 1000 time-steps was 25, which was judged to be high enough to capture the dynamics arising from a particular HCR. 
+Using nomenclature from the RL literature, we also refer to these 1000 year simulations as *episodes*.
 
 ## Observations
 
@@ -256,7 +256,7 @@ Moreover we included the trophy fishing function to explore how our analysis wou
 Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers only desire to retain large trophy-sized fish rather than valuing fish of any size equally (e.g., see @murphy1996fisheries; @licandeo2020management).
 
 Within MSE practice, it is common for complex performance metrics containing different competing objectives to be used.
-This expresses the social complexity associated with effective fishery management, in which a variety of stakeholders---with different economic realities and different cultural backgrounds---are affected by policy decisions.
+This expresses the social complexity associated with effective fishery management, in which a variety of stakeholders-with different economic realities and different cultural backgrounds-are affected by policy decisions.
 Defining the performance metrics used in MSE usually involves an active involvement of the spectrum of stakeholders.
 This process was outside the scope of the present study, and thus we have chosen to derive our results in a series of simple utility models which express distinct objectives clearly.
 We believe that our results provide a useful guide to understand the optimization problem with respect to more complex mixed utility models.[^comparisons]
@@ -555,7 +555,7 @@ Our work, moreover, points at the necessity to develop methodologies that can ef
 We will expand on this in the future work section.
 
 We find the surprising result that mean weight observations seem to matter little in decision-making for two very different utility functions ($\text{Utility}_{yield}$ and $\text{Utility}_{HARA}$).
-Our hypothesis at the start of the project was that this type of observation would lead to improvents in utility across the board, due to the fact that large recruitment events---and their associated effects on mean fish weight---are the drivers of the population dynamics in spasmodically recruiting fisheries. 
+Our hypothesis at the start of the project was that this type of observation would lead to improvents in utility across the board, due to the fact that large recruitment events-and their associated effects on mean fish weight-are the drivers of the population dynamics in spasmodically recruiting fisheries. 
 (For example, this pattern is observed in @cahill2022unveiling, where large recruitment pulses are associated with the revitalization of fish populations which had been in a collapsed state for years.)
 This unexpected result speaks to the counterintuitive nature of feedback control (e.g., see @moxnes2003uncertain), particularly given the fact that dynamics of the system depends on the full state of the system rather than on only the stock biomass (the strong state dependence of the dynamics of fisheries with highly variable recruitment is discussed in @caddy1983historical, @licandeo2020management). 
 It would thus be natural to expect that this would render stock biomass-based control rules ineffective when compared to policies which use further information about the age structure of the population for decision-making. 
