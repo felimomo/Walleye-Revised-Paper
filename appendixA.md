@@ -63,7 +63,7 @@ The distributions are computed with $n=500$ episodes, and the average rewards fo
 :align: center
 
 A timeseries for the 2RL$_3$ control. 
-We show the two observations used by the policy (smoothed with $k=3$), together with the fishing mortality predicted by the policy.
+We show the two observations used by the policy (smoothed with $k=3$), together with the harvest exploitation rate predicted by the policy.
 ```
 
 ```{figure} figures/appendix/normal-policy.png
@@ -72,7 +72,7 @@ We show the two observations used by the policy (smoothed with $k=3$), together 
 :width: 50000px
 :align: center
 
-Heatmap for 2RL as a function of the two observations (biomass and mean weight).
+Heatmap for 2RL predicted harvest exploitation rate as a function of the two observations (biomass and mean weight).
 ```
 
 ```{figure} figures/appendix/smoothed-policy.png
@@ -81,5 +81,5 @@ Heatmap for 2RL as a function of the two observations (biomass and mean weight).
 :width: 50000px
 :align: center
 
-Heatmap for 2RL$_3$ as a function of the two observations (moving averages of biomass and mean weight).
+Heatmap for 2RL$_3$ predicted harvest exploitation rate as a function of the two observations (moving averages of biomass and mean weight).
 ```
