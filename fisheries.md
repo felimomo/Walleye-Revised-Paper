@@ -148,7 +148,7 @@ $$
   m_a = \frac1{1+\exp\left(-0.5(a-a_{hm})\right)}
 $$ 
 is the maturity at-age, with $a_{hm}=6$.
-This way, the total mortality rate at-age at time-step $t$ is 
+This way, the total mortality rate at-age on year $t$ is 
 $$
 A_{a,t} = 1 - s_{a-1}\Big(1 - U_t v^{\text{harv.}}_{a}\Big).
 $$
@@ -174,14 +174,14 @@ Our model for $r_t$ is a minimalistic description of this dynamic which has expl
 One can qualitatively see concordance between the biomass observation time-series obtained using our model for $r_t$ (see, e.g., {ref}`fig:eps-um1`) and patterns found in the literature (for example, see Fig. 9 in @cahill2022unveiling).
 
 Simulations were run for 1000 years in an attempt to capture the long-term effects of HCRs on population dynamics and performance criteria. 
-Specifically, the expected number of large recruitment years (i.e. ‘‘successful’’ Bernoulli trials for $r_t$) over a period of 1000 time-steps was 25, which was judged to be high enough to capture the dynamics arising from a particular HCR. 
+Specifically, the expected number of large recruitment years (i.e. ‘‘successful’’ Bernoulli trials for $r_t$) over a period of 1000 years was 25, which was judged to be high enough to capture the dynamics arising from a particular HCR. 
 Using nomenclature from the RL literature, we also refer to these 1000 year simulations as *episodes*.
 
 ## Observations
 
-We model observations by simulating a gillnetting survey carried out by a management agency tasked with monitoring and managing the fishery. 
-These observations are then subsequently used by the HCR to set a fishing exploitation rate for a specific  time-step. 
-We consider two types of observations. 
+We model the observation process by simulating a gillnetting survey carried out by a management agency tasked with monitoring and managing the fishery. 
+These observations are then subsequently used by the HCR to set a fishing exploitation rate for each year. 
+We considered two types of observations. 
 The first is an estimate of the stock biomass vulnerable to the management agency’s survey gear,
 \begin{align}
   B_{survey} = \sum_{a=1}^{20}
@@ -212,21 +212,21 @@ Mean weight is easy for managers to observe and is important to consider in the 
 Weight, survey vulnerability, and harvest vulnerability at-age.
 ```
 
-We model observations as imperfect, with a multiplicative Gaussian observation error.
-That is, policies do not observe $(B_{survey},\, \bar{W}_{survey})$ but rather, $(e_B B_{survey},\, e_W \bar{W}_{survey})$, where $e_B$ and $e_W$ are randomly sampled each time-step according to
+We modeled observations as imperfect, with a multiplicative Gaussian observation error.
+That is, policies do not observe $(B_{survey},\, \bar{W}_{survey})$ but rather, $(e_B B_{survey},\, e_W \bar{W}_{survey})$, where $e_B$ and $e_W$ are randomly sampled each year according to
 $$
 e_B, \, e_W \sim \text{Normal}(\mu=1,\, \sigma=0.1).
 $$
 
-Here we emphasize that the system is thus only *partially* observed [@memarzadeh2019resolving]: 
-while the system dynamics unfold in the high-dimensional space defined by the biomass of each age class, most harvest control rules used to manage fisheries only observe some total measurement of stock biomass and apply a recommended Total Allowable Catch (TAC) based on this number. 
+Here we emphasize that the system is thus only partially observed [@memarzadeh2019resolving]: 
+while the system dynamics unfold in the high-dimensional space defined by the biomass of each age class, most harvest control rules used to manage fisheries only observe some total measurement of stock biomass (with error) and apply a recommended Total Allowable Catch (TAC) based on this number. 
 It is also worth noting that while the model dynamics are Markovian in the full state space, the dynamics of these two observed states are not, making this a so-called Partially Observed Markov Decision Process, or POMDP. 
 This real-world problem that surveys provide imperfect information on overall abundance leads to a mathematical inconvenience that significantly increases the technical difficulty  of finding an optimal solution using classical tools like dynamic programming, and, as a result, the analysis of ecological POMDP problems has been restricted to models that make simpler ecological assumptions  (e.g., see @williams2022partial). 
 
 ## Utility models
 
 We consider three utility models. 
-1. *Yield utility* (i.e., *yield maximizing*): the utility at a time-step $t$ is given by the total harvested biomass at that time-step,
+1. *Yield utility* (i.e., *yield maximizing*): the utility at a year $t$ is given by the total harvested biomass at that year,
 $$
   \text{Utility}_{yield}(t) = \sum_{a=1}^{20} W_a U_t v^{\text{harv.}}_a.
 $$
@@ -307,7 +307,7 @@ Mathematically,
 $$
   U_t = f_\theta(\text{Obs}_t),
 $$
-where $f_\theta$ is a neural network with parameters $\theta$, and $\text{Obs}_t$ are the observations obtained at time-step $t$.
+where $f_\theta$ is a neural network with parameters $\theta$, and $\text{Obs}_t$ are the observations obtained at year $t$.
 
 We optimized two different scenarios: one single-observation RL policy (*1RL*) in which only the biomass observation is used,
 $$
@@ -367,7 +367,8 @@ In the context of our paper, the agent is a manager tasked with making a quota d
 In RL, the agent can be restricted to only observe partial information about the state of the environment. 
 Here we consider observations of the total stock biomass and the mean fish weight, but emphasize that additional observations could be passed to the agent.
 
-The simulation is broken down into time-steps. At the beginning of each time-step, the agent prescribes an action that it applies to the environment. 
+The simulation is broken down into year-long time-steps. 
+At the beginning of each time-step, the agent prescribes an action that it applies to the environment. 
 Subsequently, the environment changes its internal state due to this action taken by the agent, and outputs an observation and a reward back to the agent. 
 The observation is used by the agent to take the next action. 
 A visualization of this is shown in @lapeyrolerie2022deep, Fig. 1.
@@ -390,7 +391,7 @@ After optimizing each HCR, we simulated $n=500$ episodes and recorded utility ob
 We visualize this data in {ref}`fig:rewards` where the (interpolated) density of utilities obtained by each policy is plotted, and we record summary statistics for this data in {ref}`tab:rew-table`.
 Moreover, to get a more detailed comparison of the dynamics induced by each HCR, we simulated an additional episode where we recorded the stock biomass, mean fish weight and exploitation rate. 
 To improve comparisons between policies, we used the same time-series of stochastic deviations $\{r_t\}_{t=1, \dots, 1000}$ across all of the latter set of simulations.
-Finally, in order to compare policy responses in the aftermath of a large recruitment year, we performed $n=500$ simulations of short time-series (30 time-steps) in which the first year was a large recruitment year, and the subsequent years had normal recruitment.
+Finally, in order to compare policy responses in the aftermath of a large recruitment year, we performed $n=500$ simulations of short time-series (30 years) in which the first year was a large recruitment year, and the subsequent years had normal recruitment.
 That is, for these simulations we used
 \begin{align}
   r_1 &\sim \mathrm{Unif}(10,\, 30),\\
@@ -495,7 +496,7 @@ The dependence of exploitation rate on mean weight is displayed with the color c
 :align: center
 :number: 4
 
-First 400 time-steps for an episode simulated with each of the HCRs optimized for *Total harvest utility*. 
+First 400 years for an episode simulated with each of the HCRs optimized for *Total harvest utility*. 
 ```
 
 ```{figure} figures/eps-um2-nores.jpeg
@@ -504,7 +505,7 @@ First 400 time-steps for an episode simulated with each of the HCRs optimized fo
 :width: 75000px
 :align: center
 
-First 400 time-steps for an episode simulated with each of the HCRs optimized for *HARA utility*. 
+First 400 years for an episode simulated with each of the HCRs optimized for *HARA utility*. 
 ```
 
 ```{figure} figures/eps-um3-nores.jpeg
@@ -513,7 +514,7 @@ First 400 time-steps for an episode simulated with each of the HCRs optimized fo
 :width: 75000px
 :align: center
 
-First 400 time-steps for an episode simulated with each of the HCRs optimized for *Trophy fishing utility*. 
+First 400 years for an episode simulated with each of the HCRs optimized for *Trophy fishing utility*. 
 ```
 
 ```{figure} figures/eps-um3-nores-zoom.jpeg
@@ -534,7 +535,7 @@ We display large recruitment years as vertical dotted lines.
 :align: center
 
 Policy interactions with our dynamical model in the timesteps following a large year class.
-For each optimized policy, we simulated 500 time-series of 30 time-steps in which the first time-step is a large recruitment year and the subsequent time-steps are normal recruitment years.
+For each optimized policy, we simulated 500 time-series of 30 years in which the first year is a large recruitment year and the subsequent years are normal recruitment years.
 We plot the average response for each policy and shade the error bar region.
 Additionally, we display the dynamics arising without fishing for comparison.
 ```
@@ -630,7 +631,7 @@ While time complexity in observations is outside the scope of this paper, our co
 <!-- Footnotes -->
 <!-- --------- -->
 
-[^opportunity]: In other words, the opportunity cost of a large harvest plays a smaller role the lower $\gamma$ is. Notice, further, that the exponent of $\gamma$ modifies the units of the utility (as opposed to other utility functions, $\text{Utility}_{HARA}$ does not have units of mass), as well as the scale at which utility varies. As we will see show in the results section, the biomass harvested at each time-step is typically $\text{Utility}_{yield}(t)<1$, and thus one can generally expect that $\text{Utility}_{HARA} > \text{Utility}_{yield}$.
+[^opportunity]: In other words, the opportunity cost of a large harvest plays a smaller role the lower $\gamma$ is. Notice, further, that the exponent of $\gamma$ modifies the units of the utility (as opposed to other utility functions, $\text{Utility}_{HARA}$ does not have units of mass), as well as the scale at which utility varies. As we will see show in the results section, the biomass harvested at each year is typically $\text{Utility}_{yield}(t)<1$, and thus one can generally expect that $\text{Utility}_{HARA} > \text{Utility}_{yield}$.
 
 [^classic]: Within classic one-dimensional models such as the logistic population growth model, systems controlled with a constant exploitation rate $U^*$ converge to an equilibrium biomass of $B^*$.
 
