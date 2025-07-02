@@ -28,11 +28,12 @@ exports:
          output: fisheries.pdf
 abstract: |
   In fishery science, harvest management of size-structured stochastic populations is a long-standing and  difficult problem. 
-  Rectilinear precautionary policies based on biomass and harvesting reference points have now become a standard approach to this problem. While these standard feedback policies are adapted from analytical or dynamic programming solutions assuming relatively simple ecological dynamics, they are often applied to more complicated ecological settings in the real world. 
+  Rectilinear precautionary policies based on biomass and harvesting reference points now represent a standard approach to this problem. 
+  While these standard feedback policies are based on analytical or dynamic programming solutions assuming relatively simple ecological dynamics, they are often applied to more complicated ecological settings in the real world. 
   In this paper we explore the problem of designing harvest control rules for partially observed, age-structured, spasmodic fish populations using tools from reinforcement learning (RL) and Bayesian optimization. 
-  Our focus is on the case of Walleye fisheries in Alberta, Canada, whose highly variable recruitment dynamics have perplexed managers and ecologists. 
-  We optimized and evaluated policies using several complementary performance metrics. 
-  The main questions we addressed were: 1. How do standard policies based on reference points perform relative to numerically optimized policies? 2. Can an observation of mean fish weight, in addition to stock biomass, aid policy decisions?
+  Our focus is on the case of Walleye fisheries in Alberta, Canada, whose populations display variable recruitment dynamics. 
+  We optimized and evaluated policies using several complementary performance metrics representing key tradeoffs in harvest management. 
+  The main questions we addressed were: 1. How do standard policies based on reference points perform relative to numerically optimized policies? 2. Can an observation of mean fish weight, in addition to stock biomass, aid in policy decisions?
 keywords: 
   - Machine learning
   - Reinforcement learning
