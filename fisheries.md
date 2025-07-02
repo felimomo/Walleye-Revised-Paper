@@ -226,19 +226,20 @@ This real-world problem that surveys provide imperfect information on overall ab
 ## Utility models
 
 We consider three utility models. 
-1. *Yield utility* (i.e., *yield maximizing*): the utility at a year $t$ is given by the total harvested biomass at that year,
+1. *Yield maximizing utility:* the utility in each year is given by the total harvested biomass at that year,
 $$
-  \text{Utility}_{yield}(t) = \sum_{a=1}^{20} W_a U_t v^{\text{harv.}}_a.
+  \text{Utility}_{yield}(t) = \sum_{a=1}^{a_{max}} W_a U_t v^{\text{harv.}}_a.
 $$
 2. *Risk averse utility*: a hyperbolic additive risk-averse utility function (also known as ‘HARA utility’) which values inter-annual stability in harvests,
 $$
   \text{Utility}_{\text{HARA}}(t) = \text{Utility}_{yield}(t)^{\gamma},
 $$
-where the parameter $\gamma=0.6$ parametrizes the risk aversion (see, e.g., @collie2021harvest).
+where the parameter $\gamma=0.6$ specifies the risk aversion (see, e.g., @collie2021harvest).
 Notice that the power of $\gamma$ attenuates the utility derived from large harvests.
-Thus, low-and-stable harvests can perform relatively better with respect to $\text{Utility}_{\text{HARA}}$ than large-but-sparse harvest peaks.[^opportunity]
+Thus, low-and-stable harvests can perform relatively better with respect to $\text{Utility}_{\text{HARA}}$ than large-but-sparse harvest peaks.
 We note that this is similar to using the natural log of catches as is commonly done in MSE.
 Here the specific risk aversion $\gamma$ is set to a specific value for clarity, and we note that this parameterization converges on total harvest utility as  $\gamma\rightarrow1.0$.
+Notice that if $\text{Utility}_{\text{yield}}(t) < 1$, then $\text{Utility}_{\text{yield}}(t) < \text{Utility}_{\text{HARA}}(t)$ and thus one can expect HARA utility values to be numerically larger than yield.
 3. *Trophy fishing utility*: here, harvested fish only contribute to the utility if they are above a certain size (age) class, $a > a_{thr.}$,
 $$
   \text{Utility}_{trophy}(t) = \sum_{a>a_{thr.}} W_a U_t v^{\text{harv.}}_a,
@@ -250,16 +251,14 @@ $$
 \text{Utility} = \sum_t \text{Utility}(t).
 $$
 
-
-We considered utility functions one and two because they represent commonly acknowledged goals of fisheries management, that is maximizing yield and stabilizing harvests, which are to some degree at odds with one another and represent high harvest rates and high interannual variability in catches (maximizing yield) or low, but consistent harvest rates (maximizing risk-averse utility; see also @walters1996fixed; @collie2021harvest). 
-Moreover we included the trophy fishing function to explore how our analysis would change for more complex, size-dependent, utility functions. 
+We considered utility functions one and two because they represent commonly acknowledged goals of fisheries management, that is maximizing yield and stabilizing harvests, which are at odds with one another and represent high harvest rates and high interannual variability in catches (maximizing yield) or low, but consistent harvest rates (maximizing risk-averse utility; see also @walters1996fixed; @collie2021harvest). 
+Moreover we included the trophy fishing function to explore how our analysis would change for more complex, size-dependent, utility functions such as those that may be needed in complex fisheries management. 
 Size dependence can be particularly relevant in cases where machinery to process harvests only operates within certain ranges of fish sizes, or perhaps when anglers only desire to retain large trophy-sized fish rather than valuing fish of any size equally (e.g., see @murphy1996fisheries; @licandeo2020management).
 
-Within MSE practice, it is common for complex performance metrics containing different competing objectives to be used.
-This expresses the social complexity associated with effective fishery management, in which a variety of stakeholders-with different economic realities and different cultural backgrounds-are affected by policy decisions.
+Within MSE, it is common for complex performance metrics containing different competing objectives to be used.
 Defining the performance metrics used in MSE usually involves an active involvement of the spectrum of stakeholders.
-This process was outside the scope of the present study, and thus we have chosen to derive our results in a series of simple utility models which express distinct objectives clearly.
-We believe that our results provide a useful guide to understand the optimization problem with respect to more complex mixed utility models.[^comparisons]
+This process was outside the scope of the present study, and instead we derived our results in a series of simple utility models that express well-known harvest management trade-offs.
+As such, our results provide a useful guide to understand the optimization problem with respect to more complex objectives.[^comparisons]
 
 
 ## Harvest control strategies
