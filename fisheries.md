@@ -402,7 +402,7 @@ That is, for these simulations we used
 In {ref}`tab:fixed-params` we show the parameter values obtained for the optimized fixed HCRs. 
 The episode utilities obtained by these HCRs are displayed in {ref}`tab:rew-table` and {ref}`fig:rewards`. 
 With respect to the $\text{Utility}_{yield}$ and $\text{Utility}_{HARA}$ utilities, we find that nearly all policies obtain essentially equal amounts of utility—-the only exception being the cPP policy which underperforms relative to the other policies in the HARA scenario.
-In contrast to this, in the trophy fishing scenario (right column), we see that the 2RL control obtains about 30\% more utility than other policies.
+In contrast to this, in the trophy fishing scenario (right column), we see that the 2RL control obtains about 30\% more utility than other harvesting policies.
 
 The optimized HCRs are visualized in {ref}`fig:policies`, where we plot exploitation rate as a function of stock biomass. 
 We discuss these plots in the following paragraphs.
@@ -453,7 +453,6 @@ In this scenario we observe a wide variety of policy shapes ({ref}`fig:policies`
 Moreover, in {ref}`fig:eps-um1` we observe that these different policies indeed lead to quite different dynamical patterns for the exploitation rate.
 Our results suggest that there is a wide variety of control strategies available to a manager that lead to essentially equal behavior in long-term yield.
 For example we observe may contrast the pulsed-fishing behavior of 2RL with UMSY, with the other policies' behavior lying somewhere in the spectrum between these two extremes. 
-Thus, it appears that other performance criteria should be used in addition to yield for the harvest control problem in this scenario.
 
 *HARA utility ({ref}`fig:policies`, middle column)*. 
 In this case, in contrast to the former scenario, we see that all policies converge to similar behavior to UMSY, with relatively flat $U$ curves as a function of observed stock biomass.
@@ -464,17 +463,17 @@ However this exploration would be of limited interest due to the expectation tha
 
 *Trophy fishing utility ({ref}`fig:policies`, right column)*.
 As previously pointed out, in this scenario we observe a marked advantage for 2RL with respect to all other policies in terms of utility obtained.
-This improved performance is associated with the fishing pulses performed by 2RL ({ref}`fig:eps-um3`).
+Examining {ref}`fig:eps-um3` we may see that  2RL used a pulsed harvesting strategy, with short bursts of high exploitation rates, followed by periods of no harvests.
+This behaviour can be contrasted with all other optimized policies we tested, which have exploitation rates that remain relatively stable over time (see {ref}`fig:eps-um3`, right column).
 While the increase of exploitation rate with respect to mean weight by the 2RL policy ({ref}`fig:policies`) is clear, this policy has a highly non-intuitive property of decreasing exploitation with increasing biomass at high biomasses.
 To understand the behavior of the 2RL policy, and its difference with respect to other policies we display a zoom into the same time-series in {ref}`fig:eps-um3-zoom`, together with the times of large recruitment years.
 Here we see that, by avoiding fishing in the years subsequent to a recruitment pulse, the 2RL agent is able to perform a large fishing pulse ($U\approx0.75$) on a population with high biomass and mean weight (with the class of the fishing pulse at $t\approx 320$ being about 10-15 years old at the time of the pulse).
 In contrast, the other optimized policies have relatively stable fishing mortalities over time, with little response to large year classes.
-Because of this, our results suggest that in cases where there is a strong age-dependence on utility, managers face a trade-off between policy stability and long-term expected utility.
 
-In {ref}`fig:aftermath` we display the reponse of each optimized policy (in each of the utility scenarios) in the aftermath of a large recruitment year.
-Right after the large recruitment year there is a dip in both the observed mean weight as well as the observed stock biomass.
+In {ref}`fig:aftermath` we display the reponse of each optimized policy (in each of the utility scenarios) following a large recruitment year.
+Immediately after the large recruitment year there is a dip in both the observed mean weight as well as the observed stock biomass.
 The latter is due to the fact that survey vulnerability at-age is low for small age classes ({ref}`fig:at-age`).
-Similarly, the pronounced dip in mean weight at $t\approx5$ (rather than the dip being at $t=0$) is explained by the age-sensitivity of surveys.
+Similarly, the pronounced dip in mean weight at $t\approx5$ (rather than the dip being at $t=0$) is explained by the survey vulnerability at-age schedule.
 In this plot, we observe that the 2RL fishing pulse in the trophy fishing scenario (right column) happens approximately between timesteps 8 and 15, around the age at which the large recruitment generation starts generating utility.
 
 ```{figure} figures/policies-nores.jpeg
