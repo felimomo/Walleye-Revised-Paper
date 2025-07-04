@@ -131,7 +131,7 @@ $$
 N_{a, t+1} = 
 \begin{cases}
   \frac{\alpha\text{SSB}_t}{1 + \beta \text{SSB}_t} r_t, & a=1,\\
-  s_{a-1}\Big(1 - U_t v^{\text{harv.}}_{a-1}\Big) N_{a-1, t}, & 2\geq a < a_{max},\\
+  s_{a-1}\Big(1 - U_t v^{\text{harv.}}_{a-1}\Big) N_{a-1, t}, & 2\leq a < a_{max},\\
   s_{a_{max}-1} \Big(
     1 - U_t v^{\text{harv.}}_{a_{max}-1}
   \Big) N_{a_{max}-1} + s_{a_max} \Big(
@@ -389,7 +389,7 @@ After optimizing each HCR, we simulated $n=500$ episodes and recorded utility ob
 We visualize this data in {ref}`fig:rewards` where the (interpolated) density of utilities obtained by each policy is plotted, and we record summary statistics for this data in {ref}`tab:rew-table`.
 Moreover, to get a more detailed comparison of the dynamics induced by each HCR, we simulated an additional episode where we recorded the stock biomass, mean fish weight and exploitation rate. 
 To improve comparisons between policies, we used the same time-series of stochastic deviations $\{r_t\}_{t=1, \dots, 1000}$ across all of the latter set of simulations.
-Recall that we use a Beverton-Holt recruitment model in which $r_t$ is the random deviate for recruitment for year $t$ (see eq. [](#popdyn)).
+Recall that we use a Beverton-Holt recruitment model in which $r_t$ is the random deviate for recruitment for year $t$ (see eq. [](#eq:popdyn)).
 Finally, in order to compare policy responses in the aftermath of a large recruitment year, we performed $n=500$ simulations of short time-series (30 years) in which the first year was a large recruitment year, and the subsequent years had normal recruitment.
 That is, for these simulations we used
 \begin{align}
@@ -608,7 +608,7 @@ These contributions raise several unresolved but important questions:
 Under what conditions can RL uncover "pretty good" policies—akin to Hilborn’s concept of pretty good yield—that balance competing objectives? 
 How can RL be extended to support harvesting decisions in spatially structured systems, where local heterogeneity and connectivity complicate management? 
 And how might RL help design policies that reconcile performance with justice, especially in contexts where Indigenous strategies such as rotational harvests fall outside the scope of conventional management strategy evaluation? 
-These questions present a technical challenge to harvest control theory and feedback policy design, particularly because optimization of feedback policies has historically been limited to low-dimensional policy functions that rely solely on stock biomass as the predictor for harvest. 
+These questions address technical challenges to harvest control theory and feedback policy design, particularly because optimization of feedback policies has historically been limited to low-dimensional policy functions that rely solely on stock biomass as the predictor for harvest. 
 We believe RL offers a flexible computational framework that makes these questions tractable and provides a path toward answering them.
 
 
